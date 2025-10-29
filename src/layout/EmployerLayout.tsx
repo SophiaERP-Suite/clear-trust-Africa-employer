@@ -6,29 +6,19 @@ import {
   Users,
   AlertTriangle,
   MessageSquare,
-  Briefcase,
   Wallet,
   Settings,
   LogOut,
 } from "lucide-react";
 
-function AdminLayout() {
+function EmploymentLayout() {
   const navItems = [
     {
       path: "/dashboard",
       icon: <LayoutDashboard size={18} />,
       label: "Dashboard",
     },
-    {
-      path: "/applicantsMgt",
-      icon: <Users size={18} />,
-      label: "Applicant Mgt",
-    },
-    {
-      path: "/employersMgt",
-      icon: <Briefcase size={18} />,
-      label: "Employers Mgt",
-    },
+   
     {
       path: "/tracker",
       icon: <ClipboardList size={18} />,
@@ -57,6 +47,12 @@ function AdminLayout() {
       label: "Communication",
     },
 
+     {
+      path: "/applicantsMgt",
+      icon: <Users size={18} />,
+      label: "Employee Mgt",
+    },
+
     {
       path: "/control-panel",
       icon: <Settings size={18} />,
@@ -64,13 +60,13 @@ function AdminLayout() {
     },
 
     {
-      path: "/control-panel",
+      path: "/logout",
       icon: <LogOut size={18} />,
       label: "Logout",
     },
   ];
 
-  return <BaseDashboardLayout navItems={navItems} />;
+  return <BaseDashboardLayout navItems={navItems} title={"EMPLOYER"} />;
 }
 
-export default AdminLayout;
+export default EmploymentLayout;

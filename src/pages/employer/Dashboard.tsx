@@ -25,7 +25,7 @@ import rashkin from "../../assets2/img/isaiah_rashkin.jpg";
 import deborah from "../../assets2/img/deborah_wilkins.jpg";
 import femi from "../../assets2/img/femi_adebayo.jpg";
 
-function AdminDashboard() {
+function EmployerDashboard() {
   return (
     <div
       className="p-6 lg:p-8 footer-inner mx-auto main-container container"
@@ -34,9 +34,7 @@ function AdminDashboard() {
       <div className="flex flex-wrap justify-between mb-6 gap-4">
         <div className="">
           <h3 className="mb-0 dark:text-white">Quick Insights</h3>
-          <p className="text-secondary-600 dark:text-white">
-            Dashboard
-          </p>
+          <p className="text-secondary-600 dark:text-white">Dashboard</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <div className="inline-block">
@@ -52,8 +50,405 @@ function AdminDashboard() {
         </div>
       </div>
       <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white rounded-md p-4 border">
+            <div>
+              <div></div>
+              <div className="text-lg font-medium text-gray-600 mb-1">
+                Active Cases
+              </div>
+              <div className="text-3xl font-bold text-yellow-600">
+                {/* {stats.expiringSoon} */}2
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-md p-4  border">
+            <div className="text-lg font-medium text-gray-600 mb-1">
+              Pending DBS Checks
+            </div>
+            <div className="text-3xl font-bold text-red-600">
+              {/* {stats.expired} */}3
+            </div>
+          </div>
+          <div className="bg-white rounded-md p-4 border">
+            <div className="text-lg font-medium text-gray-600 mb-1">
+              Open Incidents
+            </div>
+            <div className="text-3xl font-bold text-purple-600">
+              {/* {stats.pending} */}1
+            </div>
+          </div>
+          <div className="bg-white rounded-md p-4 border">
+            <div className="text-lg font-medium text-gray-600 mb-1">
+              Total Employees
+            </div>
+            <div className="text-3xl font-bold text-indigo-600">
+              {/* {stats.complianceRate}% */}6
+            </div>
+          </div>
+        </div>
         <div className="grid gird-cols-1 lg:grid-cols-3 lg:gap-8">
           <div className="relative flex flex-col mb-8 bg-white rounded shadow-lg dark:bg-dark-card grid grid-cols-1 lg:col-span-2">
+            <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-white">
+              <div className="relative flex flex-wrap justify-between p-5">
+                <h4 className="mb-0 dark:text-white">Active Cases</h4>
+              </div>
+              <div className="flex-auto p-6 pt-0">
+                <div className="border dark:border-secondary-800 rounded overflow-hidden">
+                  <table
+                    id="basic-table"
+                    className="min-w-full overflow-hidden divide-y divide-secondary-200 dark:divide-secondary-800"
+                  >
+                    <thead>
+                      <tr className="bg-secondary-200 dark:bg-dark-bg">
+                        <th className="px-6 py-3 text-left rtl:text-right text-secondary-600 whitespace-nowrap font-semibold dark:text-white">
+                          SCHOOLS
+                        </th>
+                        <th className="px-6 py-3 text-left rtl:text-right text-secondary-600 whitespace-nowrap font-semibold dark:text-white">
+                          CHECKS
+                        </th>
+                        <th className="px-6 py-3 text-left rtl:text-right text-secondary-600 whitespace-nowrap font-semibold dark:text-white">
+                          ORDER
+                        </th>
+                        <th className="px-6 py-3 text-left rtl:text-right text-secondary-600 whitespace-nowrap font-semibold dark:text-white">
+                          COMPLETION
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-secondary-200 dark:divide-secondary-800 dark:bg-dark-card dark:text-white">
+                      <tr>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <img
+                              className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                              src={alpha_global}
+                              alt="profile"
+                            />
+                            <h6 className="text-base pl-1 mt-2 dark:text-white">
+                              Alpha Global Schools
+                            </h6>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="iq-media-group iq-media-group-1">
+                            <a
+                              href="#"
+                              className="relative inline-flex ml-0 rtl:mr-0  bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-3">
+                                SP
+                              </div>
+                            </a>
+                            <a
+                              href="#"
+                              className="relative inline-flex -ml-5 rtl:-ml-0 rtl:-mr-5 bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-3">
+                                PP
+                              </div>
+                            </a>
+                            <a
+                              href="#"
+                              className="relative inline-flex -ml-5 rtl:-ml-0 rtl:-mr-5  bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-3">
+                                MM
+                              </div>
+                            </a>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap dark:text-secondary-500 text-secondary-600">
+                          #1,253,000
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center mb-2">
+                            <h6 className="font-medium dark:text-white">60%</h6>
+                          </div>
+                          <div className="flex w-full h-1 align-middle bg-primary-500/10 dark:bg-dark-card rounded-full shadow-inner">
+                            <div className="w-3/5 text-xs leading-none text-center text-white bg-primary-500 rounded-l-full"></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr className="bg-secondary-200 dark:bg-dark-strip">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <img
+                              className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                              src={princeton}
+                              alt="profile"
+                            />
+                            <h6 className="font-medium pl-1 mt-2 dark:text-white">
+                              Priceton Schools
+                            </h6>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="iq-media-group iq-media-group-1">
+                            <a
+                              href="#"
+                              className="relative inline-flex ml-0 rtl:mr-0 bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-2">
+                                SP
+                              </div>
+                            </a>
+                            <a
+                              href="#"
+                              className="relative inline-flex -ml-5 rtl:-ml-0 rtl:-mr-5 bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-2">
+                                PP
+                              </div>
+                            </a>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap dark:text-secondary-500 text-secondary-600">
+                          #1,203,000
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center mb-2">
+                            <h6 className="font-medium dark:text-white">25%</h6>
+                          </div>
+                          <div className="flex w-full h-1 align-middle bg-primary-500/10 dark:bg-dark-card rounded-full shadow-inner">
+                            <div className="w-2/5 text-xs leading-none text-center text-white bg-primary-500 rounded-l-full "></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <img
+                              className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                              src={little_nest}
+                              alt="profile"
+                            />
+                            <h6 className="font-medium pl-1 mt-2 dark:text-white">
+                              Little Nest Nursery
+                            </h6>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="iq-media-group iq-media-group-1">
+                            <a
+                              href="#"
+                              className="relative inline-flex ml-0 rtl:mr-0 bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-2">
+                                PP
+                              </div>
+                            </a>
+                            <a
+                              href="#"
+                              className="relative inline-flex -ml-5 rtl:-ml-0 rtl:-mr-5 bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-2">
+                                TP
+                              </div>
+                            </a>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap  dark:text-secondary-500 text-secondary-600">
+                          #853,000
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center mb-2">
+                            <h6 className="font-medium dark:text-white">
+                              100%
+                            </h6>
+                          </div>
+                          <div className="flex w-full h-1 align-middle bg-green-100 dark:bg-dark-card rounded-full shadow-inner">
+                            <div className="w-full text-xs leading-none text-center text-white bg-green-500 rounded-full"></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr className="bg-secondary-200 dark:bg-dark-strip">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <img
+                              className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                              src={imperial_gate}
+                              alt="profile"
+                            />
+                            <h6 className="font-medium pl-1 mt-2 dark:text-white">
+                              Imperial Gates Schools
+                            </h6>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="iq-media-group iq-media-group-1">
+                            <a
+                              href="#"
+                              className="relative inline-flex ml-0 rtl:mr-0 bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-2">
+                                SP
+                              </div>
+                            </a>
+                            <a
+                              href="#"
+                              className="relative inline-flex -ml-5 rtl:-ml-0 rtl:-mr-5 bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-2">
+                                PP
+                              </div>
+                            </a>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap dark:text-secondary-500 text-secondary-600">
+                          #783,000
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center mb-2">
+                            <h6 className="font-medium dark:text-white">25%</h6>
+                          </div>
+                          <div className="flex w-full h-1 align-middle bg-primary-500/10 dark:bg-dark-card rounded-full shadow-inner">
+                            <div className="w-2/5 text-xs leading-none text-center text-white bg-primary-500 rounded-l-full "></div>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <img
+                              className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                              src={binta}
+                              alt="profile"
+                            />
+                            <h6 className="font-medium pl-1 mt-2 dark:text-white">
+                              Binta International
+                            </h6>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="iq-media-group iq-media-group-1">
+                            <a
+                              href="#"
+                              className="relative inline-flex ml-0 rtl:mr-0 bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-2">
+                                PP
+                              </div>
+                            </a>
+                            <a
+                              href="#"
+                              className="relative inline-flex -ml-5 rtl:-ml-0 rtl:-mr-5 bg-no-repeat"
+                            >
+                              <div className="w-10 h-10 text-sm leading-10 text-center text-primary-500 bg-white border-2 border-primary-500 dark:bg-dark-card rounded-full hover:z-10 mr-2">
+                                TP
+                              </div>
+                            </a>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap  dark:text-secondary-500 text-secondary-600">
+                          #753,000
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center mb-2">
+                            <h6 className="font-medium dark:text-white">
+                              100%
+                            </h6>
+                          </div>
+                          <div className="flex w-full h-1 align-middle bg-green-100 dark:bg-dark-card rounded-full shadow-inner">
+                            <div className="w-full text-xs leading-none text-center text-white bg-green-500 rounded-full"></div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="relative flex flex-col mb-8 lg:mb-0 bg-white rounded shadow-lg dark:bg-dark-card grid grid-cols-1">
+            <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
+              <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
+                <h4 className="mb-0 dark:text-white">Pending DBS Checks</h4>
+              </div>
+              <div className="p-5">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="bg-primary-500/10 p-2 rounded text-primary-500">
+                    <img
+                      className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                      src={femi}
+                      alt="profile"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <div className="flex justify-between">
+                      <h6 className="mb-0 dark:text-white">Femi, Adebayo</h6>
+                      {/* <p className="leading-tight font-medium text-secondary-600">
+                        Pending
+                      </p> */}
+                    </div>
+                    <small className="mt-1 text-secondary-600 dark:text-white">
+                      Teacher
+                    </small>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="bg-info-500/10 p-2 rounded text-info-500">
+                    <img
+                      className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                      src={deborah}
+                      alt="profile"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <div className="flex justify-between">
+                      <h6 className="mb-0 dark:text-white">Deborah, Wilkins</h6>
+                      {/* <p className="leading-tight font-medium text-secondary-600">
+                        Pending
+                      </p> */}
+                    </div>
+                    <small className="mt-1 text-secondary-600 dark:text-white">
+                      Teacher
+                    </small>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="bg-success-500/10 p-2 rounded text-success-500">
+                    <img
+                      className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                      src={donald}
+                      alt="profile"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <div className="flex justify-between">
+                      <h6 className="mb-0 dark:text-white">Donald, Adolphus</h6>
+                      {/* <p className="leading-tight font-medium text-secondary-600">
+                        Pending
+                      </p> */}
+                    </div>
+                    <small className="mt-1 text-secondary-600 dark:text-white">
+                      Teacher
+                    </small>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 ">
+                  <div className="bg-danger-500/10 p-2 rounded text-danger-500">
+                    <img
+                      className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                      src={rashkin}
+                      alt="profile"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <div className="flex justify-between">
+                      <h6 className="mb-0 dark:text-white">Isaiah, Rashkin</h6>
+                      {/* <p className="leading-tight font-medium text-secondary-600">
+                        Pending
+                      </p> */}
+                    </div>
+                    <small className="mt-1 text-secondary-600 dark:text-white">
+                      Teacher
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <div className="relative flex flex-col mb-8 bg-white rounded shadow-lg dark:bg-dark-card grid grid-cols-1 lg:col-span-2">
             <div className="relative flex flex-wrap justify-between px-5 pt-3">
               <h4 className="mb-0 sm:mb-0 dark:text-white">
                 Report & Analytics
@@ -950,7 +1345,7 @@ function AdminDashboard() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="relative flex flex-col mb-8 bg-white rounded shadow-lg dark:bg-dark-card grid grid-cols-1">
             <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
               <div className="relative p-4">
@@ -1303,9 +1698,7 @@ function AdminDashboard() {
                     </div>
                   </div>
                   <div>
-                    <h2 className="dark:text-white text-black">
-                      #3,750,000
-                    </h2>
+                    <h2 className="dark:text-white text-black">#3,750,000</h2>
                     <small className="dark:text-white text-secondary-700 text-base">
                       This Month
                     </small>
@@ -1443,9 +1836,7 @@ function AdminDashboard() {
                     </div>
                     <div className="w-full">
                       <div className="flex justify-between">
-                        <h6 className="mb-0 dark:text-white">
-                          Check Loss
-                        </h6>
+                        <h6 className="mb-0 dark:text-white">Check Loss</h6>
                         <p className="leading-tight font-medium text-secondary-600">
                           #120,000
                         </p>
@@ -1533,9 +1924,7 @@ function AdminDashboard() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center mb-2">
-                            <h6 className="font-medium dark:text-white">
-                              60%
-                            </h6>
+                            <h6 className="font-medium dark:text-white">60%</h6>
                           </div>
                           <div className="flex w-full h-1 align-middle bg-primary-500/10 dark:bg-dark-card rounded-full shadow-inner">
                             <div className="w-3/5 text-xs leading-none text-center text-white bg-primary-500 rounded-l-full"></div>
@@ -1580,9 +1969,7 @@ function AdminDashboard() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center mb-2">
-                            <h6 className="font-medium dark:text-white">
-                              25%
-                            </h6>
+                            <h6 className="font-medium dark:text-white">25%</h6>
                           </div>
                           <div className="flex w-full h-1 align-middle bg-primary-500/10 dark:bg-dark-card rounded-full shadow-inner">
                             <div className="w-2/5 text-xs leading-none text-center text-white bg-primary-500 rounded-l-full "></div>
@@ -1674,9 +2061,7 @@ function AdminDashboard() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center mb-2">
-                            <h6 className="font-medium dark:text-white">
-                              25%
-                            </h6>
+                            <h6 className="font-medium dark:text-white">25%</h6>
                           </div>
                           <div className="flex w-full h-1 align-middle bg-primary-500/10 dark:bg-dark-card rounded-full shadow-inner">
                             <div className="w-2/5 text-xs leading-none text-center text-white bg-primary-500 rounded-l-full "></div>
@@ -1745,10 +2130,10 @@ function AdminDashboard() {
                 <div className="flex items-center gap-4 mb-8">
                   <div className="bg-primary-500/10 p-2 rounded text-primary-500">
                     <img
-                        className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                        src={femi}
-                        alt="profile"
-                      />
+                      className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                      src={femi}
+                      alt="profile"
+                    />
                   </div>
                   <div className="w-full">
                     <div className="flex justify-between">
@@ -1765,10 +2150,10 @@ function AdminDashboard() {
                 <div className="flex items-center gap-4 mb-8">
                   <div className="bg-info-500/10 p-2 rounded text-info-500">
                     <img
-                        className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                        src={deborah}
-                        alt="profile"
-                      />
+                      className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                      src={deborah}
+                      alt="profile"
+                    />
                   </div>
                   <div className="w-full">
                     <div className="flex justify-between">
@@ -1785,10 +2170,10 @@ function AdminDashboard() {
                 <div className="flex items-center gap-4 mb-8">
                   <div className="bg-success-500/10 p-2 rounded text-success-500">
                     <img
-                        className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                        src={donald}
-                        alt="profile"
-                      />
+                      className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                      src={donald}
+                      alt="profile"
+                    />
                   </div>
                   <div className="w-full">
                     <div className="flex justify-between">
@@ -1805,16 +2190,14 @@ function AdminDashboard() {
                 <div className="flex items-center gap-4 ">
                   <div className="bg-danger-500/10 p-2 rounded text-danger-500">
                     <img
-                        className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                        src={rashkin}
-                        alt="profile"
-                      />
+                      className="w-10 h-10 p-0 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                      src={rashkin}
+                      alt="profile"
+                    />
                   </div>
                   <div className="w-full">
                     <div className="flex justify-between">
-                      <h6 className="mb-0 dark:text-white">
-                        Isaiah, Rashkin
-                      </h6>
+                      <h6 className="mb-0 dark:text-white">Isaiah, Rashkin</h6>
                       <p className="leading-tight font-medium text-secondary-600">
                         10/24/25
                       </p>
@@ -1972,9 +2355,7 @@ function AdminDashboard() {
                 <div className="flex justify-between  mb-4">
                   <div className="w-full">
                     <div className="flex justify-between items-center -mb-2">
-                      <h6 className="mb-0 dark:text-white">
-                        Little Stars
-                      </h6>
+                      <h6 className="mb-0 dark:text-white">Little Stars</h6>
                       <div
                         className="flex items-center"
                         x-data="{ open: false }"
@@ -2040,9 +2421,7 @@ function AdminDashboard() {
                 <div className="flex justify-between  mb-4">
                   <div className="w-full">
                     <div className="flex justify-between items-center -mb-2">
-                      <h6 className="mb-0 dark:text-white">
-                        Ocean Hearts
-                      </h6>
+                      <h6 className="mb-0 dark:text-white">Ocean Hearts</h6>
                       <div
                         className="flex items-center"
                         x-data="{ open: false }"
@@ -2108,7 +2487,9 @@ function AdminDashboard() {
                 <div className="flex justify-between  mb-4">
                   <div className="w-full">
                     <div className="flex justify-between items-center -mb-2">
-                      <h6 className="mb-0 dark:text-white">Princeton Schools</h6>
+                      <h6 className="mb-0 dark:text-white">
+                        Princeton Schools
+                      </h6>
                       <div
                         className="flex items-center"
                         x-data="{ open: false }"
@@ -2177,9 +2558,7 @@ function AdminDashboard() {
           <div className="relative flex flex-col  lg:mb-0  bg-white rounded shadow-lg dark:bg-dark-card grid grid-cols-1">
             <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-white">
               <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
-                <h4 className="mb-0 dark:text-white">
-                  Ongoing Check Logs
-                </h4>
+                <h4 className="mb-0 dark:text-white">Ongoing Check Logs</h4>
               </div>
               <div className="flex-auto p-5">
                 <div className="flex">
@@ -2195,7 +2574,8 @@ function AdminDashboard() {
                     </div>
                     <div className="ml-4 rtl:mr-4 LR">
                       <h6 className=" font-medium dark:text-white mb-0">
-                        Completed Check on Olamide, Samuels for Princeton Schools
+                        Completed Check on Olamide, Samuels for Princeton
+                        Schools
                       </h6>
                     </div>
                   </div>
@@ -2249,7 +2629,8 @@ function AdminDashboard() {
                     </div>
                     <div className="ml-4 rtl:mr-4 LR">
                       <h6 className=" font-medium dark:text-white mb-0">
-                        Finalized check on Folarin, Joshua for Alpha Global Schools
+                        Finalized check on Folarin, Joshua for Alpha Global
+                        Schools
                       </h6>
                     </div>
                   </div>
@@ -2281,4 +2662,4 @@ function AdminDashboard() {
   );
 }
 
-export default AdminDashboard;
+export default EmployerDashboard;

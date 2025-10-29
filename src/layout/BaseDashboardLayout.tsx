@@ -2,7 +2,8 @@
 import { Outlet, NavLink } from "react-router-dom";
 import { useState, useRef, useEffect, type JSX } from "react";
 import DashboardHead from "../components/DashboardHead";
-import tcrn_image from "../assets2/img/TRCN.jpg";
+import binta from "../assets2/img/binta.jpeg";
+// import man1 from "../assets2/img/donald_adolphus.jpg";
 import femi from "../assets2/img/femi_adebayo.jpg";
 import { ArrowRight, ArrowLeft, Menu, X, Bell, Search } from "lucide-react";
 
@@ -14,9 +15,10 @@ interface NavItem {
 
 interface BaseDashboardLayoutProps {
   navItems: NavItem[];
+  title?: string;
 }
 
-function BaseDashboardLayout({ navItems }: BaseDashboardLayoutProps) {
+function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -90,14 +92,14 @@ function BaseDashboardLayout({ navItems }: BaseDashboardLayoutProps) {
               <div className="flex items-center text-black">
                 <a
                   href="/admin/dashboard"
-                  className="flex px-5 py-4 mr-4 rtl:ml-4 rtl:mr-0 text-xl whitespace-nowrap"
+                  className="flex px-1 py-0 my-4 mr-5 text-xl whitespace-nowrap"
                 >
-                  <div className="sidebar-logo ml-2">
+                  <div className="sidebar-logo">
                     <img
-                      src="/clear-logo.png"
+                      src={binta}
                       style={{ width: "160px" }}
                       alt="logo"
-                      className="mr-3"
+                     
                     />
                   </div>
                 </a>
@@ -105,46 +107,44 @@ function BaseDashboardLayout({ navItems }: BaseDashboardLayoutProps) {
             )}
           </div>
 
-          <div className="sidebar-body data-scrollbar">
-            <div className="nav-item static-item">
-              <p className="nav-link static-item disabled">
-                {isOpen ? (
-                  <a
-                    className="py-0 flex items-center p-2 ml-2 hover:text-primary-500 active:text-primary-500 focus:text-primary-500 focus"
-                    href="#"
-                  >
-                    <img
-                      src={tcrn_image}
-                      alt="User-Profile"
-                      className="h-12 w-12 rounded-full"
-                      style={{ objectFit: "cover" }}
-                      loading="lazy"
-                    />
-                    <div className="caption ml-3 d-none d-md-block ">
-                      <h6 className="mb-0 caption-title mr-4" style={{}}>
-                        Austin Robertson
-                      </h6>
-                      <p className="mb-0 caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
-                        DBS Admin
-                      </p>
-                    </div>
-                  </a>
-                ) : (
-                  <a
-                    className="py-0 flex justify-center"
-                    href="#"
-                  >
-                    <img
-                      src={tcrn_image}
-                      alt="User-Profile"
-                      className="h-12 w-12 rounded-full"
-                      style={{ objectFit: "cover" }}
-                      loading="lazy"
-                    />
-                  </a>
-                )}
-              </p>
-            </div>
+          <div className="nav-item static-item border-b">
+            <p className="nav-link static-item disabled">
+              {isOpen ? (
+                <a
+                  className="py-0 flex items-center p-2 ml-2 hover:text-primary-500 active:text-primary-500 focus:text-primary-500 focus"
+                  href="#"
+                >
+                  <img
+                    src={femi}
+                    alt="User-Profile"
+                    className="h-12 w-12 rounded-full"
+                    style={{ objectFit: "cover" }}
+                    loading="lazy"
+                  />
+                  <div className="caption ml-3 d-none d-md-block ">
+                    <h6 className="mb-0 caption-title mr-4" style={{}}>
+                      Olawale Adigun
+                    </h6>
+                    <p className="mb-0 text-sm caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
+                      HR
+                    </p>
+                  </div>
+                </a>
+              ) : (
+                <a className="py-0 flex justify-center" href="#">
+                  <img
+                    src={femi}
+                    alt="User-Profile"
+                    className="h-12 w-12 rounded-full"
+                    style={{ objectFit: "cover" }}
+                    loading="lazy"
+                  />
+                </a>
+              )}
+            </p>
+          </div>
+
+          <div className="sidebar-body data-scrollbar mt-4">
             <ul className="sidebar-main-menu">
               {navItems.map((item) => (
                 <li key={item.path} className="nav-item">
@@ -201,7 +201,7 @@ function BaseDashboardLayout({ navItems }: BaseDashboardLayoutProps) {
                 <img
                   src={femi}
                   alt="User-Profile"
-                  className="h-12 w-12 rounded-full truncate"
+                  className="h-10 w-10 rounded-full truncate"
                   style={{ objectFit: "cover" }}
                   loading="lazy"
                 />
@@ -210,7 +210,7 @@ function BaseDashboardLayout({ navItems }: BaseDashboardLayoutProps) {
                     Oluwafemi Lawal
                   </h6>
                   <p className="mb-0 caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
-                    DBS Admin
+                    Employer
                   </p>
                 </div>
               </a>
@@ -285,9 +285,9 @@ function BaseDashboardLayout({ navItems }: BaseDashboardLayoutProps) {
                           )}
                         </small>
                       </div>
-                      <h1 className="flex text-2xl font-bold text-gray-900 items-center gap-3">
-                        ADMIN PORTAL
-                      </h1>
+                      <h2 className="flex text-2xl font-bold text-gray-900 items-center gap-3">
+                        {title} PORTAL
+                      </h2>
                     </div>
 
                     <div className="flex mx-2 items-center">
@@ -756,22 +756,22 @@ function BaseDashboardLayout({ navItems }: BaseDashboardLayoutProps) {
 
                         <div className="hidden lg:flex ml-7 lg:grow transition-all duration-700 ease-in-out">
                           <ul className="flex items-center mb-2 ml-auto rtl:ml-0 rtl:mr-auto lg:mb-0">
-                            <li
-                              className="flex justify-end items-center px-1 py-1 rounded-xl border border-gray-800"
-                              x-data="{ open: false }"
-                            >
-                              <input
-                                className="h-9 hidden lg:flex rounded-l-xl w-110 p- focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-secondary-600"
-                                style={{ borderRight: "0px" }}
-                              />
-                              <a
-                                href="#"
-                                className="block group hover:text-primary-500 focusa text-secondary-600 "
-                                style={{ borderLeft: "0px" }}
-                              >
-                                <Search className="text-black" size={22} />
-                              </a>
-                            </li>
+                            <li className="flex items-center justify-end">
+  <div className="flex items-center border border-gray-700 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 transition-all duration-200">
+    <input
+      type="text"
+      placeholder="Search..."
+      className="hidden lg:block px-3 py-2 w-56 text-gray-800 focus:outline-none bg-transparent"
+    />
+    <button
+      type="button"
+      className="p-2 hover:bg-gray-700 transition-colors duration-200"
+    >
+      <Search className="text-black" size={20} />
+    </button>
+  </div>
+</li>
+
                             <li
                               className="flex items-center pl-2 border-r"
                               x-data="{ open: false }"
@@ -937,7 +937,7 @@ function BaseDashboardLayout({ navItems }: BaseDashboardLayoutProps) {
                                   onClick={() => setOpen(!open)}
                                 >
                                   <img
-                                    src={tcrn_image}
+                                    src={binta}
                                     alt="User-Profile"
                                     className="h-12 w-12 rounded-full truncate"
                                     style={{ objectFit: "cover" }}
@@ -948,10 +948,10 @@ function BaseDashboardLayout({ navItems }: BaseDashboardLayoutProps) {
                                       className="mb-0 caption-title mr-4"
                                       style={{}}
                                     >
-                                      Austin Robertson
+                                      Binta Schools
                                     </h6>
                                     <p className="mb-0 caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
-                                      DBS Admin
+                                      Admin
                                     </p>
                                   </div>
                                 </a>
