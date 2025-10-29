@@ -1,19 +1,19 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Dashboard from "../pages/admin/Dashboard";
-import AdminLayout from "../layout/AdminLayout";
-import ApplicantNew from "../pages/admin/applicant/ApplicantNew";
-import Applicants from "../pages/admin/applicant/Applicants";
-import ApplicantProfile from "../pages/admin/applicant/ApplicantProfile";
-import EmployersNew from "../pages/admin/employer/EmployerNew";
-import Employers from "../pages/admin/employer/Employers";
-import EmployerProfile from "../pages/admin/employer/EmployerProfile";
+import Dashboard from "../pages/employer/Dashboard";
+import EmployerLayout from "../layout/EmployerLayout";
+import ApplicantNew from "../pages/employer/applicant/ApplicantNew";
+import Applicants from "../pages/employer/applicant/Applicants";
+import ApplicantProfile from "../pages/employer/applicant/ApplicantProfile";
+import EmployersNew from "../pages/employer/employer/EmployerNew";
+import Employers from "../pages/employer/employer/Employers";
+import EmployerProfile from "../pages/employer/employer/EmployerProfile";
 
 function AppRoutes() {
   return (
     <Routes>
       <Route
         path="/"
-        element={<AdminLayout/>}>
+        element={<EmployerLayout/>}>
         <Route index element={<Dashboard />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="applicantsMgt" element={<Applicants />} />
