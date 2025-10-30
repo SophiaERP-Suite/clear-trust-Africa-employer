@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Settings, Users, ShieldCheck, Database, ChevronRightIcon } from "lucide-react";
+import { Settings, ShieldCheck, Database, ChevronRightIcon } from "lucide-react";
 import Overview from "./Overview";
 // import UserManagement from "./UserManagement";
 import Permissions from "./Permissions";
