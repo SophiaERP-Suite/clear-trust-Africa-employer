@@ -15,53 +15,53 @@ function EmploymentLayout() {
   const navItems = [
     {
       path: "/dashboard",
-      icon: <LayoutDashboard size={18} />,
+      icon: <LayoutDashboard size={25} />,
       label: "Dashboard",
     },
    
     {
       path: "/tracker",
-      icon: <ClipboardList size={18} />,
+      icon: <ClipboardList size={25} />,
       label: "DBS Tracker",
     },
     {
       path: "/incidentMgt",
-      icon: <AlertTriangle size={18} />,
+      icon: <AlertTriangle size={25} />,
       label: "Incident Mgt",
     },
 
     {
       path: "/financeMgt",
-      icon: <Wallet size={18} />,
+      icon: <Wallet size={25} />,
       label: "Finance Mgt",
     },
     {
       path: "/reports",
-      icon: <BarChart3 size={18} />,
+      icon: <BarChart3 size={25} />,
       label: "Reports & Analytics",
     },
 
     {
       path: "/communication",
-      icon: <MessageSquare size={18} />,
+      icon: <MessageSquare size={25} />,
       label: "Communication",
     },
 
      {
       path: "/applicantsMgt",
-      icon: <Users size={18} />,
+      icon: <Users size={25} />,
       label: "Employee Mgt",
     },
 
     {
       path: "/control-panel",
-      icon: <Settings size={18} />,
+      icon: <Settings size={25} />,
       label: "Control Panel",
     },
 
     {
       path: "/logout",
-      icon: <LogOut size={18} />,
+      icon: <LogOut size={25} />,
       label: "Logout",
     },
   ];

@@ -7,6 +7,10 @@ import ApplicantProfile from "../pages/employer/applicant/ApplicantProfile";
 import EmployersNew from "../pages/employer/employer/EmployerNew";
 import Employers from "../pages/employer/employer/Employers";
 import EmployerProfile from "../pages/employer/employer/EmployerProfile";
+import DBSTrackerModule from "../pages/employer/Tracker/DbsTracker";
+import FinanceDashboard from "../pages/employer/Finance";
+import Incidents from "../pages/employer/incident/incident";
+import Reports from "../pages/employer/reports/Reports";
 
 function AppRoutes() {
   return (
@@ -23,10 +27,10 @@ function AppRoutes() {
         <Route path="employerNew" element={<EmployersNew />} />
         <Route path="employerProfile" element={<EmployerProfile />} />
         {/* <Route path="tracker" element={<DBSTrackerModule />} /> */}
-        <Route path="tracker" element={<Dashboard />} />
-        <Route path="incidentMgt" element={<Dashboard />} />
-        <Route path="financeMgt" element={<Dashboard />} />
-        <Route path="reports" element={<Dashboard />} />
+        <Route path="tracker" element={<DBSTrackerModule />} />
+        <Route path="incidentMgt" element={<Incidents />} />
+        <Route path="financeMgt" element={<FinanceDashboard />} />
+        <Route path="reports" element={<Reports />} />
         <Route path="communication" element={<Dashboard />} />
         <Route path="control-panel" element={<Dashboard />} />
 

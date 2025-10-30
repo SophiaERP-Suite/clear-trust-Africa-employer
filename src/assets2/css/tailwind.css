@@ -1345,6 +1345,29 @@ label {
   white-space: nowrap;
   text-transform: capitalize;
 }
+.sidebar-base .nav-item .nav-link-sub.active {
+  -webkit-transition-property: background-color, color, opacity,
+    -webkit-border-radius, -webkit-transform;
+  transition-property: background-color, color, opacity, -webkit-border-radius,
+    -webkit-transform;
+  -o-transition-property: background-color, color, border-radius, transform,
+    opacity;
+  transition-property: background-color, color, border-radius, transform,
+    opacity;
+  transition-property: background-color, color, border-radius, transform,
+    opacity, -webkit-border-radius, -webkit-transform;
+  -webkit-transition-duration: 400ms;
+  -o-transition-duration: 400ms;
+  transition-duration: 400ms;
+  -webkit-transition-timing-function: ease-in-out;
+  -o-transition-timing-function: ease-in-out;
+  transition-timing-function: ease-in-out;
+  --tw-bg-opacity: 1;
+  background-color: rgb(112 22 208 / var(--tw-bg-opacity));
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  color: white;
+}
 .sidebar-base .nav-item .nav-link.active {
   -webkit-transition-property: background-color, color, opacity,
     -webkit-border-radius, -webkit-transform;

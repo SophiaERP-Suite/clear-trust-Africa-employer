@@ -77,26 +77,23 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                 >
                   <div className="sidebar-logo ml-2">
                     <img
-                      src="/clear-logo.png"
-                      style={{ width: "160px" }}
+                      src="/cleartrust_logo.png"
+                      style={{ width: "170px" }}
                       alt="logo"
                       className="mr-3"
                     />
                   </div>
                 </a>
-                {/* <div>
-                  <ArrowLeft size={30} onClick={handleSideBarToggle} />
-                </div> */}
               </div>
             ) : (
-              <div className="flex items-center text-black">
+              <div className="">
                 <a
                   href="/admin/dashboard"
-                  className="flex px-1 py-0 my-4 mr-5 text-xl whitespace-nowrap"
+                  className="flex justify-center py-2 px-2 my-2 relative right-2 items-center"
                 >
                   <div className="sidebar-logo">
                     <img
-                      src={binta}
+                       src="/cleartrust_logo_mini.png"
                       style={{ width: "160px" }}
                       alt="logo"
                      
@@ -145,13 +142,13 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
           </div>
 
           <div className="sidebar-body data-scrollbar mt-4">
-            <ul className="sidebar-main-menu">
+            <ul className="sidebar-main-menu overflow-y-auto">
               {navItems.map((item) => (
                 <li key={item.path} className="nav-item">
                   <NavLink
                     to={item.path}
                     className={({ isActive }) =>
-                      `nav-link text-black ${isActive ? "active" : ""}`
+                      `text-black  ${isOpen ? "nav-link" : "flex justify-center items-center gap-4 my-1 py-3 nav-link-sub" } ${isActive ? "active" : ""}`
                     }
                   >
                     {item.icon}
@@ -176,7 +173,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
               className="flex px-5 py-4 mr-4 rtl:ml-4 rtl:mr-0 text-xl whitespace-nowrap"
             >
               <span className="sidebar-logo ml-2" style={{ width: "170px" }}>
-                <img src="/clear-logo.png" alt="logo" />
+                <img src="/cleartrust_logo.png" alt="logo" />
               </span>
               <div className="sidebar-logo ml-2">
                 <img

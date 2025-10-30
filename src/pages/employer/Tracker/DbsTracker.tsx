@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   Shield,
   AlertTriangle,
-//   CheckCircle,
+  //   CheckCircle,
   Clock,
   Search,
   Filter,
@@ -10,43 +10,49 @@ import {
   Plus,
   Eye,
   RefreshCw,
-//   Calendar,
-//   Users,
+  //   Calendar,
+  //   Users,
   FileText,
   Bell,
   XCircle,
+  List,
+  ListChecks,
+  ClockAlert,
+  ClockFading,
+  Hourglass,
+  ChevronRightIcon,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 export default function DBSTrackerModule() {
   const [activeView, setActiveView] = useState("dashboard");
-//   const [selectedCheck, setSelectedCheck] = useState(null);
+  //   const [selectedCheck, setSelectedCheck] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
   // Sample DBS checks data
   const dbsChecks = [
     {
-      id: "DBS-2024-001",
+      id: "DBS-2025-001",
       employeeName: "Sarah Johnson",
       employeeId: "EMP-1001",
       department: "Healthcare",
       position: "Senior Nurse",
       checkType: "Enhanced",
       status: "Valid",
-      applicationDate: "2024-01-05",
-      issueDate: "2024-01-20",
+      applicationDate: "2025-01-05",
+      issueDate: "2025-01-20",
       expiryDate: "2025-01-20",
       certificateNumber: "DBS-001234567890",
       result: "Clear",
       updateService: true,
-      lastUpdated: "2024-01-28",
+      lastUpdated: "2025-01-28",
       daysUntilExpiry: 357,
       photo:
         "https://ui-avatars.com/api/?name=Sarah+Johnson&background=10b981&color=fff",
     },
     {
-      id: "DBS-2024-002",
+      id: "DBS-2025-002",
       employeeName: "Michael Chen",
       employeeId: "EMP-1002",
       department: "Education",
@@ -55,17 +61,17 @@ export default function DBSTrackerModule() {
       status: "Expiring Soon",
       applicationDate: "2023-11-10",
       issueDate: "2023-11-25",
-      expiryDate: "2024-11-25",
+      expiryDate: "2025-11-25",
       certificateNumber: "DBS-001234567891",
       result: "Clear",
       updateService: true,
-      lastUpdated: "2024-01-15",
+      lastUpdated: "2025-01-15",
       daysUntilExpiry: 30,
       photo:
         "https://ui-avatars.com/api/?name=Michael+Chen&background=3b82f6&color=fff",
     },
     {
-      id: "DBS-2024-003",
+      id: "DBS-2025-003",
       employeeName: "Emma Williams",
       employeeId: "EMP-1003",
       department: "Social Care",
@@ -84,45 +90,45 @@ export default function DBSTrackerModule() {
         "https://ui-avatars.com/api/?name=Emma+Williams&background=ef4444&color=fff",
     },
     {
-      id: "DBS-2024-004",
+      id: "DBS-2025-004",
       employeeName: "James Anderson",
       employeeId: "EMP-1004",
       department: "Administration",
       position: "Office Manager",
       checkType: "Standard",
       status: "Pending",
-      applicationDate: "2024-01-22",
+      applicationDate: "2025-01-22",
       issueDate: null,
       expiryDate: null,
       certificateNumber: null,
       result: "Pending",
       updateService: false,
-      lastUpdated: "2024-01-22",
+      lastUpdated: "2025-01-22",
       daysUntilExpiry: null,
       photo:
         "https://ui-avatars.com/api/?name=James+Anderson&background=f59e0b&color=fff",
     },
     {
-      id: "DBS-2024-005",
+      id: "DBS-2025-005",
       employeeName: "Lisa Martinez",
       employeeId: "EMP-1005",
       department: "Healthcare",
       position: "Junior Doctor",
       checkType: "Enhanced",
       status: "Under Review",
-      applicationDate: "2024-01-18",
+      applicationDate: "2025-01-18",
       issueDate: null,
       expiryDate: null,
       certificateNumber: null,
       result: "Under Review",
       updateService: true,
-      lastUpdated: "2024-01-26",
+      lastUpdated: "2025-01-26",
       daysUntilExpiry: null,
       photo:
         "https://ui-avatars.com/api/?name=Lisa+Martinez&background=8b5cf6&color=fff",
     },
     {
-      id: "DBS-2024-006",
+      id: "DBS-2025-006",
       employeeName: "David Thompson",
       employeeId: "EMP-1006",
       department: "Education",
@@ -131,11 +137,11 @@ export default function DBSTrackerModule() {
       status: "Valid",
       applicationDate: "2023-09-15",
       issueDate: "2023-10-02",
-      expiryDate: "2024-10-02",
+      expiryDate: "2025-10-02",
       certificateNumber: "DBS-001234567893",
       result: "Clear",
       updateService: true,
-      lastUpdated: "2024-01-10",
+      lastUpdated: "2025-01-10",
       daysUntilExpiry: 247,
       photo:
         "https://ui-avatars.com/api/?name=David+Thompson&background=10b981&color=fff",
@@ -193,81 +199,99 @@ export default function DBSTrackerModule() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="p-6 lg:p-8 footer-inner mx-auto main-container container">
       {/* Header */}
       <div className="mb-6">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <div className="flex">
-              <Shield className="text-blue-600" size={36} />
-              <div className="mt-3">
-                <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-3 w-full" style={{ lineHeight: '.5rem' }}>
-                  DBS Tracker & Compliance
-                </h1>
-                <small className="flex gap-3">
-                  <NavLink
-                    to='/dashboard'
-                    className='text-black'
-                  >Dashboard
-                  </NavLink>
-                  /
-                  <NavLink
-                    to='/tracker'
-                    className='text-black'
-                  >DBS Tracker
-                  </NavLink>
-                </small>
+        <div className="w-full mb-8">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="flex flex-wrap items-center justify-between">
+                <div className="flex">
+                  <Shield className="text-blue-600 mr-2" size={36} />
+                  <div>
+                    <h3 className="mb-0 text-black">
+                      DBS Tracker & Compliance
+                    </h3>
+                    <p className="text-secondary-600 text-black">
+                      Dashboard <ChevronRightIcon size={14} /> DBS Tracker{" "}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <a
+                    href="applicantNew"
+                    className="text-black btn shadow-md bg-white border focus:bg-gray-200"
+                  >
+                    <Plus size={18} className="mr-2" />
+                    Add New
+                  </a>
+                </div>
               </div>
-              
             </div>
-            <p className="text-gray-600 mt-1">
-              Monitor and manage background checks
-            </p>
           </div>
-          <button className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all shadow-lg">
-            <Plus size={20} />
-            New DBS Check
-          </button>
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-          <div className="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
-            <div className="text-sm text-gray-600 mb-1">Total Checks</div>
-            <div className="text-2xl font-bold text-gray-900">
-              {stats.total}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {/* Total Checks */}
+          {/* <div className="flex items-center gap-4 p-5 bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-md hover:shadow-lg transition">
+            <div className="bg-white/20 w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-sm">
+              <List className="text-white text-xl" />
+            </div>
+            <div>
+              <p className="text-sm text-blue-50">Total Checks</p>
+              <h2 className="text-3xl font-bold text-white">{stats.total}</h2>
+            </div>
+          </div> */}
+
+          {/* Valid */}
+          <div className="flex items-center gap-4 p-5 bg-gradient-to-r from-green-600 to-green-500 rounded-lg shadow-md hover:shadow-lg transition">
+            <div className="bg-white/20 w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-sm">
+              <ListChecks className="text-white text-xl" />
+            </div>
+            <div>
+              <p className="text-sm text-green-50">Active</p>
+              <h2 className="text-3xl font-bold text-white">{stats.valid}</h2>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
-            <div className="text-sm text-gray-600 mb-1">Valid</div>
-            <div className="text-2xl font-bold text-green-600">
-              {stats.valid}
+
+          {/* Pending */}
+          <div className="flex items-center gap-4 p-5 bg-gradient-to-r from-purple-600 to-purple-500 rounded-lg shadow-md hover:shadow-lg transition">
+            <div className="bg-white/20 w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-sm">
+              <Hourglass className="text-white text-xl" />
+            </div>
+            <div>
+              <p className="text-sm text-purple-50">Pending</p>
+              <h2 className="text-3xl font-bold text-white">{stats.pending}</h2>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
-            <div className="text-sm text-gray-600 mb-1">Expiring Soon</div>
-            <div className="text-2xl font-bold text-yellow-600">
-              {stats.expiringSoon}
+
+          {/* Expiring Soon */}
+          <div className="flex items-center gap-4 p-5 bg-gradient-to-r from-yellow-500 to-yellow-400 rounded-lg shadow-md hover:shadow-lg transition">
+            <div className="bg-white/20 w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-sm">
+              <ClockAlert className="text-white text-xl" />
+            </div>
+            <div>
+              <p className="text-sm text-yellow-50">Expiring Soon</p>
+              <h2 className="text-3xl font-bold text-white">
+                {stats.expiringSoon}
+              </h2>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 border-l-4 border-red-500">
-            <div className="text-sm text-gray-600 mb-1">Expired</div>
-            <div className="text-2xl font-bold text-red-600">
-              {stats.expired}
+
+          {/* Expired */}
+          <div className="flex items-center gap-4 p-5 bg-gradient-to-r from-red-600 to-red-500 rounded-lg shadow-md hover:shadow-lg transition">
+            <div className="bg-white/20 w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-sm">
+              <ClockFading className="text-white text-xl" />
+            </div>
+            <div>
+              <p className="text-sm text-red-50">Expired</p>
+              <h2 className="text-3xl font-bold text-white">{stats.expired}</h2>
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
-            <div className="text-sm text-gray-600 mb-1">Pending</div>
-            <div className="text-2xl font-bold text-purple-600">
-              {stats.pending}
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4 border-l-4 border-indigo-500">
-            <div className="text-sm text-gray-600 mb-1">Compliance Rate</div>
-            <div className="text-2xl font-bold text-indigo-600">
-              {stats.complianceRate}%
-            </div>
-          </div>
+
+          
         </div>
       </div>
 
@@ -288,19 +312,19 @@ export default function DBSTrackerModule() {
             <button
               key={tab.id}
               onClick={() => setActiveView(tab.id)}
-              className={`relative flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
+              className={`relative flex items-center gap-2 px-6 py-3 rounded-lg border font-semibold transition-all ${
                 activeView === tab.id
-                  ? "bg-blue-600 text-white shadow-lg"
+                  ? "bg-gray-600 text-white shadow-lg"
                   : "bg-white text-gray-700 hover:bg-gray-100"
               }`}
             >
               <Icon size={18} />
               {tab.label}
-              {/* {tab.badge > 0 && (
+              {tab.badge > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {tab.badge}
                 </span>
-              )} */}
+              )}
             </button>
           );
         })}
@@ -310,125 +334,142 @@ export default function DBSTrackerModule() {
       {activeView === "dashboard" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Expiring Soon */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-yellow-700">
-              <Clock className="text-yellow-500" />
-              Expiring Soon (30 Days)
-            </h3>
-            <div className="space-y-3">
-              {dbsChecks
-                .filter((c) => c.status === "Expiring Soon")
-                .map((check) => (
-                  <div
-                    key={check.id}
-                    className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={check.photo}
-                        alt={check.employeeName}
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm">
-                          {check.employeeName}
+          <div className="relative flex flex-col max-h-[420px] mb-8 lg:mb-0 bg-white rounded shadow-lg dark:bg-dark-card grid grid-cols-1">
+            <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
+              <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
+                <h4 className="mb-0 text-xl font-bold dark:text-white">
+                  {" "}
+                  <Clock className="text-yellow-500" /> Expiring Soon (30 Days)
+                </h4>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4">
+                <div className="space-y-3">
+                  {dbsChecks
+                    .filter((c) => c.status === "Expiring Soon")
+                    .map((check) => (
+                      <div
+                        key={check.id}
+                        className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg"
+                      >
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={check.photo}
+                            alt={check.employeeName}
+                            className="w-10 h-10 rounded-full"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-sm">
+                              {check.employeeName}
+                            </div>
+                            <div className="text-xs text-gray-600">
+                              {check.department} • {check.position}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-600">
-                          {check.department} • {check.position}
+                        <div className="mt-2 text-xs text-yellow-700 font-semibold">
+                          Expires in {check.daysUntilExpiry} days
                         </div>
                       </div>
-                    </div>
-                    <div className="mt-2 text-xs text-yellow-700 font-semibold">
-                      Expires in {check.daysUntilExpiry} days
-                    </div>
-                  </div>
-                ))}
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Expired */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-red-700">
-              <XCircle className="text-red-500" />
-              Expired Checks
-            </h3>
-            <div className="space-y-3">
-              {dbsChecks
-                .filter((c) => c.status === "Expired")
-                .map((check) => (
-                  <div
-                    key={check.id}
-                    className="p-3 bg-red-50 border border-red-200 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={check.photo}
-                        alt={check.employeeName}
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm">
-                          {check.employeeName}
+          <div className="relative flex flex-col max-h-[420px] mb-8 lg:mb-0 bg-white rounded shadow-lg dark:bg-dark-card grid grid-cols-1">
+            <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
+              <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
+                <h3 className="mb-0 font-bold text-xl dark:text-white">
+                  {" "}
+                  <XCircle className="text-red-500" /> Expired Checks
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4">
+                <div className="space-y-3">
+                  {dbsChecks
+                    .filter((c) => c.status === "Expired")
+                    .map((check) => (
+                      <div
+                        key={check.id}
+                        className="p-3 bg-red-50 border border-red-200 rounded-lg"
+                      >
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={check.photo}
+                            alt={check.employeeName}
+                            className="w-10 h-10 rounded-full"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-sm">
+                              {check.employeeName}
+                            </div>
+                            <div className="text-xs text-gray-600">
+                              {check.department} • {check.position}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-600">
-                          {check.department} • {check.position}
+                        <div className="mt-2 text-xs text-red-700 font-semibold">
+                          Expired 2 days ago
                         </div>
+                        <button className="mt-2 w-full bg-red-600 text-white text-xs py-1 rounded hover:bg-red-700">
+                          Urgent: Renew Now
+                        </button>
                       </div>
-                    </div>
-                    <div className="mt-2 text-xs text-red-700 font-semibold">
-                      Expired 2 days ago
-                    </div>
-                    <button className="mt-2 w-full bg-red-600 text-white text-xs py-1 rounded hover:bg-red-700">
-                      Urgent: Renew Now
-                    </button>
-                  </div>
-                ))}
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Pending Reviews */}
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-purple-700">
-              <AlertTriangle className="text-purple-500" />
-              Pending Reviews
-            </h3>
-            <div className="space-y-3">
-              {dbsChecks
-                .filter(
-                  (c) => c.status === "Pending" || c.status === "Under Review"
-                )
-                .map((check) => (
-                  <div
-                    key={check.id}
-                    className="p-3 bg-purple-50 border border-purple-200 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={check.photo}
-                        alt={check.employeeName}
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div className="flex-1">
-                        <div className="font-semibold text-sm">
-                          {check.employeeName}
+          <div className="relative flex flex-col max-h-[420px] mb-8 lg:mb-0 bg-white rounded shadow-lg dark:bg-dark-card grid grid-cols-1">
+            <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
+              <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
+                <h3 className="mb-0 font-bold text-xl dark:text-white">
+                  {" "}
+                  <AlertTriangle className="text-purple-500" /> Pending Reviews
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4">
+                <div className="space-y-3">
+                  {dbsChecks
+                    .filter(
+                      (c) =>
+                        c.status === "Pending" || c.status === "Under Review"
+                    )
+                    .map((check) => (
+                      <div
+                        key={check.id}
+                        className="p-3 bg-purple-50 border border-purple-200 rounded-lg"
+                      >
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={check.photo}
+                            alt={check.employeeName}
+                            className="w-10 h-10 rounded-full"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-sm">
+                              {check.employeeName}
+                            </div>
+                            <div className="text-xs text-gray-600">
+                              {check.department} • {check.position}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-600">
-                          {check.department} • {check.position}
+                        <div className="mt-2 flex items-center justify-between">
+                          <span className={`text-xs px-2 py-1 rounded`}>
+                            {check.status}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            Applied: {check.applicationDate}
+                          </span>
                         </div>
                       </div>
-                    </div>
-                    <div className="mt-2 flex items-center justify-between">
-                      <span
-                        className={`text-xs px-2 py-1 rounded`}
-                      >
-                        {check.status}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        Applied: {check.applicationDate}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                    ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -442,7 +483,7 @@ export default function DBSTrackerModule() {
               <div className="flex-1 min-w-[300px]">
                 <div className="relative">
                   <Search
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    className="absolute left-3 top-[30px] transform -translate-y-1/2 text-gray-800"
                     size={20}
                   />
                   <input
@@ -483,7 +524,7 @@ export default function DBSTrackerModule() {
               <thead className="bg-gray-50 border-b">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Employee
+                    Applicant
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     Department
@@ -581,7 +622,7 @@ export default function DBSTrackerModule() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button
-                        //   onClick={() => setSelectedCheck(check)}
+                          //   onClick={() => setSelectedCheck(check)}
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           title="View Details"
                         >
@@ -611,7 +652,7 @@ export default function DBSTrackerModule() {
 
       {activeView === "alerts" && (
         <div className="space-y-4">
-          <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg shadow">
+          <div className="bg-red-50 border border-red-500 p-6 rounded-lg shadow">
             <div className="flex items-start gap-3">
               <AlertTriangle className="text-red-600 mt-1" size={24} />
               <div className="flex-1">
@@ -650,7 +691,7 @@ export default function DBSTrackerModule() {
             </div>
           </div>
 
-          <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-lg shadow">
+          <div className="bg-yellow-50 border border-yellow-500 p-6 rounded-lg shadow">
             <div className="flex items-start gap-3">
               <Clock className="text-yellow-600 mt-1" size={24} />
               <div className="flex-1">
