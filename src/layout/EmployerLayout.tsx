@@ -6,61 +6,61 @@ import {
   Users,
   AlertTriangle,
   MessageSquare,
-  Wallet,
   Settings,
   LogOut,
+  File,
 } from "lucide-react";
 
 function EmploymentLayout() {
   const navItems = [
     {
-      path: "/dashboard",
+      path: "/Dashboard",
       icon: <LayoutDashboard size={25} />,
       label: "Dashboard",
     },
    
     {
-      path: "/tracker",
+      path: "/Tracker",
       icon: <ClipboardList size={25} />,
       label: "DBS Tracker",
     },
     {
-      path: "/incidentMgt",
+      path: "/IncidentMgt",
       icon: <AlertTriangle size={25} />,
       label: "Incident Mgt",
     },
 
     {
-      path: "/financeMgt",
-      icon: <Wallet size={25} />,
-      label: "Finance Mgt",
+      path: "/Payment",
+      icon: <File size={25} />,
+      label: "Payment Log",
     },
     {
-      path: "/reports",
+      path: "/Reports",
       icon: <BarChart3 size={25} />,
       label: "Reports & Analytics",
     },
 
     {
-      path: "/communication",
+      path: "/Communication",
       icon: <MessageSquare size={25} />,
       label: "Communication",
     },
 
      {
-      path: "/applicantsMgt",
+      path: "/Employee",
       icon: <Users size={25} />,
       label: "Employee Mgt",
     },
 
     {
-      path: "/control-panel",
+      path: "/Control-panel",
       icon: <Settings size={25} />,
       label: "Control Panel",
     },
 
     {
-      path: "/logout",
+      path: "/Logout",
       icon: <LogOut size={25} />,
       label: "Logout",
     },

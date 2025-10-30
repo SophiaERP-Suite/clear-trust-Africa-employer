@@ -45,7 +45,7 @@ function AdminApplicantsNew() {
                 </div>
                 <div>
                   <a
-                    href="applicantsMgt"
+                    href="Employee"
                     className="text-white btn shadow-md btn-soft-light hover:shadow-xl hover:bg-glass focus:bg-gray-200"
                   >
                     <Users size={18} className="mr-2" />

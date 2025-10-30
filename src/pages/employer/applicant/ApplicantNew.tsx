@@ -16,58 +16,32 @@ import "../../../assets2/js/libs.min.js";
 import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
-// import { ChevronRightIcon } from "lucide-react";
 
-function AdminApplicantsNew() {
+function AdminEmployeesNew() {
   return (
     <>
-      <div
-        className="text-white h-48 sub-header"
-        style={{ backgroundColor: "rgb(112 22 208 / 1)", overflow: "hidden" }}
+     
+       <div
+        className="p-6 lg:p-8 footer-inner mx-auto main-container container"
+        x-bind:className="setting.page_layout"
       >
-        <div className="w-full p-8">
-          <div className="row">
-            <div className="px-4 col-md-12">
-              <div className="flex flex-wrap items-center justify-between">
-                <div>
-                  <h1 className="text-white mb-2 mr-16">New Applicant</h1>
-                  <p className="mb-4 text-white mr-16">
-                    <p className="text-secondary-600 text-white">
-                      <a href="/admin/dashboard">Dashboard</a>{" "}
-                      <ChevronRightIcon size={14} />{" "}
-                      <a href="applicantsMgt">Applicants Management</a>{" "}
-                      <ChevronRightIcon size={14} /> New Applicant
-                    </p>
-                  </p>
-                </div>
-                <div>
-                  <a
-                    href="applicantsMgt"
-                    className="text-white btn shadow-md btn-soft-light hover:shadow-xl hover:bg-glass focus:bg-gray-200"
-                  >
-                    <Users size={18}  className="mr-2"/>
-                    All Applicants
-                  </a>
-                </div>
-              </div>
+         <div className="flex flex-wrap mb-8 items-center justify-between">
+          <div className="flex">
+            <Users className="text-[rgb(112_22_208/0.9)] mr-2 " size={36} />
+            <div>
+              <h3 className="mb-0 text-black">Employee Management</h3>
+              <p className="text-secondary-600 text-black">
+                Dashboard <ChevronRightIcon size={14} /> Report & Analytics{" "}
+              </p>
             </div>
           </div>
+          <div>
+            <a href="Employee" className="btn btn-primary">
+              <Users size={18} className="mr-2" />
+              All Employees
+            </a>
+          </div>
         </div>
-        <div
-          className="absolute top-0 h-80 img-height overflow-hidden"
-          style={{ zIndex: -1 }}
-        >
-          <img
-            src="../../assets/images/dashboard/top-header.html"
-            alt="header"
-            className="animated-scaleX object-cover w-screen h-full rounded-2xl"
-          />
-        </div>
-      </div>
-      <div
-        className="p-6 lg:p-8 footer-inner  mx-auto main-container  lg:py-0 py-0 "
-        x-bind:class="setting.page_layout"
-      >
         <div className="lg:flex lg:grid-cols-2 gap-8">
           <div className="flex-auto w-full lg:w-1/4">
             <div className="relative flex flex-col mb-8 text-secondary-500 bg-white shadow rounded -mt-2 dark:bg-dark-card">
@@ -457,4 +431,4 @@ function AdminApplicantsNew() {
   );
 }
 
-export default AdminApplicantsNew;
+export default AdminEmployeesNew;

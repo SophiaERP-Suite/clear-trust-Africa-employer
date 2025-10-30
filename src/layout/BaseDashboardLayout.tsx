@@ -93,10 +93,9 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                 >
                   <div className="sidebar-logo">
                     <img
-                       src="/cleartrust_logo_mini.png"
+                      src="/cleartrust_logo_mini.png"
                       style={{ width: "160px" }}
                       alt="logo"
-                     
                     />
                   </div>
                 </a>
@@ -114,7 +113,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                   <img
                     src={femi}
                     alt="User-Profile"
-                    className="h-12 w-12 rounded-full"
+                    className="h-12 w-12 border rounded-full"
                     style={{ objectFit: "cover" }}
                     loading="lazy"
                   />
@@ -148,7 +147,11 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                   <NavLink
                     to={item.path}
                     className={({ isActive }) =>
-                      `text-black  ${isOpen ? "nav-link" : "flex justify-center items-center gap-4 my-1 py-3 nav-link-sub" } ${isActive ? "active" : ""}`
+                      `text-black  ${
+                        isOpen
+                          ? "nav-link"
+                          : "flex justify-center items-center gap-4 my-1 py-3 nav-link-sub"
+                      } ${isActive ? "active" : ""}`
                     }
                   >
                     {item.icon}
@@ -754,20 +757,20 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                         <div className="hidden lg:flex ml-7 lg:grow transition-all duration-700 ease-in-out">
                           <ul className="flex items-center mb-2 ml-auto rtl:ml-0 rtl:mr-auto lg:mb-0">
                             <li className="flex items-center justify-end">
-  <div className="flex items-center border border-gray-700 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 transition-all duration-200">
-    <input
-      type="text"
-      placeholder="Search..."
-      className="hidden lg:block px-3 py-2 w-56 text-gray-800 focus:outline-none bg-transparent"
-    />
-    <button
-      type="button"
-      className="p-2 hover:bg-gray-700 transition-colors duration-200"
-    >
-      <Search className="text-black" size={20} />
-    </button>
-  </div>
-</li>
+                              <div className="flex items-center border border-gray-700 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 transition-all duration-200">
+                                <input
+                                  type="text"
+                                  placeholder="Search..."
+                                  className="hidden lg:block px-3 py-2 w-56 text-gray-800 focus:outline-none bg-transparent"
+                                />
+                                <button
+                                  type="button"
+                                  className="p-2 hover:bg-gray-700 transition-colors duration-200"
+                                >
+                                  <Search className="text-black" size={20} />
+                                </button>
+                              </div>
+                            </li>
 
                             <li
                               className="flex items-center pl-2 border-r"
@@ -936,7 +939,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                   <img
                                     src={binta}
                                     alt="User-Profile"
-                                    className="h-12 w-12 rounded-full truncate"
+                                    className="h-12 w-12 rounded-full border truncate"
                                     style={{ objectFit: "cover" }}
                                     loading="lazy"
                                   />
@@ -953,21 +956,22 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                   </div>
                                 </a>
                                 {open && (
-                                  <div className="absolute right-0 z-10 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-lg shadow-lg">
+                                  <div className="absolute right-0 z-10 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
                                     <div className="py-1 px-2">
-                                      <p className="w-full px-4 py-2 text-left text-md font-bold text-gray-700 hover:bg-gray-100">
+                                      <p className="w-full px-4 py-2 text-left text-md border-b font-bold text-gray-700 hover:bg-gray-100">
                                         Teachers Registration Council of Nigeria
                                       </p>
-                                      <hr />
-                                      <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                        Organization Profile
-                                      </button>
-                                      <button className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100">
-                                        Settings
-                                      </button>
-                                      <button className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100">
-                                        Logout
-                                      </button>
+                                      <ul className="py-2">
+                                        <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
+                                          <a>Organization Profile</a>
+                                        </li>
+                                        <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
+                                          <a>Settings</a>
+                                        </li>
+                                        <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
+                                          <button>Logout</button>
+                                        </li>
+                                      </ul>
                                     </div>
                                   </div>
                                 )}

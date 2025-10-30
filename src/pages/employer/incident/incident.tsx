@@ -133,7 +133,7 @@ export default function Incidents() {
         <div className="relative flex flex-col mb-8 bg-white rounded shadow-lg dark:bg-dark-card grid gird-cols-1 lg:col-span-2">
           <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
             <div className="relative flex flex-wrap justify-between p-5 ">
-              <h4 className="mb-2 sm:mb-0 dark:text-white">Incident Reports</h4>
+              <h4 className="mb-2 sm:mb-0 font-bold">Incident Reports</h4>
               <div className="flex"></div>
             </div>
             <hr className="m-0" />

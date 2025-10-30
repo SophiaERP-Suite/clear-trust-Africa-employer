@@ -8,9 +8,11 @@ import EmployersNew from "../pages/employer/employer/EmployerNew";
 import Employers from "../pages/employer/employer/Employers";
 import EmployerProfile from "../pages/employer/employer/EmployerProfile";
 import DBSTrackerModule from "../pages/employer/Tracker/DbsTracker";
-import FinanceDashboard from "../pages/employer/Finance";
 import Incidents from "../pages/employer/incident/incident";
 import Reports from "../pages/employer/reports/Reports";
+import CommunicationsPage from "../pages/employer/communication/Communication";
+import PaymentDashboard from "../pages/employer/Payment";
+import ControlPanel from "../pages/employer/controlpanel/ControlPanel";
 
 function AppRoutes() {
   return (
@@ -19,20 +21,20 @@ function AppRoutes() {
         path="/"
         element={<EmployerLayout/>}>
         <Route index element={<Dashboard />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="applicantsMgt" element={<Applicants />} />
-        <Route path="applicantNew" element={<ApplicantNew />} />
-        <Route path="applicantProfile" element={<ApplicantProfile />} />
-        <Route path="employersMgt" element={<Employers />} />
-        <Route path="employerNew" element={<EmployersNew />} />
-        <Route path="employerProfile" element={<EmployerProfile />} />
+        <Route path="Dashboard" element={<Dashboard />} />
+        <Route path="Employee" element={<Applicants />} />
+        <Route path="EmployeeNew" element={<ApplicantNew />} />
+        <Route path="EmployeeProfile" element={<ApplicantProfile />} />
+        <Route path="EmployersMgt" element={<Employers />} />
+        <Route path="EmployerNew" element={<EmployersNew />} />
+        <Route path="EmployerProfile" element={<EmployerProfile />} />
         {/* <Route path="tracker" element={<DBSTrackerModule />} /> */}
-        <Route path="tracker" element={<DBSTrackerModule />} />
-        <Route path="incidentMgt" element={<Incidents />} />
-        <Route path="financeMgt" element={<FinanceDashboard />} />
-        <Route path="reports" element={<Reports />} />
-        <Route path="communication" element={<Dashboard />} />
-        <Route path="control-panel" element={<Dashboard />} />
+        <Route path="Tracker" element={<DBSTrackerModule />} />
+        <Route path="IncidentMgt" element={<Incidents />} />
+        <Route path="Payment" element={<PaymentDashboard />} />
+        <Route path="Reports" element={<Reports />} />
+        <Route path="Communication" element={<CommunicationsPage />} />
+        <Route path="Control-panel" element={<ControlPanel />} />
 
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

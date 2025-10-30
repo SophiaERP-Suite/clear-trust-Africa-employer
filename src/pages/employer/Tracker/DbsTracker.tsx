@@ -285,13 +285,11 @@ export default function DBSTrackerModule() {
               <h2 className="text-3xl font-bold text-white">{stats.expired}</h2>
             </div>
           </div>
-
-          
         </div>
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex gap-2 mb-6 overflow-x-auto">
+      <div className="flex gap-1 bg-white p-1 rounded-lg border border-slate-200 mb-8 w-fit">
         {[
           { id: "dashboard", label: "Dashboard", icon: Shield },
           { id: "checks", label: "All Checks", icon: FileText },
@@ -307,13 +305,13 @@ export default function DBSTrackerModule() {
             <button
               key={tab.id}
               onClick={() => setActiveView(tab.id)}
-              className={`relative flex items-center gap-2 px-6 py-3 rounded-lg border font-semibold transition-all ${
+              className={`relative flex items-center gap-2 px-6 py-2 font-semibold transition-all ${
                 activeView === tab.id
-                  ? "bg-gray-600 text-white shadow-lg"
+                  ? "bg-black text-white shadow-lg rounded-lg border"
                   : "bg-white text-gray-700 hover:bg-gray-100"
               }`}
             >
-              <Icon size={18} />
+              <Icon size={16} />
               {tab.label}
               {tab.badge && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
