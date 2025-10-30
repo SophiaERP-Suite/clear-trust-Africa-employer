@@ -464,102 +464,102 @@ export default function InvestigationPortal() {
                   {/* Header */}
                   <div className="flex items-center justify-between px-5 py-4 border-b dark:border-gray-700">
                     <h4 className="text-lg font-semibold dark:text-white">
-                      Case Type Distribution
+                      Evidence Processing Status
                     </h4>
                   </div>
 
                   {/* Body */}
-                 <div className="space-y-3 p-4">
-                  {[
-                    { status: "Collected", count: 456, color: "bg-blue-500" },
-                    {
-                      status: "Under Analysis",
-                      count: 234,
-                      color: "bg-yellow-500",
-                    },
-                    { status: "Verified", count: 389, color: "bg-green-500" },
-                    {
-                      status: "Pending Chain of Custody",
-                      count: 164,
-                      color: "bg-orange-500",
-                    },
-                  ].map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-3 h-3 ${item.color} rounded-full`} />
-                        <span className="text-sm font-medium text-slate-900">
-                          {item.status}
+                  <div className="space-y-3 p-4">
+                    {[
+                      { status: "Collected", count: 456, color: "bg-blue-500" },
+                      {
+                        status: "Under Analysis",
+                        count: 234,
+                        color: "bg-yellow-500",
+                      },
+                      { status: "Verified", count: 389, color: "bg-green-500" },
+                      {
+                        status: "Pending Chain of Custody",
+                        count: 164,
+                        color: "bg-orange-500",
+                      },
+                    ].map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-3 h-3 ${item.color} rounded-full`}
+                          />
+                          <span className="text-sm font-medium text-slate-900">
+                            {item.status}
+                          </span>
+                        </div>
+                        <span className="text-lg font-semibold text-slate-900">
+                          {item.count}
                         </span>
                       </div>
-                      <span className="text-lg font-semibold text-slate-900">
-                        {item.count}
-                      </span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-                </div>
-              </div>
-
-
-
-              <div className="bg-white rounded-xl p-6 border border-slate-200">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                  Evidence Processing Status
-                </h2>
-                
               </div>
             </div>
 
             {/* Resolution Metrics */}
-            <div className="bg-white rounded-xl p-6 border border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                Case Resolution Metrics
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[
-                  {
-                    label: "Average Resolution Time",
-                    value: "45 days",
-                    change: "-8 days",
-                    trend: "positive",
-                  },
-                  {
-                    label: "Conviction Rate",
-                    value: "78%",
-                    change: "+3.2%",
-                    trend: "positive",
-                  },
-                  {
-                    label: "Evidence Acceptance Rate",
-                    value: "94%",
-                    change: "+1.5%",
-                    trend: "positive",
-                  },
-                ].map((metric, idx) => (
-                  <div
-                    key={idx}
-                    className="text-center p-4 border border-slate-200 rounded-lg"
-                  >
-                    <p className="text-sm text-slate-600 mb-2">
-                      {metric.label}
-                    </p>
-                    <p className="text-3xl font-bold text-slate-900 mb-1">
-                      {metric.value}
-                    </p>
-                    <p
-                      className={`text-sm font-medium ${
-                        metric.trend === "positive"
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
+            <div className="relative flex flex-col mb-8 bg-white rounded shadow-lg dark:bg-dark-card grid gird-cols-1">
+              <div className="flex flex-col overflow-hidden bg-white rounded-2xl shadow-md dark:bg-gray-900 dark:text-gray-300">
+                {/* Header */}
+                <div className="flex items-center justify-between px-5 py-4 border-b dark:border-gray-700">
+                  <h4 className="text-lg font-semibold dark:text-white">
+                    Case Resolution Metrics
+                  </h4>
+                </div>
+
+                {/* Body */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+                  {[
+                    {
+                      label: "Average Resolution Time",
+                      value: "45 days",
+                      change: "-8 days",
+                      trend: "positive",
+                    },
+                    {
+                      label: "Conviction Rate",
+                      value: "78%",
+                      change: "+3.2%",
+                      trend: "positive",
+                    },
+                    {
+                      label: "Evidence Acceptance Rate",
+                      value: "94%",
+                      change: "+1.5%",
+                      trend: "positive",
+                    },
+                  ].map((metric, idx) => (
+                    <div
+                      key={idx}
+                      className="text-center p-4 border border-slate-200 rounded-lg"
                     >
-                      {metric.change}
-                    </p>
-                  </div>
-                ))}
+                      <p className="text-sm text-slate-600 mb-2">
+                        {metric.label}
+                      </p>
+                      <p className="text-3xl font-bold text-slate-900 mb-1">
+                        {metric.value}
+                      </p>
+                      <p
+                        className={`text-sm font-medium ${
+                          metric.trend === "positive"
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {metric.change}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -590,7 +590,7 @@ export default function InvestigationPortal() {
             </div>
 
             {/* Investigator Performance */}
-            <div className="bg-white rounded-xl p-6 border border-slate-200">
+            {/* <div className="bg-white rounded-xl p-6 border border-slate-200">
               <h2 className="text-lg font-semibold text-slate-900 mb-4">
                 Team Performance Metrics
               </h2>
@@ -644,7 +644,7 @@ export default function InvestigationPortal() {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         )}
 
@@ -723,118 +723,6 @@ export default function InvestigationPortal() {
                       </span>
                       <button className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors">
                         Download
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Generate Custom Report */}
-            <div className="bg-white rounded-xl p-6 border border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                Generate Custom Report
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Report Type
-                  </label>
-                  <select className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Case Summary Report</option>
-                    <option>Evidence Analysis Report</option>
-                    <option>Investigation Progress Report</option>
-                    <option>Performance Metrics Report</option>
-                    <option>Compliance Report</option>
-                    <option>Resource Utilization Report</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Time Period
-                  </label>
-                  <select className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Last 7 days</option>
-                    <option>Last 30 days</option>
-                    <option>Last 90 days</option>
-                    <option>Last 6 months</option>
-                    <option>Last year</option>
-                    <option>Custom date range</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Case Type Filter
-                  </label>
-                  <select className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>All Case Types</option>
-                    <option>Financial Crimes</option>
-                    <option>Cyber Crimes</option>
-                    <option>Organized Crime</option>
-                    <option>Fraud Cases</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Report Format
-                  </label>
-                  <select className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>PDF</option>
-                    <option>Excel</option>
-                    <option>CSV</option>
-                    <option>JSON</option>
-                  </select>
-                </div>
-              </div>
-              <button className="px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
-                Generate Report
-              </button>
-            </div>
-
-            {/* Scheduled Reports */}
-            <div className="bg-white rounded-xl p-6 border border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                Scheduled Reports
-              </h2>
-              <div className="space-y-3">
-                {[
-                  {
-                    name: "Weekly Case Summary",
-                    frequency: "Every Monday at 9:00 AM",
-                    recipients: "3 recipients",
-                    active: true,
-                  },
-                  {
-                    name: "Monthly Performance Report",
-                    frequency: "1st of every month",
-                    recipients: "5 recipients",
-                    active: true,
-                  },
-                  {
-                    name: "Daily Priority Cases Update",
-                    frequency: "Daily at 8:00 AM",
-                    recipients: "8 recipients",
-                    active: true,
-                  },
-                ].map((schedule, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between p-4 border border-slate-200 rounded-lg"
-                  >
-                    <div>
-                      <p className="text-sm font-medium text-slate-900">
-                        {schedule.name}
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">
-                        {schedule.frequency} • {schedule.recipients}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">
-                        Active
-                      </span>
-                      <button className="px-3 py-1 text-sm text-slate-600 hover:text-slate-900 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors">
-                        Edit
                       </button>
                     </div>
                   </div>
