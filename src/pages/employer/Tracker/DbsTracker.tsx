@@ -214,13 +214,13 @@ export default function DBSTrackerModule() {
                 </div>
 
                 <div>
-                  <a
+                  {/* <a
                     href="applicantNew"
-                    className="text-black btn shadow-md bg-white border focus:bg-gray-200"
+                    className="btn btn-primary"
                   >
                     <Plus size={18} className="mr-2" />
                     Add New
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
