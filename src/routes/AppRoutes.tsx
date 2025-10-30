@@ -34,7 +34,7 @@ function AppRoutes() {
         <Route path="Payment" element={<PaymentDashboard />} />
         <Route path="Reports" element={<Reports />} />
         <Route path="Communication" element={<CommunicationsPage />} />
-        <Route path="Control-panel" element={<ControlPanel />} />
+        <Route path="ControlPanel" element={<ControlPanel />} />
 
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

@@ -127,21 +127,18 @@ function AdminEmpoyees() {
                               style={{ objectFit: "cover" }}
                               alt="profile"
                             />
-                            <a href="EmployeeProfile">Anna Sthesia</a>
+                            <a href="EmployeeProfile">Kemi Olawale</a>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
                             (760) 756 7568
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
-                            annasthesia@gmail.com
+                            KemiOlawale@gmail.com
                           </td>
                           <td className="px-6 py-4">
                             <span className="inline-block whitespace-nowrap px-2 py-1 text-xs text-center font-bold leading-none text-white bg-primary-500 rounded">
                               Active
                             </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
-                            Acme Corporation
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
                             2019/12/01
@@ -290,21 +287,18 @@ function AdminEmpoyees() {
                               style={{ objectFit: "cover" }}
                               alt="profile"
                             />{" "}
-                            <a>Brock Lee</a>
+                            <a>Wale Ojo</a>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
                             +62 5689 458 658
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
-                            brocklee@gmail.com
+                            WaleOjo@gmail.com
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600">
                             <span className="inline-block whitespace-nowrap px-2 py-1 text-xs text-center font-bold leading-none text-white bg-primary-500 rounded">
                               Active
                             </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
-                            Soylent Corp
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
                             2019/12/01
@@ -453,21 +447,18 @@ function AdminEmpoyees() {
                               style={{ objectFit: "cover" }}
                               alt="profile"
                             />
-                            <a>Dan Druff</a>
+                            <a>Oghenetega Prince</a>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
                             +55 6523 456 856
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
-                            dandruff@gmail.com
+                            OghenetegaPrince@gmail.com
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 ">
                             <span className="inline-block whitespace-nowrap px-2 py-1 text-xs text-center font-bold leading-none text-white bg-warning-500 rounded">
                               Pending
                             </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
-                            Umbrella Corporation
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
                             2019/12/01
@@ -616,21 +607,18 @@ function AdminEmpoyees() {
                               style={{ objectFit: "cover" }}
                               alt="profile"
                             />
-                            <a>Hans Olo</a>
+                            <a>Hannah James</a>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
                             +91 2586 253 125
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
-                            hansolo@gmail.com
+                            HannahJames@gmail.com
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600">
                             <span className="inline-block whitespace-nowrap px-2 py-1 text-xs text-center font-bold leading-none text-white bg-danger-500 rounded">
                               Inactive
                             </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
-                            Vehement Capital
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-secondary-600 dark:text-secondary-500">
                             2019/12/01

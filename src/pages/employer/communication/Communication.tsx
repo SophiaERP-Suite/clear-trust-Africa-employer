@@ -250,7 +250,7 @@ export default function CommunicationsPage() {
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${
                       selectedRoute === route.id
                         ? 'bg-red-500 text-white'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -277,7 +277,7 @@ export default function CommunicationsPage() {
                 className={`px-6 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${
                   activeTab === tab.id
                     ? 'bg-slate-900 text-white'
-                    : 'text-slate-600 hover:text-slate-900'
+                    : 'text-slate-600 hover:text-slate-900 cursor-pointer'
                 }`}
               >
                 <Icon className="w-4 h-4" />

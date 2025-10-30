@@ -54,7 +54,7 @@ function EmploymentLayout() {
     },
 
     {
-      path: "/Control-panel",
+      path: "/ControlPanel",
       icon: <Settings size={25} />,
       label: "Control Panel",
     },

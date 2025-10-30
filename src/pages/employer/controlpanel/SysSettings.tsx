@@ -1,4 +1,4 @@
-function SystemSettings() {
+export default function SysSettings() {
   return (
     <div>
       <h3 className="text-xl font-semibold mb-4 text-gray-800">System Settings</h3>
@@ -8,7 +8,7 @@ function SystemSettings() {
           <input
             type="text"
             className="w-full border rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
-            defaultValue="AlphaCheck Platform"
+            defaultValue="Clear Trust Platform"
           />
         </div>
         <div>
@@ -16,7 +16,7 @@ function SystemSettings() {
           <input
             type="email"
             className="w-full border rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-300"
-            defaultValue="support@alphacheck.com"
+            defaultValue="support@cleartrust.com"
           />
         </div>
         <button
@@ -30,4 +30,4 @@ function SystemSettings() {
   );
 }
 
-export default SystemSettings;
+;

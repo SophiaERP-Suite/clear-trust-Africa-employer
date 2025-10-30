@@ -1004,13 +1004,23 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
               </li>
             </ul>
             <div className="footer-second text-secondary-700 flex flex-wrap dark:text-white text-sm">
-              ©<script>document.write(new Date().getFullYear())</script>
+              © {new Date().getFullYear()} Powered by{" "}
               <a
-                className="text-primary-500 dark:text-primary-500"
-                href="https://iqonic.design/"
+                className="text-primary-500 dark:text-primary-500 ml-1"
+                href="https://sophiaerp.com"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                {" "}
-                SophiaERP
+                Sophia ERP
+              </a>{" "}
+              and{" "}
+              <a
+                className="text-primary-500 dark:text-primary-500 ml-1"
+                href="https://techiefy.co.uk"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Techiefy UK
               </a>
             </div>
           </footer>
