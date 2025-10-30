@@ -16,10 +16,8 @@ import "../../assets2/js/slider-tabs.js";
 import "../../assets2/js/sweet-alert.js";
 import "../../assets2/js/swiper-slider.js";
 import donald from "../../assets2/img/donald_adolphus.jpg";
-// import rashkin from "../../assets2/img/isaiah_rashkin.jpg";
-// import deborah from "../../assets2/img/deborah_wilkins.jpg";
 import femi from "../../assets2/img/femi_adebayo.jpg";
-import { ChevronRightIcon, Logs, Plus, Receipt, Wallet } from "lucide-react";
+import { ChevronRightIcon, Logs, Plus } from "lucide-react";
 
 function FinanceDashboard() {
   return (

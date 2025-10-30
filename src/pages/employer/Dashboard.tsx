@@ -15,11 +15,6 @@ import "../../assets2/js/libs.min.js";
 import "../../assets2/js/slider-tabs.js";
 import "../../assets2/js/sweet-alert.js";
 import "../../assets2/js/swiper-slider.js";
-import alpha_global from "../../assets2/img/alpha_global.png";
-import imperial_gate from "../../assets2/img/imperial_gate.jpg";
-import princeton from "../../assets2/img/princeton.png";
-import little_nest from "../../assets2/img/little_nest.png";
-import binta from "../../assets2/img/binta.jpeg";
 import donald from "../../assets2/img/donald_adolphus.jpg";
 import rashkin from "../../assets2/img/isaiah_rashkin.jpg";
 import deborah from "../../assets2/img/deborah_wilkins.jpg";
@@ -29,7 +24,6 @@ import {
   Clipboard,
   Folder,
   Plus,
-  Settings,
   Users,
 } from "lucide-react";
 

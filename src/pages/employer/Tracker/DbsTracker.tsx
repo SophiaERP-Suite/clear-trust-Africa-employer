@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Shield,
   AlertTriangle,
-  //   CheckCircle,
   Clock,
   Search,
   Filter,
@@ -10,19 +9,15 @@ import {
   Plus,
   Eye,
   RefreshCw,
-  //   Calendar,
-  //   Users,
   FileText,
   Bell,
   XCircle,
-  List,
   ListChecks,
   ClockAlert,
   ClockFading,
   Hourglass,
   ChevronRightIcon,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
 
 export default function DBSTrackerModule() {
   const [activeView, setActiveView] = useState("dashboard");
@@ -320,7 +315,7 @@ export default function DBSTrackerModule() {
             >
               <Icon size={18} />
               {tab.label}
-              {tab.badge > 0 && (
+              {tab.badge && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {tab.badge}
                 </span>

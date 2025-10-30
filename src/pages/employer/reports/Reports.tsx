@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   TrendingUp,
   TrendingDown,
   FileText,
-  Users,
-  AlertTriangle,
   CheckCircle,
   Clock,
   Shield,
   ChevronRightIcon,
-  Logs,
   BarChart3,
 } from "lucide-react";
 
@@ -588,63 +585,6 @@ export default function InvestigationPortal() {
                 ))}
               </div>
             </div>
-
-            {/* Investigator Performance */}
-            {/* <div className="bg-white rounded-xl p-6 border border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                Team Performance Metrics
-              </h2>
-              <div className="space-y-4">
-                {[
-                  {
-                    metric: "Case Closure Rate",
-                    value: 89,
-                    target: 85,
-                    color: "bg-green-500",
-                  },
-                  {
-                    metric: "Evidence Documentation",
-                    value: 96,
-                    target: 95,
-                    color: "bg-blue-500",
-                  },
-                  {
-                    metric: "Response Time Compliance",
-                    value: 82,
-                    target: 90,
-                    color: "bg-yellow-500",
-                  },
-                  {
-                    metric: "Report Quality Score",
-                    value: 91,
-                    target: 85,
-                    color: "bg-purple-500",
-                  },
-                ].map((item, idx) => (
-                  <div key={idx}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-slate-700">
-                        {item.metric}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-500">
-                          Target: {item.target}%
-                        </span>
-                        <span className="text-sm font-semibold text-slate-900">
-                          {item.value}%
-                        </span>
-                      </div>
-                    </div>
-                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full ${item.color} rounded-full transition-all duration-500`}
-                        style={{ width: `${item.value}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div> */}
           </div>
         )}
 
@@ -721,7 +661,7 @@ export default function InvestigationPortal() {
                       <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
                         {report.status}
                       </span>
-                      <button className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors">
+                      <button className="px-4 py-2 bg text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors">
                         Download
                       </button>
                     </div>
