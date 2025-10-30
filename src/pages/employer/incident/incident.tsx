@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import {
   Plus,
   List,
@@ -10,7 +10,6 @@ import {
   Timer,
   ActivityIcon,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
 import donald from "../../../assets2/img/donald_adolphus.jpg";
 import femi from "../../../assets2/img/femi_adebayo.jpg";
 
