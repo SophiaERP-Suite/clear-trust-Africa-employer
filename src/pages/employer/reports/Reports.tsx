@@ -459,11 +459,17 @@ export default function InvestigationPortal() {
               </div>
 
               {/* Evidence Processing */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                  Evidence Processing Status
-                </h2>
-                <div className="space-y-3">
+              <div className="relative flex flex-col mb-8 bg-white rounded shadow-lg dark:bg-dark-card grid gird-cols-1">
+                <div className="flex flex-col overflow-hidden bg-white rounded-2xl shadow-md dark:bg-gray-900 dark:text-gray-300">
+                  {/* Header */}
+                  <div className="flex items-center justify-between px-5 py-4 border-b dark:border-gray-700">
+                    <h4 className="text-lg font-semibold dark:text-white">
+                      Case Type Distribution
+                    </h4>
+                  </div>
+
+                  {/* Body */}
+                 <div className="space-y-3 p-4">
                   {[
                     { status: "Collected", count: 456, color: "bg-blue-500" },
                     {
@@ -494,6 +500,16 @@ export default function InvestigationPortal() {
                     </div>
                   ))}
                 </div>
+                </div>
+              </div>
+
+
+
+              <div className="bg-white rounded-xl p-6 border border-slate-200">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">
+                  Evidence Processing Status
+                </h2>
+                
               </div>
             </div>
 
