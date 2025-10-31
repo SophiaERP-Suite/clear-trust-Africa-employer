@@ -13,13 +13,12 @@ import Reports from "../pages/employer/reports/Reports";
 import CommunicationsPage from "../pages/employer/communication/Communication";
 import PaymentDashboard from "../pages/employer/Payment";
 import ControlPanel from "../pages/employer/controlpanel/ControlPanel";
+import Pricing from "../pages/employer/pricing/Pricing";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={<EmployerLayout/>}>
+      <Route path="/" element={<EmployerLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="Dashboard" element={<Dashboard />} />
         <Route path="Employee" element={<Applicants />} />
@@ -35,7 +34,7 @@ function AppRoutes() {
         <Route path="Reports" element={<Reports />} />
         <Route path="Communication" element={<CommunicationsPage />} />
         <Route path="ControlPanel" element={<ControlPanel />} />
-
+        <Route path="Pricing" element={<Pricing />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
