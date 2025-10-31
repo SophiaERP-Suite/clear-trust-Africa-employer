@@ -1,4 +1,4 @@
-import { ChevronRightIcon, Users } from "lucide-react";
+import { ChevronRightIcon, User } from "lucide-react";
 import "../../../assets2/css/choices.min.css";
 import "../../../assets2/css/flatpickr.min.css";
 import "../../../assets2/css/libs.min.css";
@@ -16,64 +16,37 @@ import "../../../assets2/js/libs.min.js";
 import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
-// import { ChevronRightIcon } from "lucide-react";
 
-function EmployersNew() {
+function ProfileUpdate() {
   return (
     <>
+      
       <div
-        className="text-white h-48 sub-header"
-        style={{ backgroundColor: "rgb(112 22 208 / 1)", overflow: "hidden" }}
-      >
-        <div className="w-full p-8">
-          <div className="row">
-            <div className="px-4 col-md-12">
-              <div className="flex flex-wrap items-center justify-between">
-                <div>
-                  <h1 className="text-white mb-2 mr-16">New Employer</h1>
-                  <p className="mb-4 text-white mr-16">
-                    <p className="text-secondary-600 text-white">
-                      <a href="/admin/dashboard">Dashboard</a>{" "}
-                      <ChevronRightIcon size={14} />{" "}
-                      <a href="EmployersMgt">Employers Management</a>{" "}
-                      <ChevronRightIcon size={14} /> New Employer
-                    </p>
-                  </p>
-                </div>
-                <div>
-                  <a
-                    href="EmployersMgt"
-                    className="text-white btn shadow-md btn-soft-light hover:shadow-xl hover:bg-glass focus:bg-gray-200"
-                  >
-                    <Users size={18}  className="mr-2"/>
-                    All Employers
-                  </a>
-                </div>
+      className="p-6 lg:p-8 footer-inner mx-auto main-container container"
+      x-bind:className="setting.page_layout"
+    >
+      {/* Header */}
+      <div className="flex flex-wrap mb-8 justify-between gap-4">
+        <div className="col-md-12">
+          <div className="flex flex-wrap items-center justify-between">
+            <div className="flex">
+              <User className="text-[rgb(112_22_208/0.9)] mr-2 " size={36} />
+              <div>
+                <h3 className="mb-0 text-black">Profile Update</h3>
+                <p className="text-secondary-600 text-black">
+                  Dashboard <ChevronRightIcon size={14} /> Profile <ChevronRightIcon size={14} /> Profile Update{" "}
+                </p>
               </div>
             </div>
           </div>
         </div>
-        <div
-          className="absolute top-0 h-80 img-height overflow-hidden"
-          style={{ zIndex: -1 }}
-        >
-          <img
-            src="../../assets/images/dashboard/top-header.html"
-            alt="header"
-            className="animated-scaleX object-cover w-screen h-full rounded-2xl"
-          />
-        </div>
       </div>
-      <div
-        className="p-6 lg:p-8 footer-inner  mx-auto main-container  lg:py-0 py-0 "
-        x-bind:class="setting.page_layout"
-      >
         <div className="lg:flex lg:grid-cols-2 gap-8">
           <div className="flex-auto w-full lg:w-1/4">
             <div className="relative flex flex-col mb-8 text-secondary-500 bg-white shadow rounded -mt-2 dark:bg-dark-card">
               <div className="flex justify-between flex-auto p-5 mb-4 border-b dark:border-secondary-800">
                 <div className="header-title">
-                  <h4 className="mb-0 dark:text-white">Add New Employer</h4>
+                  <h4 className="mb-0 dark:text-white">Profile Update</h4>
                 </div>
               </div>
               <div className="p-5">
@@ -220,7 +193,7 @@ function EmployersNew() {
           <div className="flex-auto w-full lg:w-3/4">
             <div className="relative flex flex-col mb-8 text-secondary-500 bg-white shadow rounded -mt-2 dark:bg-dark-card">
               <div className="flex justify-between flex-auto p-6 border-b dark:border-secondary-800">
-                <h4 className="mb-0 dark:text-white">Employer Information</h4>
+                <h4 className="mb-0 dark:text-white">Buisness Information</h4>
               </div>
               <div className="p-6 ">
                 <form>
@@ -388,7 +361,7 @@ function EmployersNew() {
                     </div>
                   </div>
                   <hr className="mt-5" />
-                  <h5 className="mb-4 dark:text-white">Security</h5>
+                  {/* <h5 className="mb-4 dark:text-white">Security</h5>
                   <div className="grid lg:grid-cols-2 gap-x-8">
                     <div className="w-full mb-3 col-span-2">
                       <label
@@ -432,7 +405,7 @@ function EmployersNew() {
                         placeholder="Repeat Password "
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="mb-3">
                     <label className="inline-block mb-2 text-secondary-600 dark:text-white">
                       <input
@@ -457,4 +430,4 @@ function EmployersNew() {
   );
 }
 
-export default EmployersNew;
+export default ProfileUpdate;

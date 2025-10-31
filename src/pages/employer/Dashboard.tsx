@@ -1268,12 +1268,12 @@ function EmployerDashboard() {
               {/* Body */}
               <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Action 1 */}
-                <button className="flex flex-col items-center justify-center gap-2 bg-gray-100 text-white p-4 rounded-xl shadow hover:shadow-lg hover:scale-[1.03] transition">
+                {/* <button className="flex flex-col items-center justify-center gap-2 bg-gray-100 text-white p-4 rounded-xl shadow hover:shadow-lg hover:scale-[1.03] transition">
                   <div className="bg-white/60 p-3 rounded-full text-black">
                     <Plus size={22} />
                   </div>
                   <span className="text-sm text-black font-bold">Add Case</span>
-                </button>
+                </button> */}
 
                 {/* Action 2 */}
                 <button className="flex flex-col items-center justify-center gap-2 bg-gray-100 text-white p-4 rounded-xl shadow hover:shadow-lg hover:scale-[1.03] transition">
@@ -1286,14 +1286,14 @@ function EmployerDashboard() {
                 </button>
 
                 {/* Action 3 */}
-                <button className="flex flex-col items-center justify-center gap-2 bg-gray-100 text-white p-4 rounded-xl shadow hover:shadow-lg hover:scale-[1.03] transition">
+                {/* <button className="flex flex-col items-center justify-center gap-2 bg-gray-100 text-white p-4 rounded-xl shadow hover:shadow-lg hover:scale-[1.03] transition">
                   <div className="bg-white/60 p-3 rounded-full text-black">
                     <AlertTriangle size={22} />
                   </div>
                   <span className="text-sm font-bold text-black">
                     Report Incident
                   </span>
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

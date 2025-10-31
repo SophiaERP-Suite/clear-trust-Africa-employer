@@ -4,9 +4,6 @@ import EmployerLayout from "../layout/EmployerLayout";
 import ApplicantNew from "../pages/employer/applicant/ApplicantNew";
 import Applicants from "../pages/employer/applicant/Applicants";
 import ApplicantProfile from "../pages/employer/applicant/ApplicantProfile";
-import EmployersNew from "../pages/employer/employer/EmployerUpdate";
-import Employers from "../pages/employer/employer/Employers";
-import EmployerProfile from "../pages/employer/employer/EmployerProfile";
 import DBSTrackerModule from "../pages/employer/Tracker/DbsTracker";
 import Incidents from "../pages/employer/incident/incident";
 import Reports from "../pages/employer/reports/Reports";
@@ -14,6 +11,9 @@ import CommunicationsPage from "../pages/employer/communication/Communication";
 import PaymentDashboard from "../pages/employer/Payment";
 import ControlPanel from "../pages/employer/controlpanel/ControlPanel";
 import Pricing from "../pages/employer/pricing/Pricing";
+import Profile from "../pages/employer/employer/EmployerProfile";
+import ProfileUpdate from "../pages/employer/employer/EmployerUpdate";
+import Security from "../pages/employer/Security";
 
 function AppRoutes() {
   return (
@@ -24,10 +24,8 @@ function AppRoutes() {
         <Route path="Employee" element={<Applicants />} />
         <Route path="EmployeeNew" element={<ApplicantNew />} />
         <Route path="EmployeeProfile" element={<ApplicantProfile />} />
-        <Route path="EmployersMgt" element={<Employers />} />
-        <Route path="EmployerNew" element={<EmployersNew />} />
-        <Route path="EmployerProfile" element={<EmployerProfile />} />
-        {/* <Route path="tracker" element={<DBSTrackerModule />} /> */}
+        <Route path="ProfileUpdate" element={<ProfileUpdate />} />
+        <Route path="Profile" element={<Profile />} />
         <Route path="Tracker" element={<DBSTrackerModule />} />
         <Route path="IncidentMgt" element={<Incidents />} />
         <Route path="Payment" element={<PaymentDashboard />} />
@@ -35,6 +33,7 @@ function AppRoutes() {
         <Route path="Communication" element={<CommunicationsPage />} />
         <Route path="ControlPanel" element={<ControlPanel />} />
         <Route path="Pricing" element={<Pricing />} />
+        <Route path="Security" element={<Security />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

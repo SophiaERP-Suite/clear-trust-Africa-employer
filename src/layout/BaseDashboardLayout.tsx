@@ -72,7 +72,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
             {isOpen ? (
               <div className="flex items-center text-black justify-between w-full">
                 <a
-                  href="/admin/dashboard"
+                  href="dashboard"
                   className="flex px-5 py-4 mr-4 rtl:ml-4 rtl:mr-0 text-xl whitespace-nowrap"
                 >
                   <div className="sidebar-logo ml-2">
@@ -88,7 +88,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
             ) : (
               <div className="">
                 <a
-                  href="/admin/dashboard"
+                  href="dashboard"
                   className="flex justify-center py-2 px-2 my-2 relative right-2 items-center"
                 >
                   <div className="sidebar-logo">
@@ -172,7 +172,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
         >
           <div className="sidebar-header relative flex items-center justify-start mb-3 border-b dark:border-gray-700 z-0">
             <a
-              href="/admin/dashboard"
+              href="dashboard"
               className="flex px-2 py-4 mr-4 rtl:ml-4 rtl:mr-0 text-xl whitespace-nowrap"
             >
               <span className="sidebar-logo ml-2" style={{ width: "160px" }}>

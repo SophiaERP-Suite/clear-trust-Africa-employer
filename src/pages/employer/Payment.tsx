@@ -96,8 +96,8 @@ function PaymentDashboard() {
               className={`bg-gradient-to-r from-green-600 to-green-500 rounded-xl p-6 border border-slate-200 hover:shadow-lg transition-shadow ${stat.styling}`}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="p-2 bg-slate-100 rounded-lg">
-                  <Icon className="w-5 h-5 text-slate-700" />
+                <div className="py-3 px-3 bg-slate-100/50 rounded-full">
+                  <Icon className="w-6 h-5 text-white" />
                 </div>
               </div>
               <div>
