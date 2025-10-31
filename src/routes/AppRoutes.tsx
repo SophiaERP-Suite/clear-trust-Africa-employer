@@ -4,7 +4,7 @@ import EmployerLayout from "../layout/EmployerLayout";
 import ApplicantNew from "../pages/employer/applicant/ApplicantNew";
 import Applicants from "../pages/employer/applicant/Applicants";
 import ApplicantProfile from "../pages/employer/applicant/ApplicantProfile";
-import EmployersNew from "../pages/employer/employer/EmployerNew";
+import EmployersNew from "../pages/employer/employer/EmployerUpdate";
 import Employers from "../pages/employer/employer/Employers";
 import EmployerProfile from "../pages/employer/employer/EmployerProfile";
 import DBSTrackerModule from "../pages/employer/Tracker/DbsTracker";
