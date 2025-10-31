@@ -1,6 +1,6 @@
 
 import {
-  Plus,
+  // Plus,
   List,
   ListChecks,
   ClockAlert,
@@ -34,13 +34,13 @@ export default function Incidents() {
                 </div>
 
                 <div>
-                  <a
+                  {/* <a
                     href="applicantNew"
                     className="text-black btn shadow-md bg-white border focus:bg-gray-200"
                   >
                     <Plus size={18} className="mr-2" />
                     Add New
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
@@ -50,53 +50,53 @@ export default function Incidents() {
         {/* Quick Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-10">
           {/* Total Incidents */}
-          <div className="bg-white rounded-lg shadow-md border border-blue-600 p-5 hover:shadow-lg transition">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-md border border-blue-600 p-5 hover:shadow-lg transition">
             <div className="flex items-center gap-4">
               <div className="bg-blue-100 w-12 h-12 flex items-center justify-center rounded-full">
                 <List className="text-blue-600 text-xl" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Total Incidents</p>
-                <h2 className="text-3xl font-bold text-gray-900">1</h2>
+                <p className="text-sm text-white">Total Incidents</p>
+                <h2 className="text-3xl font-bold text-white">1</h2>
               </div>
             </div>
           </div>
-
+ 
           {/* Resolved */}
-          <div className="bg-white rounded-lg shadow-md border border-green-600 p-5 hover:shadow-lg transition">
+          <div className="bg-gradient-to-r from-green-600 to-green-500 rounded-lg shadow-md border border-green-600 p-5 hover:shadow-lg transition">
             <div className="flex items-center gap-4">
               <div className="bg-green-100 w-12 h-12 flex items-center justify-center rounded-full">
                 <ListChecks className="text-green-600 text-xl" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Resolved</p>
-                <h2 className="text-3xl font-bold text-green-700">4</h2>
+                <p className="text-sm text-white">Resolved</p>
+                <h2 className="text-3xl font-bold text-white">4</h2>
               </div>
             </div>
           </div>
 
           {/* Under Investigation */}
-          <div className="bg-white rounded-lg shadow-md border border-yellow-500 p-5 hover:shadow-lg transition">
+          <div className="bg-gradient-to-r from-yellow-600 to-yellow-500 rounded-lg shadow-md border border-yellow-500 p-5 hover:shadow-lg transition">
             <div className="flex items-center gap-4">
               <div className="bg-yellow-100 w-12 h-12 flex items-center justify-center rounded-full">
                 <ClockAlert className="text-yellow-500 text-xl" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Under Investigation</p>
-                <h2 className="text-3xl font-bold text-yellow-600">3</h2>
+                <p className="text-sm text-white">Under Investigation</p>
+                <h2 className="text-3xl font-bold text-white">3</h2>
               </div>
             </div>
           </div>
 
           {/* Critical */}
-          <div className="bg-white rounded-lg shadow-md border border-red-600 p-5 hover:shadow-lg transition">
+          <div className="bg-gradient-to-r from-red-600 to-red-500 rounded-lg shadow-md border border-red-600 p-5 hover:shadow-lg transition">
             <div className="flex items-center gap-4">
               <div className="bg-red-100 w-12 h-12 flex items-center justify-center rounded-full">
                 <AlertCircle className="text-red-600 text-xl" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Critical</p>
-                <h2 className="text-3xl font-bold text-red-700">3</h2>
+                <p className="text-sm text-white">Critical</p>
+                <h2 className="text-3xl font-bold text-white">3</h2>
               </div>
             </div>
           </div>
@@ -115,14 +115,14 @@ export default function Incidents() {
           </div>
 
           {/* Open Rate */}
-          <div className="bg-white rounded-lg shadow-md border border-purple-600 p-5 hover:shadow-lg transition">
+          <div className="bg-gradient-to-r from-purple-600 to-purple-500 rounded-lg shadow-md border border-purple-600 p-5 hover:shadow-lg transition">
             <div className="flex items-center gap-4">
               <div className="bg-purple-100 w-12 h-12 flex items-center justify-center rounded-full">
                 <ActivityIcon className="text-purple-600 text-xl" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Open Rate</p>
-                <h2 className="text-3xl font-bold text-purple-700">50%</h2>
+                <p className="text-sm text-white">Open Rate</p>
+                <h2 className="text-3xl font-bold text-white">50%</h2>
               </div>
             </div>
           </div>
@@ -133,7 +133,7 @@ export default function Incidents() {
         <div className="relative flex flex-col mb-8 bg-white rounded shadow-lg dark:bg-dark-card grid gird-cols-1 lg:col-span-2">
           <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
             <div className="relative flex flex-wrap justify-between p-5 ">
-              <h4 className="mb-2 sm:mb-0 font-bold">Incident Reports</h4>
+              <h4 className="mb-2 sm:mb-0 text-xl font-bold">Incident Reports</h4>
               <div className="flex"></div>
             </div>
             <hr className="m-0" />

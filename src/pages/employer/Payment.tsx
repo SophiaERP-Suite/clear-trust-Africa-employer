@@ -115,7 +115,7 @@ function PaymentDashboard() {
         <div className="relative flex flex-col mb-8 bg-white rounded shadow-lg dark:bg-dark-card grid gird-cols-1 lg:col-span-2">
           <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
             <div className="relative flex flex-wrap justify-between p-5 ">
-              <h4 className="mb-2 sm:mb-0 font-bold">Payment Log</h4>
+              <h4 className="mb-2 sm:mb-0 text-xl font-bold">Payment Log</h4>
               <div className="flex">
                 <select
                   value={filter}

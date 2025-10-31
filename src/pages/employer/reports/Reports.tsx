@@ -173,7 +173,7 @@ export default function InvestigationPortal() {
             {/* Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Case Status Chart */}
-              <div className="lg:col-span-2 bg-white rounded-xl p-6 border border-slate-200">
+              <div className="lg:col-span-2 bg-white rounded-md p-6 border border-slate-200">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-lg font-semibold text-slate-900">
                     Case Activity Trend
@@ -1136,8 +1136,8 @@ export default function InvestigationPortal() {
             </div>
 
             {/* Geographic Distribution */}
-            <div className="bg-gradient-to-r from-green-600 to-green-500 rounded-xl p-6 border border-slate-200">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">
+            <div className="bg-gradient-to-r from-green-600 to-green-500 rounded-md p-6 border border-slate-200">
+              <h2 className="text-lg font-semibold text-white mb-4">
                 Geographic Case Distribution
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -1166,7 +1166,7 @@ export default function InvestigationPortal() {
         {/* Reports Tab */}
         {activeTab === "reports" && (
           <div className="space-y-6">
-            <div className="bg-white rounded-xl p-6 border border-slate-200">
+            <div className="bg-white rounded-md p-6 border border-slate-200">
               <h2 className="text-lg font-semibold text-slate-900 mb-4">
                 Available Reports
               </h2>
@@ -1217,7 +1217,7 @@ export default function InvestigationPortal() {
                 ].map((report, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                    className="flex items-center justify-between p-4 border border-slate-200 rounded-md hover:bg-slate-50 transition-colors"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-1">
