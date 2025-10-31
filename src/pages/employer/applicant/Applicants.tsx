@@ -16,6 +16,10 @@ import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
 import { ChevronRightIcon, Plus, Users } from "lucide-react";
+import donald from "../../../assets2/img/donald_adolphus.jpg";
+import rashkin from "../../../assets2/img/isaiah_rashkin.jpg";
+import deborah from "../../../assets2/img/deborah_wilkins.jpg";
+import femi from "../../../assets2/img/femi_adebayo.jpg";
 
 function AdminEmployees() {
   return (
@@ -120,7 +124,7 @@ function AdminEmployees() {
                           <td className="px-6 py-4 whitespace-nowrap flex gap-2 items-center text-secondary-600 dark:text-secondary-500">
                             <img
                               className="w-10 h-10 mr-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                              src="/user.jpg"
+                              src={donald}
                               style={{ objectFit: "cover" }}
                               alt="profile"
                             />
@@ -280,7 +284,7 @@ function AdminEmployees() {
                           <td className="px-6 py-4 whitespace-nowrap flex gap-2 items-center text-secondary-600 dark:text-secondary-500">
                             <img
                               className="w-10 h-10 mr-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                              src="/user.jpg"
+                              src={rashkin}
                               style={{ objectFit: "cover" }}
                               alt="profile"
                             />{" "}
@@ -440,7 +444,7 @@ function AdminEmployees() {
                           <td className="px-6 py-4 whitespace-nowrap flex gap-2 items-center text-secondary-600 dark:text-secondary-500">
                             <img
                               className="w-10 h-10 mr-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                              src="/user.jpg"
+                              src={femi}
                               style={{ objectFit: "cover" }}
                               alt="profile"
                             />
@@ -600,7 +604,7 @@ function AdminEmployees() {
                           <td className="px-6 py-4 whitespace-nowrap flex gap-2 items-center text-secondary-600 dark:text-secondary-500 ">
                             <img
                               className="w-10 h-10 mr-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                              src="/user.jpg"
+                              src={deborah}
                               style={{ objectFit: "cover" }}
                               alt="profile"
                             />
