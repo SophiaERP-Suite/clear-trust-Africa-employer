@@ -766,7 +766,7 @@ function AdminEmployees() {
                       <div className="flex flex-wrap justify-between my-6 mx-5">
                         <div className="flex justify-center items-center mb-1">
                           <p className="text-secondary-600">
-                            Showing 1 to 9 of 9 entries
+                            Showing 4 to 1 of 1 entries
                           </p>
                         </div>
                         <div className="inline-flex flex-wrap">
