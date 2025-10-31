@@ -66,7 +66,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
         <aside
           className={`${
             isOpen ? "w-64" : "w-20"
-          } z-50 sidebar hidden md:block shadow-lg sidebar-base sidebar-default w-60 bg-gray-800 text-white min-h-screen`}
+          } z-50 sidebar hidden md:block  shadow-lg sidebar-base sidebar-default w-60 bg-gray-800 text-white min-h-screen`}
         >
           <div className="sidebar-header relative flex items-center justify-start mb-3 border-b dark:border-gray-700 z-0">
             {isOpen ? (
@@ -141,7 +141,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
           </div>
 
           <div className="sidebar-body data-scrollbar mt-4">
-            <ul className="sidebar-main-menu overflow-y-auto">
+            <ul className="sidebar-main-menu">
               {navItems.map((item) => (
                 <li key={item.path} className="nav-item">
                   <NavLink
@@ -173,55 +173,45 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
           <div className="sidebar-header relative flex items-center justify-start mb-3 border-b dark:border-gray-700 z-0">
             <a
               href="/admin/dashboard"
-              className="flex px-5 py-4 mr-4 rtl:ml-4 rtl:mr-0 text-xl whitespace-nowrap"
+              className="flex px-2 py-4 mr-4 rtl:ml-4 rtl:mr-0 text-xl whitespace-nowrap"
             >
-              <span className="sidebar-logo ml-2" style={{ width: "170px" }}>
+              <span className="sidebar-logo ml-2" style={{ width: "160px" }}>
                 <img src="/cleartrust_logo.png" alt="logo" />
               </span>
-              <div className="sidebar-logo ml-2">
-                <img
-                  src="/clear-logo.png"
-                  style={{ width: "110px" }}
-                  alt="logo"
-                  className="mr-3"
-                />
-              </div>
             </a>
             <div>
-              <X size={18} onClick={handleMobileSideBarToggle} />
+              <X
+                size={25}
+                className="text-black"
+                onClick={handleMobileSideBarToggle}
+              />
             </div>
           </div>
 
           <div className="sidebar-body data-scrollbar">
             <div className="nav-item static-item mb-2">
-              <a
-                className="py-0 flex items-center p-2 ml-2 hover:text-primary-500 active:text-primary-500 focus:text-primary-500 focus"
-                href="#"
-              >
-                <img
-                  src={femi}
-                  alt="User-Profile"
-                  className="h-10 w-10 rounded-full truncate"
-                  style={{ objectFit: "cover" }}
-                  loading="lazy"
-                />
-                <div className="caption ml-3 d-none d-md-block">
-                  <h6 className="mb-0 caption-title mr-4" style={{}}>
-                    Oluwafemi Lawal
-                  </h6>
-                  <p className="mb-0 caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
-                    Employer
-                  </p>
-                </div>
-              </a>
               <div className="nav-item static-item">
                 <p className="nav-link static-item disabled">
-                  <span className="default-icon">Admin</span>
-                  <span className="mini-icon">-</span>
-                </p>
-                <p className="nav-link static-item disabled">
-                  <span className="default-icon">Admin</span>
-                  <span className="mini-icon">-</span>
+                  <a
+                    className="py-0 flex items-center p-2 ml-2 hover:text-primary-500 active:text-primary-500 focus:text-primary-500 focus"
+                    href="#"
+                  >
+                    <img
+                      src={femi}
+                      alt="User-Profile"
+                      className="h-12 w-12 border rounded-full"
+                      style={{ objectFit: "cover" }}
+                      loading="lazy"
+                    />
+                    <div className="caption ml-3 d-none d-md-block ">
+                      <h6 className="mb-0 caption-title mr-4" style={{}}>
+                        Olawale Adigun
+                      </h6>
+                      <p className="mb-0 text-sm caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
+                        HR
+                      </p>
+                    </div>
+                  </a>
                 </p>
               </div>
               <ul className="sidebar-main-menu">
@@ -255,23 +245,17 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
               <div className="w-full px-7 py-2">
                 <div className="relative">
                   {/* Mobile menu button */}
-                  <div
-                    className="absolute flex items-center px-2 py-1 text-xl border border-secondary-500 rounded lg:hidden right-0"
-                    x-bind:className="setting.theme_scheme_direction == 'ltr' ? 'right-0' : 'left-0'"
-                  >
-                    <button
-                      type="button"
-                      className="inline-flex items-center justify-center text-xl text-black"
-                    >
-                      <Menu size={18} onClick={handleMobileSideBarToggle} />
+                  <div className="absolute flex items-center px-2 py-0 mt-4 lg:hidden right-0">
+                    <div className="inline-flex items-center justify-center cursor-pointer text-xl text-black top-5">
+                      <Menu size={30} onClick={handleMobileSideBarToggle} />
                       {/* <X size={18} /> */}
-                    </button>
+                    </div>
                   </div>
 
                   <div className="flex justify-between items-center h-16">
-                    <div className="breadcrumb-title xl:flex sm:hidden justify-between items-center lg:flex mt-3">
+                    <div className="breadcrumb-title xl:flex hidden justify-between items-center lg:flex mt-3">
                       <div className="breadcrumb-title xl:flex sm:hidden justify-center items-center lg:flex">
-                        <small className="capitalize hidden md:block mr-3 pr-3 border-r border-secondary-300 dark:border-secondary-700 dark:text-white">
+                        <small className="capitalize cursor-pointer hidden md:block mr-3 pr-3 border-r border-secondary-300 dark:border-secondary-700 dark:text-white">
                           {!isOpen ? (
                             <ArrowRight
                               size={18}
@@ -285,7 +269,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                           )}
                         </small>
                       </div>
-                      <h2 className="flex text-2xl font-bold text-gray-900 items-center gap-3">
+                      <h2 className="hidden xl:flex text-2xl font-bold text-gray-900 items-center gap-3">
                         {title} PORTAL
                       </h2>
                     </div>
@@ -298,7 +282,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                             className="flex items-center whitespace-nowrap gap-4"
                           >
                             <img
-                              src="/clear-logo.png"
+                              src="/cleartrust_logo.png"
                               style={{ width: "160px" }}
                               alt="logo"
                               className="mr-3"

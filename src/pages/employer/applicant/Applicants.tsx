@@ -17,7 +17,7 @@ import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
 import { ChevronRightIcon, Plus, Users } from "lucide-react";
 
-function AdminEmpoyees() {
+function AdminEmployees() {
   return (
     <>
       <div
@@ -47,7 +47,7 @@ function AdminEmpoyees() {
             <div className="relative flex flex-col mb-8  bg-white dark:bg-dark-card shadow rounded">
               <div className="flex justify-between flex-auto p-5 border-b dark:border-secondary-800 rounded">
                 <h4 className="mb-0 font-bold">
-                  Empoyees List
+                  Employees List
                 </h4>
                 <a href="/ApplicantNew"></a>
               </div>
@@ -105,9 +105,6 @@ function AdminEmpoyees() {
                             Email
                           </th>
                           <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                            Country
-                          </th>
-                          <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
                             Status
                           </th>
                           <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
@@ -147,7 +144,7 @@ function AdminEmpoyees() {
                             <div className="flex items-center list-user-action">
                               <a
                                 className="btn btn-success btn-icon btn-sm mr-1"
-                                href="#"
+                                href="Pricing"
                                 type="button"
                                 data-tp-toggle="tooltip"
                                 data-tp-placement="top"
@@ -197,7 +194,7 @@ function AdminEmpoyees() {
                               </a>
                               <a
                                 className="btn btn-warning btn-icon btn-sm mr-1"
-                                href="#"
+                                href="EmployeeNew"
                                 type="button"
                                 data-tp-toggle="tooltip"
                                 data-tp-placement="top"
@@ -801,4 +798,4 @@ function AdminEmpoyees() {
   );
 }
 
-export default AdminEmpoyees;
+export default AdminEmployees;

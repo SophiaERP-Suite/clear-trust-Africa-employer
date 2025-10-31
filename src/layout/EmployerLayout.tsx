@@ -9,6 +9,8 @@ import {
   Settings,
   LogOut,
   File,
+  User,
+  ShieldCheck,
 } from "lucide-react";
 
 function EmploymentLayout() {
@@ -57,6 +59,18 @@ function EmploymentLayout() {
       path: "/ControlPanel",
       icon: <Settings size={25} />,
       label: "Control Panel",
+    },
+
+    {
+      path: "/Profile",
+      icon: <User size={25} />,
+      label: "Profile",
+    },
+
+    {
+      path: "/Security",
+      icon: <ShieldCheck size={25} />,
+      label: "Security",
     },
 
     {
