@@ -5,7 +5,7 @@ import DashboardHead from "../components/DashboardHead";
 import binta from "../assets2/img/binta.jpeg";
 // import man1 from "../assets2/img/donald_adolphus.jpg";
 import femi from "../assets2/img/femi_adebayo.jpg";
-import { ArrowRight, ArrowLeft, Menu, X, Bell, Search } from "lucide-react";
+import { ArrowRight, ArrowLeft, Menu, X, Bell, Search, CircleQuestionMark } from "lucide-react";
 
 interface NavItem {
   path: string;
@@ -757,7 +757,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                             </li>
 
                             <li
-                              className="flex items-center pl-2 border-r"
+                              className="flex items-center pl-2"
                               x-data="{ open: false }"
                             >
                               <a
@@ -891,6 +891,22 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                   </div>
                                 </div>
                               </div>
+                            </li>
+                             <li className="relative flex items-center pl-2 border-r group">
+                              <a
+                                href="help"
+                                className="block p-3 hover:text-primary-500 text-secondary-600"
+                              >
+                                <CircleQuestionMark
+                                  className="text-black"
+                                  size={22}
+                                />
+                              </a>
+
+                              {/* Tooltip */}
+                              <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 invisible group-hover:visible bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                                Help & Support
+                              </span>
                             </li>
                             <li
                               className="nav-item iq-full-screen sm:hidden xl:block border-r"
