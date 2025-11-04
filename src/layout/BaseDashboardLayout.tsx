@@ -121,7 +121,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                     <h6 className="mb-0 caption-title mr-4" style={{}}>
                       Olawale Adigun
                     </h6>
-                    <p className="mb-0 text-sm caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
+                    <p className="mb-0 text-sm font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
                       HR
                     </p>
                   </div>
@@ -934,7 +934,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                     >
                                       Binta Schools
                                     </h6>
-                                    <p className="mb-0 caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
+                                    <p className="mb-0 font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
                                       Admin
                                     </p>
                                   </div>
