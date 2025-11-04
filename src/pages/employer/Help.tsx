@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  Search,
+  // Search,
   BookOpen,
   MessageCircle,
   Phone,
@@ -212,6 +212,13 @@ export default function HelpSupportPage() {
       className="p-6 lg:p-8 footer-inner mx-auto main-container container"
       x-bind:className="setting.page_layout"
     >
+      <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search for help articles, FAQs, guides..."
+                className="hidden w-full pl-12 pr-4 py-4 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+              />
       {/* Header */}
       <div className="flex flex-wrap justify-between gap-4">
         <div className="col-md-12">
