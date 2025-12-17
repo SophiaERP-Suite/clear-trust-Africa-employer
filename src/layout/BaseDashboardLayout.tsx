@@ -120,7 +120,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                   />
                   <div className="caption ml-3 d-none d-md-block ">
                     <h6 className="mb-0 caption-title mr-4" style={{}}>
-                      Olawale Adigun
+                      Olamide Adigun
                     </h6>
                     <p className="mb-0 text-sm font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
                       HR
@@ -206,7 +206,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                     />
                     <div className="caption ml-3 d-none d-md-block ">
                       <h6 className="mb-0 caption-title mr-4" style={{}}>
-                        Olawale Adigun
+                        Olamide Adigun
                       </h6>
                       <p className="mb-0 text-sm caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
                         HR
