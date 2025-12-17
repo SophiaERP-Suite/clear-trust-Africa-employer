@@ -4,7 +4,7 @@ import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
-      <BrowserRouter>
+      <BrowserRouter basename="/xt/cta_emp">
         <AppRoutes />
       </BrowserRouter>
   );
