@@ -6,7 +6,7 @@ import binta from "../assets2/img/binta.jpeg";
 import main_logo from "../assets2/img/cleartrust_logo.png";
 import mini_logo from "../assets2/img/cleartrust_logo_mini.png";
 import femi from "../assets2/img/femi_adebayo.jpg";
-import { ArrowRight, ArrowLeft, Menu, X, Bell, Search } from "lucide-react";
+import { ArrowRight, ArrowLeft, Menu, X, Bell, Search, CircleQuestionMark } from "lucide-react";
 
 interface NavItem {
   path: string;
@@ -122,7 +122,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                     <h6 className="mb-0 caption-title mr-4" style={{}}>
                       Olawale Adigun
                     </h6>
-                    <p className="mb-0 text-sm caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
+                    <p className="mb-0 text-sm font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
                       HR
                     </p>
                   </div>
@@ -758,7 +758,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                             </li>
 
                             <li
-                              className="flex items-center pl-2 border-r"
+                              className="flex items-center pl-2"
                               x-data="{ open: false }"
                             >
                               <a
@@ -893,6 +893,22 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                 </div>
                               </div>
                             </li>
+                             <li className="relative flex items-center pl-2 border-r group">
+                              <a
+                                href="help"
+                                className="block p-3 hover:text-primary-500 text-secondary-600"
+                              >
+                                <CircleQuestionMark
+                                  className="text-black"
+                                  size={22}
+                                />
+                              </a>
+
+                              {/* Tooltip */}
+                              <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 invisible group-hover:visible bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
+                                Help & Support
+                              </span>
+                            </li>
                             <li
                               className="nav-item iq-full-screen sm:hidden xl:block border-r"
                               id="fullscreen-item"
@@ -935,7 +951,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                     >
                                       Binta Schools
                                     </h6>
-                                    <p className="mb-0 caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
+                                    <p className="mb-0 font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
                                       Admin
                                     </p>
                                   </div>

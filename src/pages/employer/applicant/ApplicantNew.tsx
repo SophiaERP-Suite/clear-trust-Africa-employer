@@ -362,7 +362,7 @@ function AdminEmployeesNew() {
                     </div>
                   </div>
                   <hr className="mt-5" />
-                  <h5 className="mb-4 dark:text-white">Security</h5>
+                  {/* <h5 className="mb-4 dark:text-white">Security</h5>
                   <div className="grid lg:grid-cols-2 gap-x-8">
                     <div className="w-full mb-3 col-span-2">
                       <label
@@ -406,7 +406,7 @@ function AdminEmployeesNew() {
                         placeholder="Repeat Password "
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="mb-3">
                     <label className="inline-block mb-2 text-secondary-600 dark:text-white">
                       <input

@@ -14,6 +14,7 @@ import Pricing from "../pages/employer/pricing/Pricing";
 import Profile from "../pages/employer/employer/EmployerProfile";
 import ProfileUpdate from "../pages/employer/employer/EmployerUpdate";
 import Security from "../pages/employer/Security";
+import HelpSupportPage from "../pages/employer/Help";
 
 function AppRoutes() {
   return (
@@ -34,6 +35,7 @@ function AppRoutes() {
         <Route path="ControlPanel" element={<ControlPanel />} />
         <Route path="Pricing" element={<Pricing />} />
         <Route path="Security" element={<Security />} />
+        <Route path="Help" element={<HelpSupportPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
