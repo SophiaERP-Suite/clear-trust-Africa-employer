@@ -1,11 +1,19 @@
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
+import { AuthProvider } from "./utils/AuthProvider";
+import { ToastContainer } from "react-toastify";
+import { RequireLogin } from "./utils/RequireLogin";
 
 function App() {
   return (
       <BrowserRouter basename="/xt/cta_emp">
-        <AppRoutes />
+        <ToastContainer />
+        <AuthProvider>
+          <RequireLogin>
+            <AppRoutes />
+          </RequireLogin>
+        </AuthProvider>
       </BrowserRouter>
   );
 }

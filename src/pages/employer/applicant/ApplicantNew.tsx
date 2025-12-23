@@ -16,8 +16,25 @@ import "../../../assets2/js/libs.min.js";
 import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
+import { useForm } from "react-hook-form";
+
+interface ApplicantFormValues {
+  FirstName: string;
+  LastName: string;
+  ProfilePhoto: string;
+  Phone: string;
+  Email: string;
+  NIN: string;
+  DateOfBirth: string;
+  Gender: string;
+  Address: string;
+}
 
 function AdminEmployeesNew() {
+  const { register, reset, handleSubmit, formState } = useForm<ApplicantFormValues>();
+  const { errors } = formState;
+
+  const addApplicant = () => {}
   return (
     <>
      
@@ -31,7 +48,7 @@ function AdminEmployeesNew() {
             <div>
               <h3 className="mb-0 text-black">Employee Management</h3>
               <p className="text-secondary-600 text-black">
-                Dashboard <ChevronRightIcon size={14} /> Report & Analytics{" "}
+                Dashboard <ChevronRightIcon size={14} /> Employee Mgt{" "}<ChevronRightIcon size={14} /> New Employee
               </p>
             </div>
           </div>
@@ -43,162 +60,17 @@ function AdminEmployeesNew() {
           </div>
         </div>
         <div className="lg:flex lg:grid-cols-2 gap-8">
-          <div className="flex-auto w-full lg:w-1/4">
-            <div className="relative flex flex-col mb-8 text-secondary-500 bg-white shadow rounded -mt-2 dark:bg-dark-card">
-              <div className="flex justify-between flex-auto p-5 mb-4 border-b dark:border-secondary-800">
-                <div className="header-title">
-                  <h4 className="mb-0 dark:text-white">Add New Applicant</h4>
-                </div>
-              </div>
-              <div className="p-5">
-                <form>
-                  <div className="mb-4">
-                    <div className="relative">
-                      <img
-                        className="w-24 h-24 rounded"
-                        src="/user-avatar.png"
-                        alt="profile-pic"
-                      />
-                      <div className="image-upload absolute cursor-pointer top-auto w-8 h-8 text-center bg-primary-500 border-4 border-white rounded-full left-20 rtl:right-20 rtl:left-0 -bottom-2">
-                        <label htmlFor="file-input">
-                          <svg
-                            className="inline-block pb-1 m-0.5"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              fill="#ffffff"
-                              d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z"
-                            ></path>
-                          </svg>
-                        </label>
-                        <input
-                          id="file-input"
-                          className="hidden file-upload"
-                          type="file"
-                          accept="image/*"
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-4 ">
-                      <div className="items-center inline-block">
-                        <span className="text-secondary-600 dark:text-white">
-                          Only
-                        </span>
-                        <a
-                          href="javascript:void();"
-                          className="text-primary-400 hover:text-primary-500"
-                        >
-                          .jpg
-                        </a>
-                        <a
-                          href="javascript:void();"
-                          className="text-primary-400 hover:text-primary-500"
-                        >
-                          .png
-                        </a>
-                        <a
-                          href="javascript:void();"
-                          className="text-primary-400 hover:text-primary-500"
-                        >
-                          .jpeg
-                        </a>
-                        <span className="text-secondary-600 dark:text-white">
-                          allowed
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      className="inline-block mb-2 text-secondary-600 dark:text-white"
-                      htmlFor="user_role"
-                    >
-                      User Role:
-                    </label>
-                    <select
-                      name="type"
-                      className="block w-full px-4 py-2  dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 dark:focus:border-primary-500 focus:shadow selectpicker appearance-none"
-                      data-style="py-0"
-                      id="user_role"
-                    >
-                      <option>Select</option>
-                      <option>Web Designer</option>
-                      <option>Web Developer</option>
-                      <option>Tester</option>
-                      <option>Php Developer</option>
-                      <option>Ios Developer </option>
-                    </select>
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      className="inline-block mb-2 text-secondary-600 dark:text-white"
-                      htmlFor="furl"
-                    >
-                      Facebook Url:
-                    </label>
-                    <input
-                      type="text"
-                      className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                      id="furl"
-                      placeholder="Facebook Url"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      className="inline-block mb-2 text-secondary-600 dark:text-white"
-                      htmlFor="turl"
-                    >
-                      Twitter Url:
-                    </label>
-                    <input
-                      type="text"
-                      className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                      id="turl"
-                      placeholder="Twitter Url"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      className="inline-block mb-2 text-secondary-600 dark:text-white"
-                      htmlFor="instaurl"
-                    >
-                      Instagram Url:
-                    </label>
-                    <input
-                      type="text"
-                      className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                      id="instaurl"
-                      placeholder="Instagram Url"
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label
-                      className="inline-block mb-2 text-secondary-600 dark:text-white"
-                      htmlFor="lurl"
-                    >
-                      Linkedin Url:
-                    </label>
-                    <input
-                      type="text"
-                      className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                      id="lurl"
-                      placeholder="Linkedin Url"
-                    />
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div className="flex-auto w-full lg:w-3/4">
+          <div className="flex-auto w-full">
             <div className="relative flex flex-col mb-8 text-secondary-500 bg-white shadow rounded -mt-2 dark:bg-dark-card">
               <div className="flex justify-between flex-auto p-6 border-b dark:border-secondary-800">
                 <h4 className="mb-0 dark:text-white">Applicant Information</h4>
               </div>
               <div className="p-6 ">
-                <form>
-                  <div className="grid lg:grid-cols-2 gap-x-8 gap-y-5">
+                <form
+                  onSubmit={handleSubmit(addApplicant)}
+                  noValidate
+                >
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-5">
                     <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
@@ -206,12 +78,19 @@ function AdminEmployeesNew() {
                       >
                         First Name:
                       </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="fname"
-                        placeholder="First Name"
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('FirstName', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.FirstName?.message}</p>
+                      </div>
                     </div>
                     <div>
                       <label
@@ -220,75 +99,19 @@ function AdminEmployeesNew() {
                       >
                         Last Name:
                       </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="lname"
-                        placeholder="Last Name"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="add1"
-                      >
-                        Street Address 1:
-                      </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="add1"
-                        placeholder="Street Address 1"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="add2"
-                      >
-                        Street Address 2:
-                      </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="add2"
-                        placeholder="Street Address 2"
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label
-                        className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="cname"
-                      >
-                        Company Name:
-                      </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="cname"
-                        placeholder="Company Name"
-                      />
-                    </div>
-                    <div className="col-span-2">
-                      <label
-                        className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="country"
-                      >
-                        Country:
-                      </label>
-                      <select
-                        name="type"
-                        className="block w-full px-4 py-2 text-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow selectpicker appearance-none dark:focus:border-primary-500"
-                        data-style="py-0"
-                        id="country"
-                      >
-                        <option>Select Country</option>
-                        <option>Caneda</option>
-                        <option>Noida</option>
-                        <option>USA</option>
-                        <option>India</option>
-                        <option>Africa</option>
-                      </select>
+                      <div>
+                        <input
+                          type="text"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('LastName', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.LastName?.message}</p>
+                      </div>
                     </div>
                     <div>
                       <label
@@ -297,26 +120,19 @@ function AdminEmployeesNew() {
                       >
                         Mobile Number:
                       </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="mobno"
-                        placeholder="Mobile Number"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="altconno"
-                      >
-                        Alternate Contact:
-                      </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="altconno"
-                        placeholder="Alternate Contact"
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('Phone', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.Phone?.message}</p>
+                      </div>
                     </div>
                     <div>
                       <label
@@ -325,101 +141,139 @@ function AdminEmployeesNew() {
                       >
                         Email:
                       </label>
-                      <input
-                        type="email"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="email"
-                        placeholder="Email"
-                      />
+                      <div>
+                        <input
+                          type="text"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('Email', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.Email?.message}</p>
+                      </div>
                     </div>
                     <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="pno"
+                        htmlFor="email"
                       >
-                        Pin Code:
+                        Applicant Photo:
                       </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="pno"
-                        placeholder="Pin Code"
-                      />
+                      <div>
+                        <input
+                          type="file"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                            {
+                            ...register('ProfilePhoto', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.ProfilePhoto?.message}</p>
+                      </div>
                     </div>
-                    <div className="col-span-2">
+                    <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="city"
+                        htmlFor="email"
                       >
-                        Town/City:
+                        Date Of Birth:
                       </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="city"
-                        placeholder="Town/City"
-                      />
+                      <div>
+                        <input
+                          type="date"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('DateOfBirth', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.DateOfBirth?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        NIN:
+                      </label>
+                      <div>
+                        <input
+                          type="text"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('NIN', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.NIN?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Gender:
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('Gender', {
+                              required: 'Required',
+                              pattern: {
+                                value: /^(?!default$).+$/,
+                                message: 'Required'
+                              }
+                            })
+                          }
+                        >
+                          <option value="default" disabled>Select Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </select>
+                        <p className='error-msg'>{errors.Gender?.message}</p>
+                      </div>
+                    </div>
+                    <div className="lg:col-span-2">
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="Address"
+                      >
+                        Address:
+                      </label>
+                      <div>
+                        <textarea
+                          className="w-full h-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('Address', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        ></textarea>
+                        <p className='error-msg'>{errors.Address?.message}</p>
+                      </div>
                     </div>
                   </div>
                   <hr className="mt-5" />
-                  {/* <h5 className="mb-4 dark:text-white">Security</h5>
-                  <div className="grid lg:grid-cols-2 gap-x-8">
-                    <div className="w-full mb-3 col-span-2">
-                      <label
-                        className="inline-block mb-2 text-slate-400 text-secondary-600 dark:text-white"
-                        htmlFor="uname"
-                      >
-                        User Name:
-                      </label>
-                      <input
-                        type="text"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="uname"
-                        placeholder="User Name"
-                      />
+                  <button type="submit" className="btn-primary">
+                    <div className="dots hidden" id="query-loader">
+                      <div className="dot"></div>
+                      <div className="dot"></div>
+                      <div className="dot"></div>
                     </div>
-                    <div className="w-full mb-3">
-                      <label
-                        className="inline-block mb-2 text-slate-400 text-secondary-600 dark:text-white"
-                        htmlFor="pass"
-                      >
-                        Password:
-                      </label>
-                      <input
-                        type="password"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="pass"
-                        placeholder="Password"
-                      />
-                    </div>
-                    <div className="w-full mb-3">
-                      <label
-                        className="inline-block mb-2 text-slate-400 text-secondary-600 dark:text-white"
-                        htmlFor="rpass"
-                      >
-                        Repeat Password:
-                      </label>
-                      <input
-                        type="password"
-                        className="block w-full px-4 py-2 placeholder-secondary-400 dark:bg-dark-card dark:border-secondary-800 bg-white border rounded outline-none focus:border-primary-500 focus:shadow dark:focus:border-primary-500"
-                        id="rpass"
-                        placeholder="Repeat Password "
-                      />
-                    </div>
-                  </div> */}
-                  <div className="mb-3">
-                    <label className="inline-block mb-2 text-secondary-600 dark:text-white">
-                      <input
-                        className="float-left w-4 h-4 mt-1 mr-2  border border-primary-500 rounded dark:bg-dark-card rtl:float-right rtl:ml-2 rtl:mr-0 "
-                        type="checkbox"
-                        value=""
-                        id="flexCheckChecked"
-                      />
-                      Enable Two-Factor-Authentication
-                    </label>
-                  </div>
-                  <button type="submit" className="btn btn-primary">
-                    Submit
+                    <span id="query-text">Submit Data</span>
                   </button>
                 </form>
               </div>
