@@ -24,6 +24,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    console.log(localStorage.getItem("accessToken"))
     function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
