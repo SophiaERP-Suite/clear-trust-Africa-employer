@@ -1,4 +1,4 @@
-import { Check, ChevronRightIcon, Users } from "lucide-react";
+import { CheckCheck, ChevronRightIcon, Users } from "lucide-react";
 import "../../../assets2/css/choices.min.css";
 import "../../../assets2/css/flatpickr.min.css";
 import "../../../assets2/css/libs.min.css";
@@ -320,7 +320,7 @@ function AdminEmployeesNew() {
                       <div className="dot"></div>
                     </div>
                     <span id="query-text">
-                      <Check size={18} className="mr-2" />
+                      <CheckCheck size={18} className="mr-2" />
                       Create Applicant
                     </span>
                   </button>

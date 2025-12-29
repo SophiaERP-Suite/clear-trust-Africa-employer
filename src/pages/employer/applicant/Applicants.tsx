@@ -16,7 +16,7 @@ import "../../../assets2/js/libs.min.js";
 import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
-import { ChevronRightIcon, Plus, Users, UserLock, Trash2, Eye, Check, X } from "lucide-react";
+import { ChevronRightIcon, Plus, Users, UserLock, Trash2, Eye, CheckCheck, X } from "lucide-react";
 import { fetchApplicants } from "../../../utils/Requests/EmployeeRequests.js";
 import Tippy from '@tippyjs/react';
 import { NavLink } from "react-router-dom";
@@ -189,7 +189,7 @@ function AdminEmployees() {
                   <div className="dot"></div>
                 </div>
                 <span id="query-text">
-                  <Check size={18} className="mr-2" />
+                  <CheckCheck size={18} className="mr-2" />
                   Proceed
                 </span>
               </button>
@@ -219,10 +219,10 @@ function AdminEmployees() {
             </div>
           </div>
           <div>
-            <a href="EmployeeNew" className="btn btn-success">
+            <NavLink to="/EmployeeNew" className="btn btn-success">
               <Plus size={18} className="mr-2" />
               Add New
-            </a>
+            </NavLink>
           </div>
         </div>
 

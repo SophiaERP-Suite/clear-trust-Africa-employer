@@ -1,4 +1,4 @@
-import { ChevronRightIcon, Eye, Pen, Plus, Trash, Users } from "lucide-react";
+import { ChevronRightIcon, Eye, Pen, Plus, Trash2, Users } from "lucide-react";
 import "../../../assets2/css/choices.min.css";
 import "../../../assets2/css/flatpickr.min.css";
 import "../../../assets2/css/libs.min.css";
@@ -165,7 +165,7 @@ function AdminApplicantsNew() {
                           Review Profile
                         </button>
                         <button className="btn btn-danger mr-2 mb-2">
-                          <Trash size={18} className="mr-2" />
+                          <Trash2 size={18} className="mr-2" />
                           Delete Profile
                         </button>
                       </li>
