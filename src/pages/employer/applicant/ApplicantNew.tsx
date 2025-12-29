@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { createEmployee } from "../../../utils/Requests/EmployeeRequests.js";
 import { handleCreateEmployee } from "../../../utils/ResponseHandlers/EmployeeResponse.js";
 import { toast } from 'react-toastify';
+import { NavLink } from "react-router-dom";
 
 interface ApplicantFormValues {
   FirstName: string;
@@ -79,15 +80,25 @@ function AdminEmployeesNew() {
             <div>
               <h3 className="mb-0 text-black">Employee Management</h3>
               <p className="text-secondary-600 text-black">
-                Dashboard <ChevronRightIcon size={14} /> Employee Mgt{" "}<ChevronRightIcon size={14} /> New Employee
+                <NavLink to="/Dashboard">
+                  Dashboard
+                </NavLink>
+                <ChevronRightIcon size={14} />
+                <NavLink to="/Employee">
+                  Employee Mgt {" "}
+                </NavLink>
+                <ChevronRightIcon size={14} />
+                <NavLink to="/EmployeeNew">
+                  New Employee
+                </NavLink>
               </p>
             </div>
           </div>
           <div>
-            <a href="Employee" className="btn btn-primary">
+            <NavLink to="/Employee" className="btn btn-primary">
               <Users size={18} className="mr-2" />
               All Employees
-            </a>
+            </NavLink>
           </div>
         </div>
         <div className="lg:flex lg:grid-cols-2 gap-8">

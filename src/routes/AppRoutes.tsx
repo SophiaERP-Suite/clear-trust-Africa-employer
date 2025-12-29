@@ -24,7 +24,7 @@ function AppRoutes() {
         <Route path="Dashboard" element={<Dashboard />} />
         <Route path="Employee" element={<Applicants />} />
         <Route path="EmployeeNew" element={<ApplicantNew />} />
-        <Route path="EmployeeProfile" element={<ApplicantProfile />} />
+        <Route path="EmployeeProfile/:id" element={<ApplicantProfile />} />
         <Route path="ProfileUpdate" element={<ProfileUpdate />} />
         <Route path="Profile" element={<Profile />} />
         <Route path="Tracker" element={<DBSTrackerModule />} />

@@ -19,6 +19,8 @@ import "../../../assets2/js/swiper-slider.js";
 import { ChevronRightIcon, Plus, Users, UserLock, Trash2, Eye } from "lucide-react";
 import { fetchApplicants } from "../../../utils/Requests/EmployeeRequests.js";
 import Tippy from '@tippyjs/react';
+import { NavLink } from "react-router-dom";
+import Hashids from "hashids";
 
 interface EmployeeData {
   userId: number;
@@ -40,6 +42,7 @@ function AdminEmployees() {
   const [totalEmployees, setTotalEmployees] = useState(0);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const hashIds = new Hashids('ClearTrustAfricaEncode', 10);
 
   useEffect(() => {
     fetchApplicants(page, limit)
@@ -88,7 +91,13 @@ function AdminEmployees() {
             <div>
               <h3 className="mb-0 text-black">Employee Management</h3>
               <p className="text-secondary-600 text-black">
-                Dashboard <ChevronRightIcon size={14} /> Employee Management{" "}
+                <NavLink to="/Dashboard">
+                  Dashboard
+                </NavLink>
+                <ChevronRightIcon size={14} />
+                <NavLink to="/Employee">
+                  Employee Mgt {" "}
+                </NavLink>
               </p>
             </div>
           </div>
@@ -110,8 +119,8 @@ function AdminEmployees() {
                 <a href="/ApplicantNew"></a>
               </div>
               <div className="pb-6 pt-2 px-0">
-                <div className="overflow-x-auto">
-                  <div className=" overflow-x-auto p-5">
+                <div className="overflow-x-hidden">
+                  <div className=" overflow-x-hidden p-5">
                     <div className="flex flex-wrap justify-between my-6 mx-5">
                       <div className="flex justify-center items-center mb-1">
                         <label
@@ -152,119 +161,118 @@ function AdminEmployees() {
                         />
                       </div>
                     </div>
-                    <table className="min-w-full overflow-scroll divide-y divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
-                      <thead>
-                        <tr className="bg-secondary-100 dark:bg-dark-bg">
-                          <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                            S/N
-                          </th>
-                          <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                            Name
-                          </th>
-                          <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                            Phone
-                          </th>
-                          <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                            Email
-                          </th>
-                          <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                            Gender
-                          </th>
-                          <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                            Date Of Birth
-                          </th>
-                          <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                            Action
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-secondary-200 dark:divide-secondary-800">
-                        {
-                          employees.map((data: EmployeeData, index) => (
-                           <tr key={data.userId ?? index}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="iq-media-group iq-media-group-1">
-                                <h6 className="font-bold dark:text-white">
-                                  {" "}
-                                  #{index + 1}
-                                </h6>
+                    <div className="flex flex-wrap justify-between mx-5 overflow-x-auto">
+                      <table className="min-w-full divide-y divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
+                        <thead>
+                          <tr className="bg-secondary-100 dark:bg-dark-bg">
+                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                              S/N
+                            </th>
+                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                              Name
+                            </th>
+                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                              Phone
+                            </th>
+                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                              Email
+                            </th>
+                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                              Gender
+                            </th>
+                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                              Date Of Birth
+                            </th>
+                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                              Action
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-secondary-200 dark:divide-secondary-800">
+                          {
+                            employees.map((data: EmployeeData, index) => (
+                            <tr key={data.userId ?? index}>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="iq-media-group iq-media-group-1">
+                                  <h6 className="font-bold dark:text-white">
+                                    {" "}
+                                    #{index + 1}
+                                  </h6>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <NavLink to={`/EmployeeProfile/${hashIds.encode(String(data.userId))}`} className="flex items-center">
+                                  <img
+                                    className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                                    src={data.profileImage}
+                                    alt="profile"
+                                  />
+                                  <h6 className="font-medium pl-1 mt-2 dark:text-white">
+                                    {`${data.firstName} ${data.lastName}`}
+                                  </h6>
+                                </NavLink>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                                {data.phone}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                                {data.email}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                                {data.gender}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                                {(new Date(data.dateOfBirth)).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex items-center list-user-action">
+                                  <Tippy content='Request New DBS Check'>
+                                    <a
+                                      className="btn btn-success btn-icon btn-sm mr-1"
+                                      href="#"
+                                      type="button"
+                                    >
+                                      <span className="btn-inner">
+                                        <UserLock />
+                                      </span>
+                                    </a>
+                                  </Tippy>
+                                  <Tippy content='Preview Applicant Profile'>
+                                    <NavLink  to={`/EmployeeProfile/${hashIds.encode(String(data.userId))}`}
+                                      className="btn btn-warning btn-icon btn-sm mr-1"
+                                    >
+                                      <span className="btn-inner">
+                                        <Eye />
+                                      </span>
+                                    </NavLink>
+                                  </Tippy>
+                                  <Tippy content='Remove Applicant'>
+                                    <a
+                                      className="btn btn-danger btn-icon btn-sm mr-1"
+                                      href="#"
+                                      type="button"
+                                    >
+                                      <span className="btn-inner">
+                                        <Trash2 />
+                                      </span>
+                                    </a>
+                                  </Tippy>
+                                </div>
+                              </td>
+                            </tr>
+                            ))
+                          }
+                          {
+                            employees.length === 0 ? <tr>
+                              <div className="px-6 py-4 whitespace-nowrap">
+                                <span  className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">There are currently no registered employees in your organization</span>
                               </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center">
-                                <img
-                                  className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                                  src={data.profileImage}
-                                  alt="profile"
-                                />
-                                <h6 className="font-medium pl-1 mt-2 dark:text-white">
-                                  {`${data.firstName} ${data.lastName}`}
-                                </h6>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
-                              {data.phone}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
-                              {data.email}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
-                              {data.gender}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
-                              {(new Date(data.dateOfBirth)).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="flex items-center list-user-action">
-                                <Tippy content='Request New DBS Check'>
-                                  <a
-                                    className="btn btn-success btn-icon btn-sm mr-1"
-                                    href="#"
-                                    type="button"
-                                  >
-                                    <span className="btn-inner">
-                                      <UserLock />
-                                    </span>
-                                  </a>
-                                </Tippy>
-                                <Tippy content='Preview Applicant Profile'>
-                                  <a
-                                    className="btn btn-warning btn-icon btn-sm mr-1"
-                                    href="#"
-                                    type="button"
-                                  >
-                                    <span className="btn-inner">
-                                      <Eye />
-                                    </span>
-                                  </a>
-                                </Tippy>
-                                <Tippy content='Remove Applicant'>
-                                  <a
-                                    className="btn btn-danger btn-icon btn-sm mr-1"
-                                    href="#"
-                                    type="button"
-                                  >
-                                    <span className="btn-inner">
-                                      <Trash2 />
-                                    </span>
-                                  </a>
-                                </Tippy>
-                              </div>
-                            </td>
-                           </tr>
-                          ))
-                        }
-                        {
-                          employees.length === 0 ? <tr>
-                            <div className="px-6 py-4 whitespace-nowrap">
-                              <span  className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">There are currently no registered employees in your organization</span>
-                            </div>
-                          </tr> : <></>
-                        }
-                      </tbody>
-                    </table>
-                    <div className="border dark:border-secondary-800">
-                      <div className="flex flex-wrap justify-between my-6 mx-5">
+                            </tr> : <></>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="flex flex-wrap justify-between my-6 mx-5">
                         <div className="flex justify-center items-center mb-1">
                           <p className="text-secondary-600">
                             Showing { employees.length > 0 ? ((page * limit) - limit) + 1 : 0 } to { employees.length > 0 ? (((page * limit) - limit) + 1) + (employees.length - 1) : 0 } of { totalEmployees } entries
@@ -298,7 +306,6 @@ function AdminEmployees() {
                           
                         </div>
                       </div>
-                    </div>
                   </div>
                 </div>
               </div>
