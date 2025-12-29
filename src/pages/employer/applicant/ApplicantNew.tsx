@@ -1,4 +1,4 @@
-import { ChevronRightIcon, Users } from "lucide-react";
+import { Check, ChevronRightIcon, Users } from "lucide-react";
 import "../../../assets2/css/choices.min.css";
 import "../../../assets2/css/flatpickr.min.css";
 import "../../../assets2/css/libs.min.css";
@@ -118,12 +118,12 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="fname"
                       >
-                        First Name:
+                        First Name
                       </label>
                       <div>
                         <input
                           type="text"
-                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
                             ...register('FirstName', {
                               required: 'Required'
@@ -139,12 +139,12 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="lname"
                       >
-                        Last Name:
+                        Last Name
                       </label>
                       <div>
                         <input
                           type="text"
-                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
                             ...register('LastName', {
                               required: 'Required'
@@ -160,12 +160,12 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="mobno"
                       >
-                        Mobile Number:
+                        Mobile Number
                       </label>
                       <div>
                         <input
                           type="text"
-                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
                             ...register('Phone', {
                               required: 'Required'
@@ -181,12 +181,12 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        Email:
+                        Email
                       </label>
                       <div>
                         <input
                           type="text"
-                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
                             ...register('Email', {
                               required: 'Required',
@@ -206,12 +206,12 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        Applicant Photo:
+                        Applicant Photo
                       </label>
                       <div>
                         <input
                           type="file"
-                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                             {
                             ...register('ProfileImage', {
                               required: 'Required'
@@ -227,12 +227,12 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        Date Of Birth:
+                        Date Of Birth
                       </label>
                       <div>
                         <input
                           type="date"
-                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
                             ...register('DateOfBirth', {
                               required: 'Required'
@@ -248,12 +248,12 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        Identification Number (NIN, SSN, SIN):
+                        Identification Number (NIN, SSN, SIN)
                       </label>
                       <div>
                         <input
                           type="text"
-                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
                             ...register('IdentificationNumber', {
                               required: 'Required'
@@ -269,11 +269,11 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        Gender:
+                        Gender
                       </label>
                       <div>
                         <select
-                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
                             ...register('Gender', {
                               required: 'Required',
@@ -296,11 +296,11 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="Address"
                       >
-                        Address:
+                        Address
                       </label>
                       <div>
                         <textarea
-                          className="w-full h-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          className="w-full h-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
                             ...register('Address', {
                               required: 'Required'
@@ -313,13 +313,16 @@ function AdminEmployeesNew() {
                     </div>
                   </div>
                   <hr className="mt-5" />
-                  <button type="submit" className="btn-primary">
+                  <button type="submit" className="btn btn-success">
                     <div className="dots hidden" id="query-loader">
                       <div className="dot"></div>
                       <div className="dot"></div>
                       <div className="dot"></div>
                     </div>
-                    <span id="query-text">Submit Data</span>
+                    <span id="query-text">
+                      <Check size={18} className="mr-2" />
+                      Create Applicant
+                    </span>
                   </button>
                 </form>
               </div>

@@ -16,11 +16,15 @@ import "../../../assets2/js/libs.min.js";
 import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
-import { ChevronRightIcon, Plus, Users, UserLock, Trash2, Eye } from "lucide-react";
+import { ChevronRightIcon, Plus, Users, UserLock, Trash2, Eye, Check, X } from "lucide-react";
 import { fetchApplicants } from "../../../utils/Requests/EmployeeRequests.js";
 import Tippy from '@tippyjs/react';
 import { NavLink } from "react-router-dom";
 import Hashids from "hashids";
+import { fetchDbsTypes, submitDbsRequest } from "../../../utils/Requests/DbsRequests.js";
+import Modal from 'react-modal';
+import { handleDbsRequest } from "../../../utils/ResponseHandlers/DbsResponse.js";
+import { toast } from 'react-toastify';
 
 interface EmployeeData {
   userId: number;
@@ -37,13 +41,27 @@ interface EmployeeData {
   role: string;
 }
 
+interface DbsTypes {
+  dbsApplicationTypeId: number;
+  typeName: string;
+  typeCost: number;
+}
+
+interface DbsCheckRequest {
+  requestType: DbsTypes;
+  employee: EmployeeData;
+}
+
 function AdminEmployees() {
   const [employees, setEmployees] = useState<EmployeeData[]>([]);
   const [totalEmployees, setTotalEmployees] = useState(0);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [dbsTypes, setDbsTypes] = useState<DbsTypes[]>([]);
   const hashIds = new Hashids('ClearTrustAfricaEncode', 10);
   const [openRowId, setOpenRowId] = useState<string | null>(null);
+  const [modalState, setModalState] = useState(false);
+  const [dbsRequestData, setDbsRequestData] = useState<DbsCheckRequest | null>(null);
 
   const toggleDropDrown = (id: string) => {
     setOpenRowId(prev => (prev === id ? null : id));
@@ -69,6 +87,49 @@ function AdminEmployees() {
     .catch((err) => console.log(err))
   }, [page, limit]);
 
+  const submitRequest = async (data: DbsCheckRequest) => {
+    const loader = document.getElementById('query-loader');
+    const text = document.getElementById('query-text');
+    if (loader) {
+      loader.style.display = 'flex';
+    }
+    if (text) {
+      text.style.display = 'none';
+    }
+    const formData = new FormData();
+    formData.append('UserId', String(data.employee.userId));
+    formData.append('DbsApplicationTypeId', String(data.requestType.dbsApplicationTypeId));
+    formData.append('Status', String(data.requestType.typeCost > 0 ? 1 : 2));
+    const res = await submitDbsRequest(formData);
+    handleDbsRequest(res, loader, text, { toast })
+    .finally(() => setModalState(false));
+  }
+
+  const switchData = (data: DbsCheckRequest) => {
+    toggleDropDrown('');
+    setDbsRequestData(data);
+    setModalState(true);
+  }
+
+  useEffect(() => {
+    fetchDbsTypes()
+      .then(res => {
+        if (res.status === 200) {
+          res.json()
+            .then(data => {
+              console.log(data);
+              setDbsTypes(data.data);
+            })
+        } else {
+          res.text()
+            .then(data => {
+              console.log(JSON.parse(data));
+            })
+        }
+      })
+      .catch((err) => console.log(err))
+  }, []);
+
   const refetchData = async () => {
     try {
       const res = await fetchApplicants(page, limit);
@@ -86,6 +147,57 @@ function AdminEmployees() {
   }
   return (
     <>
+      <Modal isOpen={modalState} onRequestClose={() => { setModalState(false); }}
+        style={{
+        content: {
+          width: 'fit-content',
+          height: 'fit-content',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'rgb(255 255 255)',
+          borderRadius: '0.5rem',
+          boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'
+        },
+        overlay: {
+          backgroundColor: 'rgba(255, 255, 255, 0.7)'
+        }
+      }}
+      >
+        {dbsRequestData && (
+          <div className="h-fit w-80 lg:w-fit">
+            <div className="flex justify-start">
+              <p className="font-semibold text-black py-1 text-lg"><UserLock size={20} className="mr-2" /> Request DBS Check for { `${dbsRequestData.employee.firstName}` }</p>
+            </div>
+            <div className="flex justify-start">
+              <div className="my-2">
+                <p className="py-1">Employee Name: {`${dbsRequestData.employee.firstName} ${dbsRequestData.employee.lastName}`}</p>
+                <p className="py-1">DBS Check Type: {dbsRequestData.requestType.typeName}</p>
+                <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.requestType.typeCost}` }</p>
+              </div>
+            </div>
+            
+            <div className="flex justify-end my-2 gap-2">
+              <button className="btn text-white bg-black" onClick={() => setModalState(false) }>
+                <X size={18} className="mr-2" />
+                Cancel
+              </button>
+              <button className="btn btn-success" onClick={() => {submitRequest(dbsRequestData)}}>
+                <div className="dots hidden" id="query-loader">
+                  <div className="dot"></div>
+                  <div className="dot"></div>
+                  <div className="dot"></div>
+                </div>
+                <span id="query-text">
+                  <Check size={18} className="mr-2" />
+                  Proceed
+                </span>
+              </button>
+            </div>
+          </div>
+        )}
+        
+      </Modal>
       <div
         className="p-6 lg:p-8 footer-inner mx-auto main-container container"
         x-bind:className="setting.page_layout"
@@ -95,7 +207,7 @@ function AdminEmployees() {
             <Users className="text-[rgb(112_22_208/0.9)] mr-2 " size={36} />
             <div>
               <h3 className="mb-0 text-black">Employee Management</h3>
-              <p className="text-secondary-600 text-black">
+              <p className="text-secondary-600">
                 <NavLink to="/Dashboard">
                   Dashboard
                 </NavLink>
@@ -107,7 +219,7 @@ function AdminEmployees() {
             </div>
           </div>
           <div>
-            <a href="EmployeeNew" className="btn btn-primary">
+            <a href="EmployeeNew" className="btn btn-success">
               <Plus size={18} className="mr-2" />
               Add New
             </a>
@@ -129,14 +241,14 @@ function AdminEmployees() {
                     <div className="flex flex-wrap justify-between my-6 mx-5">
                       <div className="flex justify-center items-center mb-1">
                         <label
-                          className="inline-block text-secondary-600 dark:text-white"
+                          className="inline-block text-black dark:text-white"
                           htmlFor="show"
                         >
-                          Show
+                          Display Per Page:
                         </label>
                         <div className="flex">
                           <select
-                            className="block w-full px-2 py-1 ml-2 text-base font-normal rounded text-secondary-500 dark:bg-dark-card dark:border-secondary-800 bg-white border outline-none focus:border-primary-500 focus:shadow"
+                            className="block w-full px-2 py-1 ml-2 text-base font-normal rounded text-black dark:bg-dark-card dark:border-secondary-800 bg-white border outline-none focus:border-primary-500 focus:shadow"
                             aria-label=".form-select-sm example"
                             id="show"
                             value={limit}
@@ -147,14 +259,11 @@ function AdminEmployees() {
                             <option value={50}>50</option>
                             <option value={100}>100</option>
                           </select>
-                          <span className="text-secondary-600 ml-1 dark:text-white">
-                            entries
-                          </span>
                         </div>
                       </div>
                       <div className="flex justify-center items-center mb-1">
                         <label
-                          className="inline-block mb-2 text-secondary-600 dark:text-white"
+                          className="inline-block mb-2 text-black dark:text-white"
                           htmlFor="email"
                         >
                           Search:
@@ -170,25 +279,25 @@ function AdminEmployees() {
                       <table className="min-w-full divide-y divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
                         <thead>
                           <tr className="bg-secondary-100 dark:bg-dark-bg">
-                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                            <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
                               S/N
                             </th>
-                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                            <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
                               Name
                             </th>
-                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                            <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
                               Phone
                             </th>
-                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                            <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
                               Email
                             </th>
-                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                            <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
                               Gender
                             </th>
-                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                              Date Of Birth
+                            <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                              Birth Date
                             </th>
-                            <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                            <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
                               Action
                             </th>
                           </tr>
@@ -233,7 +342,7 @@ function AdminEmployees() {
                                 <div className="flex items-center list-user-action">
                                   <Tippy content='Request New DBS Check'>
                                     <a
-                                      className="btn btn-success btn-icon btn-sm mr-1"
+                                      className="btn btn-primary btn-icon btn-sm mr-1"
                                       href="#"
                                         type="button"
                                         onClick={() => toggleDropDrown(String(data.userId))}
@@ -245,22 +354,20 @@ function AdminEmployees() {
                                   </Tippy>
                                   {
                                     openRowId === String(data.userId) && (
-                                      <div className="absolute right-0 mt-2 w-40 bg-white border shadow-lg z-10">
-                                        <button className="block w-full px-4 py-2 hover:bg-gray-100">
-                                          Basic
-                                        </button>
-                                        <button className="block w-full px-4 py-2 hover:bg-gray-100">
-                                          Standard
-                                        </button>
-                                        <button className="block w-full px-4 py-2 text-red-600 hover:bg-gray-100">
-                                          Enhanced
-                                        </button>
+                                      <div className="absolute bottom-5 mt-2 w-30 bg-white border shadow-lg z-1">
+                                        {
+                                            dbsTypes.map((dbsData, index) => (
+                                            <button key={dbsData.dbsApplicationTypeId ?? index} onClick={() => switchData({ requestType: dbsData, employee: data })} className="block w-full px-4 py-2 hover:bg-secondary-200 text-left">
+                                              {`${dbsData.typeName}`}
+                                            </button>
+                                          ))
+                                        }
                                       </div>
                                     )
                                   }
                                   <Tippy content='Preview Applicant Profile'>
                                     <NavLink  to={`/EmployeeProfile/${hashIds.encode(String(data.userId))}`}
-                                      className="btn btn-warning btn-icon btn-sm mr-1"
+                                      className="btn btn-info btn-icon btn-sm mr-1"
                                     >
                                       <span className="btn-inner">
                                         <Eye />
@@ -286,7 +393,7 @@ function AdminEmployees() {
                           {
                             employees.length === 0 ? <tr>
                               <div className="px-6 py-4 whitespace-nowrap">
-                                <span  className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">There are currently no registered employees in your organization</span>
+                                <span  className="px-6 py-4 text-left font-medium text-black dark:text-white">There are currently no registered employees in your organization</span>
                               </div>
                             </tr> : <></>
                           }
@@ -295,7 +402,7 @@ function AdminEmployees() {
                     </div>
                     <div className="flex flex-wrap justify-between my-6 mx-5">
                         <div className="flex justify-center items-center mb-1">
-                          <p className="text-secondary-600">
+                          <p className="text-black">
                             Showing { employees.length > 0 ? ((page * limit) - limit) + 1 : 0 } to { employees.length > 0 ? (((page * limit) - limit) + 1) + (employees.length - 1) : 0 } of { totalEmployees } entries
                           </p>
                         </div>

@@ -11,6 +11,17 @@ export const fetchApplicants = async (pageNumber=1, limit=10) => {
   return response
 }
 
+export const fetchApplicantById = async (applicantId: number) => {
+  const token = localStorage.getItem('accessToken');
+  const response = await fetch(`${BaseURL}/applicants/${applicantId}`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+  return response
+}
+
 export const createEmployee = async (data: FormData) => {
   const token = localStorage.getItem('accessToken');
   const response = await fetch(`${BaseURL}/applicants`, {

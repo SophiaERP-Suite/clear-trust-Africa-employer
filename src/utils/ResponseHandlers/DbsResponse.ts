@@ -30,7 +30,7 @@ interface DataResponse {
   }
 }
 
-export const handleCreateEmployee = async (res: any, loader: HTMLElement | null, text: HTMLElement | null, { toast }: Props, reset: any, msg="Data added successfully") => {
+export const handleDbsRequest = async (res: any, loader: HTMLElement | null, text: HTMLElement | null, { toast }: Props, msg="Data added successfully") => {
   try {
     if (loader) {
       loader.style.display = 'none';
@@ -42,7 +42,7 @@ export const handleCreateEmployee = async (res: any, loader: HTMLElement | null,
       const responseData: DataResponse = await res.json();
       console.log(responseData);
       toast.success(responseData.message ?? msg);
-      reset();
+      return true;
     } else {
       console.log(res.status)
       const resText = await res.text();
@@ -65,9 +65,11 @@ export const handleCreateEmployee = async (res: any, loader: HTMLElement | null,
         console.error("Parsing error:", error.message);
         console.log(resText);
       }
+        return false;
     }
   } catch (err) {
     console.error(err);
     toast.error("An Unexpected Error Occurred");
+    return false;
   }
 }
