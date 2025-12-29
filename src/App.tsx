@@ -4,6 +4,7 @@ import AppRoutes from "./routes/AppRoutes";
 import { AuthProvider } from "./utils/AuthProvider";
 import { ToastContainer } from "react-toastify";
 import { RequireLogin } from "./utils/RequireLogin";
+import 'tippy.js/dist/tippy.css'
 
 function App() {
   return (

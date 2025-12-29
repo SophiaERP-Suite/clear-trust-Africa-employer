@@ -17,14 +17,17 @@ import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
 import { useForm } from "react-hook-form";
+import { createEmployee } from "../../../utils/Requests/EmployeeRequests.js";
+import { handleCreateEmployee } from "../../../utils/ResponseHandlers/EmployeeResponse.js";
+import { toast } from 'react-toastify';
 
 interface ApplicantFormValues {
   FirstName: string;
   LastName: string;
-  ProfilePhoto: string;
+  ProfileImage: string;
   Phone: string;
   Email: string;
-  NIN: string;
+  IdentificationNumber: string;
   DateOfBirth: string;
   Gender: string;
   Address: string;
@@ -34,7 +37,35 @@ function AdminEmployeesNew() {
   const { register, reset, handleSubmit, formState } = useForm<ApplicantFormValues>();
   const { errors } = formState;
 
-  const addApplicant = () => {}
+  const addApplicant = async (data: ApplicantFormValues) => {
+    if (!errors.FirstName && !errors.LastName &&
+      !errors.ProfileImage && !errors.Phone &&
+      !errors.Email && !errors.IdentificationNumber &&
+      !errors.DateOfBirth && !errors.Gender &&
+      !errors.Address
+    ) {
+      const loader = document.getElementById('query-loader');
+      const text = document.getElementById('query-text');
+      if (loader) {
+        loader.style.display = 'flex';
+      }
+      if (text) {
+        text.style.display = 'none';
+      }
+      const formData = new FormData();
+      formData.append('FirstName', data.FirstName);
+      formData.append('LastName', data.LastName);
+      formData.append('Phone', data.Phone);
+      formData.append('Email', data.Email);
+      formData.append('IdentificationNumber', data.IdentificationNumber);
+      formData.append('DateOfBirth', data.DateOfBirth);
+      formData.append('Gender', data.Gender);
+      formData.append('Address', data.Address);
+      formData.append('ProfileImage', data.ProfileImage[0]);
+      const res = await createEmployee(formData);
+      handleCreateEmployee(res, loader, text, { toast }, reset);
+    }
+  }
   return (
     <>
      
@@ -147,7 +178,11 @@ function AdminEmployeesNew() {
                           className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
                             ...register('Email', {
-                              required: 'Required'
+                              required: 'Required',
+                              pattern: {
+                                value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+                                message: "Invalid Email"
+                              }
                             })
                           }
                           required
@@ -167,13 +202,13 @@ function AdminEmployeesNew() {
                           type="file"
                           className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                             {
-                            ...register('ProfilePhoto', {
+                            ...register('ProfileImage', {
                               required: 'Required'
                             })
                           }
                           required
                         />
-                        <p className='error-msg'>{errors.ProfilePhoto?.message}</p>
+                        <p className='error-msg'>{errors.ProfileImage?.message}</p>
                       </div>
                     </div>
                     <div>
@@ -202,20 +237,20 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        NIN:
+                        Identification Number (NIN, SSN, SIN):
                       </label>
                       <div>
                         <input
                           type="text"
                           className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
-                            ...register('NIN', {
+                            ...register('IdentificationNumber', {
                               required: 'Required'
                             })
                           }
                           required
                         />
-                        <p className='error-msg'>{errors.NIN?.message}</p>
+                        <p className='error-msg'>{errors.IdentificationNumber?.message}</p>
                       </div>
                     </div>
                     <div>
@@ -238,7 +273,7 @@ function AdminEmployeesNew() {
                             })
                           }
                         >
-                          <option value="default" disabled>Select Gender</option>
+                          <option value="default">Select Gender</option>
                           <option value="Male">Male</option>
                           <option value="Female">Female</option>
                         </select>

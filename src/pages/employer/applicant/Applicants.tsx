@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import "../../../assets2/css/choices.min.css";
 import "../../../assets2/css/flatpickr.min.css";
 import "../../../assets2/css/libs.min.css";
@@ -15,13 +16,66 @@ import "../../../assets2/js/libs.min.js";
 import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
-import { ChevronRightIcon, Plus, Users } from "lucide-react";
-import donald from "../../../assets2/img/donald_adolphus.jpg";
-import rashkin from "../../../assets2/img/isaiah_rashkin.jpg";
-import deborah from "../../../assets2/img/deborah_wilkins.jpg";
-import femi from "../../../assets2/img/femi_adebayo.jpg";
+import { ChevronRightIcon, Plus, Users, UserLock, Trash2, Eye } from "lucide-react";
+import { fetchApplicants } from "../../../utils/Requests/EmployeeRequests.js";
+import Tippy from '@tippyjs/react';
+
+interface EmployeeData {
+  userId: number;
+  firstName: string;
+  lastName: string;
+  profileImage: string;
+  phone: string;
+  email: string;
+  identificationNumber: string;
+  dateOfBirth: string;
+  gender: string;
+  address: string;
+  organizationId: number;
+  role: string;
+}
 
 function AdminEmployees() {
+  const [employees, setEmployees] = useState<EmployeeData[]>([]);
+  const [totalEmployees, setTotalEmployees] = useState(0);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  useEffect(() => {
+    fetchApplicants(page, limit)
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          console.log(data);
+          setEmployees(data.data.users);
+          setTotalEmployees(data.data.totalCount);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, [page, limit]);
+
+  const refetchData = async () => {
+    try {
+      const res = await fetchApplicants(page, limit);
+      if (res.status === 200) {
+        const data = await res.json()
+        setEmployees(data.data.users);
+        setTotalEmployees(data.data.totalCount);
+      } else {
+        const resText = await res.text();
+        console.log(JSON.parse(resText));
+      }
+    } catch (err) {
+       console.log(err)
+    }
+  }
   return (
     <>
       <div
@@ -71,11 +125,13 @@ function AdminEmployees() {
                             className="block w-full px-2 py-1 ml-2 text-base font-normal rounded text-secondary-500 dark:bg-dark-card dark:border-secondary-800 bg-white border outline-none focus:border-primary-500 focus:shadow"
                             aria-label=".form-select-sm example"
                             id="show"
+                            value={limit}
+                            onChange={(e) => { setLimit(Number(e.target.value)); refetchData(); }}
                           >
-                            <option selected={true}>10</option>
-                            <option value="1">25</option>
-                            <option value="2">50</option>
-                            <option value="3">100</option>
+                            <option value={10}>10</option>
+                            <option value={25}>25</option>
+                            <option value={50}>50</option>
+                            <option value={100}>100</option>
                           </select>
                           <span className="text-secondary-600 ml-1 dark:text-white">
                             entries
@@ -96,9 +152,12 @@ function AdminEmployees() {
                         />
                       </div>
                     </div>
-                    <table className="min-w-full overflow-hidden divide-y divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
+                    <table className="min-w-full overflow-scroll divide-y divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
                       <thead>
                         <tr className="bg-secondary-100 dark:bg-dark-bg">
+                          <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
+                            S/N
+                          </th>
                           <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
                             Name
                           </th>
@@ -112,7 +171,7 @@ function AdminEmployees() {
                             Gender
                           </th>
                           <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
-                            Date Added
+                            Date Of Birth
                           </th>
                           <th className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">
                             Action
@@ -120,35 +179,123 @@ function AdminEmployees() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-secondary-200 dark:divide-secondary-800">
-                        
+                        {
+                          employees.map((data: EmployeeData, index) => (
+                           <tr key={data.userId ?? index}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="iq-media-group iq-media-group-1">
+                                <h6 className="font-bold dark:text-white">
+                                  {" "}
+                                  #{index + 1}
+                                </h6>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <img
+                                  className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
+                                  src={data.profileImage}
+                                  alt="profile"
+                                />
+                                <h6 className="font-medium pl-1 mt-2 dark:text-white">
+                                  {`${data.firstName} ${data.lastName}`}
+                                </h6>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                              {data.phone}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                              {data.email}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                              {data.gender}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                              {(new Date(data.dateOfBirth)).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center list-user-action">
+                                <Tippy content='Request New DBS Check'>
+                                  <a
+                                    className="btn btn-success btn-icon btn-sm mr-1"
+                                    href="#"
+                                    type="button"
+                                  >
+                                    <span className="btn-inner">
+                                      <UserLock />
+                                    </span>
+                                  </a>
+                                </Tippy>
+                                <Tippy content='Preview Applicant Profile'>
+                                  <a
+                                    className="btn btn-warning btn-icon btn-sm mr-1"
+                                    href="#"
+                                    type="button"
+                                  >
+                                    <span className="btn-inner">
+                                      <Eye />
+                                    </span>
+                                  </a>
+                                </Tippy>
+                                <Tippy content='Remove Applicant'>
+                                  <a
+                                    className="btn btn-danger btn-icon btn-sm mr-1"
+                                    href="#"
+                                    type="button"
+                                  >
+                                    <span className="btn-inner">
+                                      <Trash2 />
+                                    </span>
+                                  </a>
+                                </Tippy>
+                              </div>
+                            </td>
+                           </tr>
+                          ))
+                        }
+                        {
+                          employees.length === 0 ? <tr>
+                            <div className="px-6 py-4 whitespace-nowrap">
+                              <span  className="px-6 py-4 text-left font-medium text-secondary-600 dark:text-white">There are currently no registered employees in your organization</span>
+                            </div>
+                          </tr> : <></>
+                        }
                       </tbody>
                     </table>
                     <div className="border dark:border-secondary-800">
                       <div className="flex flex-wrap justify-between my-6 mx-5">
                         <div className="flex justify-center items-center mb-1">
                           <p className="text-secondary-600">
-                            Showing 4 to 1 of 1 entries
+                            Showing { employees.length > 0 ? ((page * limit) - limit) + 1 : 0 } to { employees.length > 0 ? (((page * limit) - limit) + 1) + (employees.length - 1) : 0 } of { totalEmployees } entries
                           </p>
                         </div>
                         <div className="inline-flex flex-wrap">
-                          <a
+                          {
+                            page > 1 && <a
                             href="#"
+                            onClick={() => { if (page > 1) {setPage(page - 1); refetchData();} }}
                             className="border-t border-b border-l text-primary-500 border-secondary-500 px-2 py-1 rounded-l dark:border-secondary-800"
                           >
                             Previous
                           </a>
+                          }
                           <a
                             href="#"
                             className="border text-white border-secondary-500 cursor-pointer bg-primary-500 px-4 py-1 dark:border-secondary-800"
                           >
-                            1
+                            { page }
                           </a>
-                          <a
+                          {
+                            (page * limit) < totalEmployees && <a
                             href="#"
+                            onClick={() => { setPage(page + 1); refetchData(); }}
                             className="border-r border-t border-b text-primary-500 border-secondary-500 px-4 py-1 rounded-r dark:border-secondary-800"
                           >
                             Next
                           </a>
+                          }
+                          
                         </div>
                       </div>
                     </div>

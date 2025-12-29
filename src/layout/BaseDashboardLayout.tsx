@@ -24,7 +24,6 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    console.log(localStorage.getItem("accessToken"))
     function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
@@ -126,9 +125,9 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                 </a>
               ) : (
                 <a className="py-0 flex justify-center" href="#">
-                  <div className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#0000ff2f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
+                  <span className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#0000ff2f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
                       { user && `${user.firstName[0]} ${user.lastName[0]}` }
-                  </div>
+                  </span>
                 </a>
               )}
             </p>
@@ -190,16 +189,16 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                     className="py-0 flex items-center p-2 ml-2 hover:text-primary-500 active:text-primary-500 focus:text-primary-500 focus"
                     href="#"
                   >
-                    <div className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#0000ff2f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
+                    <span className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#0000ff2f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
                       { user && `${user.firstName[0]} ${user.lastName[0]}` }
-                    </div>
+                    </span>
                     <div className="caption ml-3 d-none d-md-block ">
-                      <h6 className="mb-0 caption-title mr-4" style={{}}>
+                      <span className="mb-0 caption-title mr-4" style={{}}>
                         { user && `${user.firstName} ${user.lastName}` }
-                      </h6>
-                      <p className="mb-0 text-sm font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
+                      </span>
+                      <span className="mb-0 text-sm font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
                         { user && user.userRole }
-                      </p>
+                      </span>
                     </div>
                   </a>
                 </p>
