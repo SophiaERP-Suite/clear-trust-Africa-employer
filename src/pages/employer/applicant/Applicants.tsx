@@ -43,6 +43,11 @@ function AdminEmployees() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const hashIds = new Hashids('ClearTrustAfricaEncode', 10);
+  const [openRowId, setOpenRowId] = useState<string | null>(null);
+
+  const toggleDropDrown = (id: string) => {
+    setOpenRowId(prev => (prev === id ? null : id));
+  }
 
   useEffect(() => {
     fetchApplicants(page, limit)
@@ -230,13 +235,29 @@ function AdminEmployees() {
                                     <a
                                       className="btn btn-success btn-icon btn-sm mr-1"
                                       href="#"
-                                      type="button"
+                                        type="button"
+                                        onClick={() => toggleDropDrown(String(data.userId))}
                                     >
                                       <span className="btn-inner">
                                         <UserLock />
                                       </span>
                                     </a>
                                   </Tippy>
+                                  {
+                                    openRowId === String(data.userId) && (
+                                      <div className="absolute right-0 mt-2 w-40 bg-white border shadow-lg z-10">
+                                        <button className="block w-full px-4 py-2 hover:bg-gray-100">
+                                          Basic
+                                        </button>
+                                        <button className="block w-full px-4 py-2 hover:bg-gray-100">
+                                          Standard
+                                        </button>
+                                        <button className="block w-full px-4 py-2 text-red-600 hover:bg-gray-100">
+                                          Enhanced
+                                        </button>
+                                      </div>
+                                    )
+                                  }
                                   <Tippy content='Preview Applicant Profile'>
                                     <NavLink  to={`/EmployeeProfile/${hashIds.encode(String(data.userId))}`}
                                       className="btn btn-warning btn-icon btn-sm mr-1"
