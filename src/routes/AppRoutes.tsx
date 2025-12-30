@@ -15,6 +15,7 @@ import Profile from "../pages/employer/employer/EmployerProfile";
 import ProfileUpdate from "../pages/employer/employer/EmployerUpdate";
 import Security from "../pages/employer/Security";
 import HelpSupportPage from "../pages/employer/Help";
+import PaymentRedirect from "../pages/employer/payment/PaymentRedirect";
 
 function AppRoutes() {
   return (
@@ -36,6 +37,7 @@ function AppRoutes() {
         <Route path="Pricing" element={<Pricing />} />
         <Route path="Security" element={<Security />} />
         <Route path="Help" element={<HelpSupportPage />} />
+        <Route path="PaymentRedirect/:tx_ref" element={<PaymentRedirect />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

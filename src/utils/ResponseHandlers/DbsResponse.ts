@@ -26,7 +26,7 @@ interface ErrorResponse {
 interface DataResponse {
   message: string;
   data: {
-    organizationId: number
+      redirect_url: string;
   }
 }
 
@@ -41,7 +41,8 @@ export const handleDbsRequest = async (res: any, loader: HTMLElement | null, tex
     if (res.status === 201 || res.status === 200) {
       const responseData: DataResponse = await res.json();
       console.log(responseData);
-      toast.success(responseData.message ?? msg);
+      console.log(msg);
+      window.location.replace(responseData.data.redirect_url);
       return true;
     } else {
       console.log(res.status)

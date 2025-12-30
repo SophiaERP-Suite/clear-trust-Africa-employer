@@ -262,7 +262,7 @@ function AdminApplicantsNew() {
                   </div>
                   <span id="query-text">
                     <CheckCheck size={18} className="mr-2" />
-                    Proceed
+                    Upload
                   </span>
                 </button>
               </div>

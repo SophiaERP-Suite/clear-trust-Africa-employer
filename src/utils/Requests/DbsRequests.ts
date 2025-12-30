@@ -33,3 +33,14 @@ export const fetchDbsChecksByUserId = async (userId: number) => {
   })
   return response
 }
+
+export const verifyDbsPayment = async (tx_ref: string) => {
+  const token = localStorage.getItem('accessToken');
+  const response = await fetch(`${BaseURL}/dbs-applications/payment/${tx_ref}/verify`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+  return response
+}
