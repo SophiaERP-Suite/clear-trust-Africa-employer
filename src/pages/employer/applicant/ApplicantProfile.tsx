@@ -1,4 +1,4 @@
-import { CheckCheck, ChevronRightIcon, Eye, Pen, Plus, Trash2, Upload, Users, X } from "lucide-react";
+import { CheckCheck, ChevronRightIcon, Eye, Pen, Plus, Trash2, Upload, UserLock, Users, X } from "lucide-react";
 import "../../../assets2/css/choices.min.css";
 import "../../../assets2/css/flatpickr.min.css";
 import "../../../assets2/css/libs.min.css";
@@ -20,12 +20,14 @@ import { NavLink, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchApplicantById, fetchApplicantDocsById, uploadDocuments } from "../../../utils/Requests/EmployeeRequests.js";
 import Hashids from "hashids";
-import { fetchDbsChecksByUserId } from "../../../utils/Requests/DbsRequests.js";
+import { fetchDbsChecksByUserId, fetchDbsTypes, submitDbsRequest } from "../../../utils/Requests/DbsRequests.js";
 import Tippy from "@tippyjs/react";
 import Modal from 'react-modal';
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import { handleCreateEmployee } from "../../../utils/ResponseHandlers/EmployeeResponse.js";
+import type { DbsTypes } from "./Applicants.js";
+import { handleDbsRequest } from "../../../utils/ResponseHandlers/DbsResponse.js";
 
 interface EmployeeData {
   userId: number;
@@ -77,9 +79,13 @@ function AdminApplicantsNew() {
   const hashedId = id ? Number(hashIds.decode(id)[0]) : 0;
   const [dbsChecks, setDbsChecks] = useState<DbsChecks[]>([]);
   const [docModalState, setDocModalState] = useState(false);
+  const [dbsModalState, setDbsModalState] = useState(false);
   const { register, reset, handleSubmit, formState } = useForm<DocumentFormValues>();
   const { errors } = formState;
   const [userDocuments, setUserDocuments] = useState<UserDocumentValues[]>([]);
+  const [dbsTypes, setDbsTypes] = useState<DbsTypes[]>([]);
+  const [dbsRequestData, setDbsRequestData] = useState<DbsTypes | null>(null);
+  const [openDbsTypes, setOpenDbsTypes] = useState(false);
 
   useEffect(() => {
       fetchApplicantById(hashedId)
@@ -119,24 +125,43 @@ function AdminApplicantsNew() {
       .catch((err) => console.log(err))
     }, [hashedId]);
 
-    useEffect(() => {
-      fetchApplicantDocsById(hashedId)
-      .then(res => {
-        if (res.status === 200) {
-          res.json()
-          .then(data => {
-            console.log(data);
-            setUserDocuments(data.data.docs);
-          })
-        } else {
-          res.text()
-          .then(data => {
-            console.log(JSON.parse(data));
-          })
-        }
-      })
-      .catch((err) => console.log(err))
-    }, [hashedId]);
+  useEffect(() => {
+    fetchApplicantDocsById(hashedId)
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          console.log(data);
+          setUserDocuments(data.data.docs);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, [hashedId]);
+
+  useEffect(() => {
+      fetchDbsTypes()
+        .then(res => {
+          if (res.status === 200) {
+            res.json()
+              .then(data => {
+                console.log(data);
+                setDbsTypes(data.data);
+              })
+          } else {
+            res.text()
+              .then(data => {
+                console.log(JSON.parse(data));
+              })
+          }
+        })
+        .catch((err) => console.log(err))
+    }, []);
   
   const uploadDocument = async (data: DocumentFormValues) =>{
     if (!errors.File && !errors.DocumentType){
@@ -167,7 +192,31 @@ function AdminApplicantsNew() {
         }
       });
     }
-  } 
+  }
+
+  const switchData = (data: DbsTypes) => {
+    setOpenDbsTypes(false);
+    setDbsRequestData(data);
+    setDbsModalState(true);
+  }
+
+  const submitRequest = async (data: DbsTypes, user: EmployeeData) => {
+    const loader = document.getElementById('query-loader');
+    const text = document.getElementById('query-text');
+    if (loader) {
+      loader.style.display = 'flex';
+    }
+    if (text) {
+      text.style.display = 'none';
+    }
+    const formData = new FormData();
+    formData.append('UserId', String(user.userId));
+    formData.append('DbsApplicationTypeId', String(data.dbsApplicationTypeId));
+    formData.append('Status', String(data.typeCost > 0 ? 1 : 2));
+    const res = await submitDbsRequest(formData);
+    handleDbsRequest(res, loader, text, { toast })
+    .finally(() => setDbsModalState(false));
+  }
 
   return (
    <>
@@ -268,6 +317,57 @@ function AdminApplicantsNew() {
               </div>
             </form>
           </div>
+      </Modal>
+      <Modal isOpen={dbsModalState} onRequestClose={() => { setDbsModalState(false); }}
+          style={{
+          content: {
+            width: 'fit-content',
+            height: 'fit-content',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'rgb(255 255 255)',
+            borderRadius: '0.5rem',
+            boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'
+          },
+          overlay: {
+            backgroundColor: 'rgba(255, 255, 255, 0.7)'
+          }
+        }}
+        >
+          {(dbsRequestData && employee) && (
+            <div className="h-fit w-80 lg:w-fit">
+              <div className="flex justify-start">
+                <p className="font-semibold text-black py-1 text-lg"><UserLock size={22} className="mr-2" /> Request DBS Check for { `${employee.firstName}` }</p>
+              </div>
+              <div className="flex justify-start">
+                <div className="my-2">
+                  <p className="py-1">Employee Name: {`${employee.firstName} ${employee.lastName}`}</p>
+                  <p className="py-1">DBS Check Type: {dbsRequestData.typeName}</p>
+                  <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.typeCost.toFixed(2)}` }</p>
+                </div>
+              </div>
+              
+              <div className="flex justify-end my-2 gap-2">
+                <button className="btn text-white bg-black" onClick={() => setDbsModalState(false) }>
+                  <X size={18} className="mr-2" />
+                  Cancel
+                </button>
+                <button className="btn btn-success" onClick={() => {submitRequest(dbsRequestData, employee)}}>
+                  <div className="dots hidden" id="query-loader">
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                  </div>
+                  <span id="query-text">
+                    <CheckCheck size={18} className="mr-2" />
+                    Proceed
+                  </span>
+                </button>
+              </div>
+            </div>
+          )}
+          
       </Modal>
       <div
         className="p-6 lg:p-8 footer-inner mx-auto main-container container"
@@ -395,10 +495,25 @@ function AdminApplicantsNew() {
               <div className="col lg:col-span-2">
                 <div>
                   <div className="relative flex flex-col mb-8  bg-white shadow rounded-xl dark:bg-dark-card">
-                    <div className="p-5 border-b dark:border-secondary-800 dark:border-secondary-800">
+                    <div className="p-5 border-b dark:border-secondary-800 dark:border-secondary-800 flex justify-between">
                       <h4 className="card-title mb-0 dark:text-white">
                         DBS Checks
                       </h4>
+                      <div className="relative">
+                        <button className="btn btn-success mr-2 mb-2" onClick={() => setOpenDbsTypes(!openDbsTypes)}>
+                          <Plus size={18} className="mr-2" />
+                          New DBS Check
+                        </button>
+                        {openDbsTypes && (<div className="absolute top-8 mt-2 w-30 bg-white border shadow-lg z-1">
+                          {
+                              dbsTypes.map((dbsData, index) => (
+                              <button key={dbsData.dbsApplicationTypeId ?? index} onClick={() => switchData(dbsData)} className="block w-full px-4 py-2 hover:bg-secondary-200 text-left">
+                                {`${dbsData.typeName}`}
+                              </button>
+                            ))
+                          }
+                        </div>)}
+                      </div>
                     </div>
                     <div className="p-6">
                       <div className="flex flex-wrap justify-between overflow-x-auto h-fit">

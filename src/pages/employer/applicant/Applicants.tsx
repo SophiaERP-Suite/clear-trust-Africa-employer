@@ -41,7 +41,7 @@ interface EmployeeData {
   role: string;
 }
 
-interface DbsTypes {
+export interface DbsTypes {
   dbsApplicationTypeId: number;
   typeName: string;
   typeCost: number;
