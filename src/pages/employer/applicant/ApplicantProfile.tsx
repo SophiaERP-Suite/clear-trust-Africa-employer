@@ -86,6 +86,12 @@ function AdminApplicantsNew() {
   const [dbsTypes, setDbsTypes] = useState<DbsTypes[]>([]);
   const [dbsRequestData, setDbsRequestData] = useState<DbsTypes | null>(null);
   const [openDbsTypes, setOpenDbsTypes] = useState(false);
+  const [dbsPage, setDbsPage] = useState(1);
+  const dbsLimit = 3;
+  const [totalDbsChecks, setTotalDbsChecks] = useState(0);
+  const [docPage, setDocPage] = useState(1);
+  const docLimit = 3;
+  const [totalDocs, setTotalDocs] = useState(0);
 
   useEffect(() => {
       fetchApplicantById(hashedId)
@@ -107,13 +113,14 @@ function AdminApplicantsNew() {
   }, [hashedId]);
   
   useEffect(() => {
-      fetchDbsChecksByUserId(hashedId)
+      fetchDbsChecksByUserId(hashedId, dbsPage, dbsLimit)
       .then(res => {
         if (res.status === 200) {
           res.json()
           .then(data => {
             console.log(data);
             setDbsChecks(data.data.checks);
+            setTotalDbsChecks(data.data.totalCount);
           })
         } else {
           res.text()
@@ -123,16 +130,33 @@ function AdminApplicantsNew() {
         }
       })
       .catch((err) => console.log(err))
-    }, [hashedId]);
+  }, [hashedId, dbsPage, dbsLimit]);
+  
+  const refetchDbsData = async () => {
+    try {
+      const res = await fetchDbsChecksByUserId(hashedId, dbsPage, dbsLimit);
+      if (res.status === 200) {
+        const data = await res.json()
+        setDbsChecks(data.data.checks);
+        setTotalDbsChecks(data.data.totalCount);
+      } else {
+        const resText = await res.text();
+        console.log(JSON.parse(resText));
+      }
+    } catch (err) {
+        console.log(err)
+    }
+  }
 
   useEffect(() => {
-    fetchApplicantDocsById(hashedId)
+    fetchApplicantDocsById(hashedId, docPage, docLimit)
     .then(res => {
       if (res.status === 200) {
         res.json()
         .then(data => {
           console.log(data);
           setUserDocuments(data.data.docs);
+          setTotalDocs(data.data.totalCount);
         })
       } else {
         res.text()
@@ -142,7 +166,23 @@ function AdminApplicantsNew() {
       }
     })
     .catch((err) => console.log(err))
-  }, [hashedId]);
+  }, [hashedId, docPage, docLimit]);
+
+  const refetchDocData = async () => {
+    try {
+      const res = await fetchApplicantDocsById(hashedId, dbsPage, dbsLimit);
+      if (res.status === 200) {
+        const data = await res.json()
+        setUserDocuments(data.data.docs);
+        setTotalDocs(data.data.totalCount);
+      } else {
+        const resText = await res.text();
+        console.log(JSON.parse(resText));
+      }
+    } catch (err) {
+        console.log(err)
+    }
+  }
 
   useEffect(() => {
       fetchDbsTypes()
@@ -344,7 +384,7 @@ function AdminApplicantsNew() {
                 <div className="my-2">
                   <p className="py-1">Employee Name: {`${employee.firstName} ${employee.lastName}`}</p>
                   <p className="py-1">DBS Check Type: {dbsRequestData.typeName}</p>
-                  <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.typeCost.toFixed(2)}` }</p>
+                  <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.typeCost.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2})}` }</p>
                 </div>
               </div>
               
@@ -604,6 +644,40 @@ function AdminApplicantsNew() {
                             </div> : <></>
                         }
                       </div>
+                      <div className="flex flex-wrap justify-between my-6 mx-5">
+                        <div className="flex justify-center items-center mb-1">
+                          <p className="text-black">
+                            Showing { dbsChecks.length > 0 ? ((dbsPage * dbsLimit) - dbsLimit) + 1 : 0 } to { dbsChecks.length > 0 ? (((dbsPage * dbsLimit) - dbsLimit) + 1) + (dbsChecks.length - 1) : 0 } of { totalDbsChecks } entries
+                          </p>
+                        </div>
+                        <div className="inline-flex flex-wrap">
+                          {
+                            dbsPage > 1 && <a
+                            href="#"
+                            onClick={() => { if (dbsPage > 1) {setDbsPage(dbsPage - 1); refetchDbsData();} }}
+                            className="border-t border-b border-l text-primary-500 border-secondary-500 px-2 py-1 rounded-l dark:border-secondary-800"
+                          >
+                            Previous
+                          </a>
+                          }
+                          <a
+                            href="#"
+                            className="border text-white border-secondary-500 cursor-pointer bg-primary-500 px-4 py-1 dark:border-secondary-800"
+                          >
+                            { dbsPage }
+                          </a>
+                          {
+                            (dbsPage * dbsLimit) < totalDbsChecks && <a
+                            href="#"
+                            onClick={() => { setDbsPage(dbsPage + 1); refetchDbsData(); }}
+                            className="border-r border-t border-b text-primary-500 border-secondary-500 px-4 py-1 rounded-r dark:border-secondary-800"
+                          >
+                            Next
+                          </a>
+                          }
+                          
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div className="relative flex flex-col mb-8  bg-white shadow rounded-xl dark:bg-dark-card">
@@ -709,6 +783,40 @@ function AdminApplicantsNew() {
                             </div>
                           </tr> : <></>
                         }
+                      </div>
+                      <div className="flex flex-wrap justify-between my-6 mx-5">
+                        <div className="flex justify-center items-center mb-1">
+                          <p className="text-black">
+                            Showing { userDocuments.length > 0 ? ((docPage * docLimit) - docLimit) + 1 : 0 } to { userDocuments.length > 0 ? (((docPage * docLimit) - docLimit) + 1) + (userDocuments.length - 1) : 0 } of { totalDocs } entries
+                          </p>
+                        </div>
+                        <div className="inline-flex flex-wrap">
+                          {
+                            docPage > 1 && <a
+                            href="#"
+                            onClick={() => { if (docPage > 1) {setDocPage(docPage - 1); refetchDocData();} }}
+                            className="border-t border-b border-l text-primary-500 border-secondary-500 px-2 py-1 rounded-l dark:border-secondary-800"
+                          >
+                            Previous
+                          </a>
+                          }
+                          <a
+                            href="#"
+                            className="border text-white border-secondary-500 cursor-pointer bg-primary-500 px-4 py-1 dark:border-secondary-800"
+                          >
+                            { docPage }
+                          </a>
+                          {
+                            (docPage * docLimit) < totalDocs && <a
+                            href="#"
+                            onClick={() => { setDocPage(docPage + 1); refetchDocData(); }}
+                            className="border-r border-t border-b text-primary-500 border-secondary-500 px-4 py-1 rounded-r dark:border-secondary-800"
+                          >
+                            Next
+                          </a>
+                          }
+                          
+                        </div>
                       </div>
                     </div>
                   </div>

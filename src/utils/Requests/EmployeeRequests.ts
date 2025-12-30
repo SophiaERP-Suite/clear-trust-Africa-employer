@@ -46,9 +46,9 @@ export const uploadDocuments = async (data: FormData) => {
   return response
 }
 
-export const fetchApplicantDocsById = async (applicantId: number) => {
+export const fetchApplicantDocsById = async (applicantId: number, pageNumber=1, limit=5) => {
   const token = localStorage.getItem('accessToken');
-  const response = await fetch(`${BaseURL}/applicants/${applicantId}/docs`, {
+  const response = await fetch(`${BaseURL}/applicants/${applicantId}/docs?pageNumber=${pageNumber}&limit=${limit}`, {
     method: 'GET',
     headers: {
       "Authorization": `Bearer ${token}`

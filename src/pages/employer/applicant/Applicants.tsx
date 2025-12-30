@@ -173,7 +173,7 @@ function AdminEmployees() {
               <div className="my-2">
                 <p className="py-1">Employee Name: {`${dbsRequestData.employee.firstName} ${dbsRequestData.employee.lastName}`}</p>
                 <p className="py-1">DBS Check Type: {dbsRequestData.requestType.typeName}</p>
-                <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.requestType.typeCost.toFixed(2)}` }</p>
+                <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.requestType.typeCost.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2})}` }</p>
               </div>
             </div>
             

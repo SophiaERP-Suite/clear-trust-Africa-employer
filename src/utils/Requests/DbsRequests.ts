@@ -23,9 +23,9 @@ export const submitDbsRequest = async (data: FormData) => {
   return response
 }
 
-export const fetchDbsChecksByUserId = async (userId: number) => {
+export const fetchDbsChecksByUserId = async (userId: number, pageNumber=1, limit=5) => {
   const token = localStorage.getItem('accessToken');
-  const response = await fetch(`${BaseURL}/dbs-applications/${userId}`, {
+  const response = await fetch(`${BaseURL}/dbs-applications/${userId}?pageNumber=${pageNumber}&limit=${limit}`, {
     method: 'GET',
     headers: {
       "Authorization": `Bearer ${token}`
