@@ -173,7 +173,7 @@ function AdminEmployees() {
               <div className="my-2">
                 <p className="py-1">Employee Name: {`${dbsRequestData.employee.firstName} ${dbsRequestData.employee.lastName}`}</p>
                 <p className="py-1">DBS Check Type: {dbsRequestData.requestType.typeName}</p>
-                <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.requestType.typeCost}` }</p>
+                <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.requestType.typeCost.toFixed(2)}` }</p>
               </div>
             </div>
             
@@ -354,7 +354,7 @@ function AdminEmployees() {
                                   </Tippy>
                                   {
                                     openRowId === String(data.userId) && (
-                                      <div className="absolute bottom-5 mt-2 w-30 bg-white border shadow-lg z-1">
+                                      <div className="absolute right-8 mt-2 w-30 bg-white border shadow-lg z-1">
                                         {
                                             dbsTypes.map((dbsData, index) => (
                                             <button key={dbsData.dbsApplicationTypeId ?? index} onClick={() => switchData({ requestType: dbsData, employee: data })} className="block w-full px-4 py-2 hover:bg-secondary-200 text-left">
