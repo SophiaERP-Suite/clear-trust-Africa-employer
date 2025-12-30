@@ -167,7 +167,7 @@ function AdminEmployees() {
         {dbsRequestData && (
           <div className="h-fit w-80 lg:w-fit">
             <div className="flex justify-start">
-              <p className="font-semibold text-black py-1 text-lg"><UserLock size={20} className="mr-2" /> Request DBS Check for { `${dbsRequestData.employee.firstName}` }</p>
+              <p className="font-semibold text-black py-1 text-lg"><UserLock size={22} className="mr-2" /> Request DBS Check for { `${dbsRequestData.employee.firstName}` }</p>
             </div>
             <div className="flex justify-start">
               <div className="my-2">
