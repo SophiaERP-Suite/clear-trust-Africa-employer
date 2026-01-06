@@ -48,15 +48,15 @@ interface DbsChecks {
   dbsApplicationId: number;
   userId: number
   requestedById: number
-  dbsApplicationTypeId: number
+  dbsTypeId: number
   status: string
   submittedAt: string
   completedAt: string
   dateCreated: string
   user: string;
   requestedBy: string;
-  dbsApplicationType: string;
-  dbsApplicationTypeCost: number;
+  dbsType: string;
+  dbsTypeCost: number;
 }
 
 interface DocumentFormValues {
@@ -83,9 +83,9 @@ function AdminApplicantsNew() {
   const { register, reset, handleSubmit, formState } = useForm<DocumentFormValues>();
   const { errors } = formState;
   const [userDocuments, setUserDocuments] = useState<UserDocumentValues[]>([]);
-  const [dbsTypes, setDbsTypes] = useState<DbsTypes[]>([]);
+  const [dbsTypes, setdbsTypes] = useState<DbsTypes[]>([]);
   const [dbsRequestData, setDbsRequestData] = useState<DbsTypes | null>(null);
-  const [openDbsTypes, setOpenDbsTypes] = useState(false);
+  const [opendbsTypes, setOpendbsTypes] = useState(false);
   const [dbsPage, setDbsPage] = useState(1);
   const dbsLimit = 3;
   const [totalDbsChecks, setTotalDbsChecks] = useState(0);
@@ -191,7 +191,7 @@ function AdminApplicantsNew() {
             res.json()
               .then(data => {
                 console.log(data);
-                setDbsTypes(data.data);
+                setdbsTypes(data.data);
               })
           } else {
             res.text()
@@ -235,7 +235,7 @@ function AdminApplicantsNew() {
   }
 
   const switchData = (data: DbsTypes) => {
-    setOpenDbsTypes(false);
+    setOpendbsTypes(false);
     setDbsRequestData(data);
     setDbsModalState(true);
   }
@@ -251,7 +251,7 @@ function AdminApplicantsNew() {
     }
     const formData = new FormData();
     formData.append('UserId', String(user.userId));
-    formData.append('DbsApplicationTypeId', String(data.dbsApplicationTypeId));
+    formData.append('dbsTypeId', String(data.dbsTypeId));
     formData.append('Status', String(data.typeCost > 0 ? 1 : 2));
     const res = await submitDbsRequest(formData);
     handleDbsRequest(res, loader, text, { toast })
@@ -540,14 +540,14 @@ function AdminApplicantsNew() {
                         DBS Checks
                       </h4>
                       <div className="relative">
-                        <button className="btn btn-success mr-2 mb-2" onClick={() => setOpenDbsTypes(!openDbsTypes)}>
+                        <button className="btn btn-success mr-2 mb-2" onClick={() => setOpendbsTypes(!opendbsTypes)}>
                           <Plus size={18} className="mr-2" />
                           New DBS Check
                         </button>
-                        {openDbsTypes && (<div className="absolute top-8 mt-2 w-30 bg-white border shadow-lg z-1">
+                        {opendbsTypes && (<div className="absolute top-8 mt-2 w-30 bg-white border shadow-lg z-1">
                           {
                               dbsTypes.map((dbsData, index) => (
-                              <button key={dbsData.dbsApplicationTypeId ?? index} onClick={() => switchData(dbsData)} className="block w-full px-4 py-2 hover:bg-secondary-200 text-left">
+                              <button key={dbsData.dbsTypeId ?? index} onClick={() => switchData(dbsData)} className="block w-full px-4 py-2 hover:bg-secondary-200 text-left">
                                 {`${dbsData.typeName}`}
                               </button>
                             ))
@@ -616,7 +616,7 @@ function AdminApplicantsNew() {
                                   }
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
-                                  {data.dbsApplicationType}
+                                  {data.dbsType}
                                 </td>
                                 <td className="px-6 py-4">
                                   <div className="flex items-center list-user-action">

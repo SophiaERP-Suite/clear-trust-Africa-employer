@@ -42,7 +42,7 @@ interface EmployeeData {
 }
 
 export interface DbsTypes {
-  dbsApplicationTypeId: number;
+  dbsTypeId: number;
   typeName: string;
   typeCost: number;
 }
@@ -98,7 +98,7 @@ function AdminEmployees() {
     }
     const formData = new FormData();
     formData.append('UserId', String(data.employee.userId));
-    formData.append('DbsApplicationTypeId', String(data.requestType.dbsApplicationTypeId));
+    formData.append('dbsTypeId', String(data.requestType.dbsTypeId));
     formData.append('Status', String(data.requestType.typeCost > 0 ? 1 : 2));
     const res = await submitDbsRequest(formData);
     handleDbsRequest(res, loader, text, { toast })
@@ -107,6 +107,7 @@ function AdminEmployees() {
 
   const switchData = (data: DbsCheckRequest) => {
     toggleDropDrown('');
+    console.log(data);
     setDbsRequestData(data);
     setModalState(true);
   }
@@ -357,7 +358,7 @@ function AdminEmployees() {
                                       <div className="absolute right-8 mt-2 w-30 bg-white border shadow-lg z-1">
                                         {
                                             dbsTypes.map((dbsData, index) => (
-                                            <button key={dbsData.dbsApplicationTypeId ?? index} onClick={() => switchData({ requestType: dbsData, employee: data })} className="block w-full px-4 py-2 hover:bg-secondary-200 text-left">
+                                            <button key={dbsData.dbsTypeId ?? index} onClick={() => switchData({ requestType: dbsData, employee: data })} className="block w-full px-4 py-2 hover:bg-secondary-200 text-left">
                                               {`${dbsData.typeName}`}
                                             </button>
                                           ))
