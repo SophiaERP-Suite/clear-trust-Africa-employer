@@ -72,6 +72,14 @@ interface UserDocumentValues {
   dateCreated: string;
 }
 
+const statusStyles: Record<string, string> = {
+  Draft: 'bg-orange-200',
+  Submitted: 'bg-blue-200',
+  'In Review': 'bg-purple-200',
+  Completed: 'bg-green-200',
+  Rejected: 'bg-red-200',
+};
+
 function AdminApplicantsNew() {
   const { id } = useParams();
   const [employee, setEmployee] = useState<EmployeeData | null>(null);
@@ -598,22 +606,14 @@ function AdminApplicantsNew() {
                                 <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
                                   {data.requestedBy}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
-                                  {
-                                    Number(data.status) === 1 && <p className="p-1 bg-orange-200 text-center rounded-lg">Draft</p>
-                                  }
-                                  {
-                                    Number(data.status) === 2 && <p className="p-1 bg-blue-200 text-center rounded-lg">Submitted</p>
-                                  }
-                                  {
-                                    Number(data.status) === 3 && <p className="p-1 bg-purple-200 text-center rounded-lg">In Review</p>
-                                  }
-                                  {
-                                    Number(data.status) === 4 && <p className="p-1 bg-green-200 text-center rounded-lg">Completed</p>
-                                  }
-                                  {
-                                    Number(data.status) === 5 && <p className="p-1 bg-red-200 text-center rounded-lg">Rejected</p>
-                                  }
+                                <td className="px-6 py-4 whitespace-nowrap text-gray-900">
+                                  <p
+                                    className={`p-1 text-center rounded-lg ${
+                                      statusStyles[data.status] ?? 'bg-gray-200'
+                                    }`}
+                                  >
+                                    {data.status}
+                                  </p>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
                                   {data.dbsType}
