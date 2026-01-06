@@ -26,7 +26,7 @@ interface ErrorResponse {
 interface DataResponse {
   message: string;
   data: {
-    organizationId: number
+    organisationId: number
   }
 }
 

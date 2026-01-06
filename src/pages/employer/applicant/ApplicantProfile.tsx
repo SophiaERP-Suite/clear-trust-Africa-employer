@@ -40,7 +40,7 @@ interface EmployeeData {
   dateOfBirth: string;
   gender: string;
   address: string;
-  organizationId: number;
+  organisationId: number;
   role: string;
 }
 

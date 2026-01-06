@@ -4,9 +4,9 @@ export interface User {
   email: string;
   phone: string;
   userRole: string;
-  organizationId: number;
-  organizationName: string;
-  organizationType: string;
+  organisationId: number;
+  organisationName: string;
+  organisationType: string;
   roleScope: number;
 }
 

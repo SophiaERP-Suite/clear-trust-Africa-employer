@@ -931,17 +931,17 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                   onClick={() => setOpen(!open)}
                                 >
                                   <div className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#ff7b002f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
-                                    { user && user.organizationName[0] }
+                                    { user && user.organisationName[0] }
                                   </div>
                                   <div className="caption ml-3 d-none d-md-block ">
                                     <h6
                                       className="mb-0 caption-title mr-4"
                                       style={{}}
                                     >
-                                      { user && user.organizationName }
+                                      { user && user.organisationName }
                                     </h6>
                                     <p className="mb-0 font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
-                                      { user && user.organizationType }
+                                      { user && user.organisationType }
                                     </p>
                                   </div>
                                 </a>
@@ -953,7 +953,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                       </p>
                                       <ul className="py-2">
                                         <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
-                                          <a>Organization Profile</a>
+                                          <a>Organisation Profile</a>
                                         </li>
                                         <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
                                           <a>Settings</a>
