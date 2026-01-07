@@ -7,6 +7,7 @@ import mini_logo from "../assets2/img/cleartrust_logo_mini.png";
 import { ArrowRight, ArrowLeft, Menu, X, Bell, Search, CircleQuestionMark } from "lucide-react";
 import { useAuth } from "../utils/useAuth";
 import Modal from 'react-modal';
+import Tippy from "@tippyjs/react";
 
 interface NavItem {
   path: string;
@@ -142,21 +143,31 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
             <ul className="sidebar-main-menu">
               {navItems.map((item) => (
                 <li key={item.path} className="nav-item">
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      `text-black  ${
-                        isOpen
-                          ? "nav-link"
-                          : "flex justify-center items-center gap-4 my-1 py-3 nav-link-sub"
-                      } ${isActive ? "active" : ""}`
-                    }
-                  >
-                    {item.icon}
-                    {isOpen ? (
-                      <span className="item-name">{item.label}</span>
-                    ) : null}
-                  </NavLink>
+                  {
+                    isOpen ? (
+                      <NavLink
+                        to={item.path}
+                        className={({ isActive }) =>
+                          `text-black  ${"nav-link"
+                          } ${isActive ? "active" : ""}`
+                        }
+                      >
+                        {item.icon}
+                        <span className="item-name">{item.label}</span>
+                      </NavLink>
+                    ) : (
+                        <Tippy content={item.label}>
+                          <NavLink
+                            to={item.path}
+                            className={({ isActive }) =>
+                              `text-black flex justify-center items-center gap-4 my-1 py-3 nav-link-sub" ${isActive ? "active" : ""}`
+                            }
+                          >
+                            {item.icon}
+                          </NavLink>
+                        </Tippy>
+                    )
+                  }
                 </li>
               ))}
             </ul>
