@@ -178,7 +178,7 @@ function AdminApplicantsNew() {
 
   const refetchDocData = async () => {
     try {
-      const res = await fetchApplicantDocsById(hashedId, dbsPage, dbsLimit);
+      const res = await fetchApplicantDocsById(hashedId, docPage, docLimit);
       if (res.status === 200) {
         const data = await res.json()
         setUserDocuments(data.data.docs);
