@@ -99,7 +99,6 @@ function AdminEmployees() {
     const formData = new FormData();
     formData.append('UserId', String(data.employee.userId));
     formData.append('dbsTypeId', String(data.requestType.dbsTypeId));
-    formData.append('Status', String(data.requestType.typeCost > 0 ? 1 : 2));
     const res = await submitDbsRequest(formData);
     handleDbsRequest(res, loader, text, { toast })
     .finally(() => setModalState(false));

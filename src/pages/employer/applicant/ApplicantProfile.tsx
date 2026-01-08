@@ -260,7 +260,6 @@ function AdminApplicantsNew() {
     const formData = new FormData();
     formData.append('UserId', String(user.userId));
     formData.append('dbsTypeId', String(data.dbsTypeId));
-    formData.append('Status', String(data.typeCost > 0 ? 1 : 2));
     const res = await submitDbsRequest(formData);
     handleDbsRequest(res, loader, text, { toast })
     .finally(() => setDbsModalState(false));
