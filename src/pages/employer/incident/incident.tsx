@@ -1,4 +1,3 @@
-
 import {
   // Plus,
   List,
@@ -9,9 +8,11 @@ import {
   AlertCircle,
   Timer,
   ActivityIcon,
+  Plus,
 } from "lucide-react";
 import donald from "../../../assets2/img/donald_adolphus.jpg";
 import femi from "../../../assets2/img/femi_adebayo.jpg";
+import { NavLink } from "react-router-dom";
 
 export default function Incidents() {
   return (
@@ -23,7 +24,10 @@ export default function Incidents() {
             <div className="col-md-12">
               <div className="flex flex-wrap items-center justify-between">
                 <div className="flex">
-                  <AlertTriangleIcon className="text-[rgb(112_22_208/0.9)] mr-2" size={36} />
+                  <AlertTriangleIcon
+                    className="text-[rgb(112_22_208/0.9)] mr-2"
+                    size={36}
+                  />
                   <div>
                     <h3 className="mb-0 text-black">Incident Management</h3>
                     <p className="text-secondary-600 text-black">
@@ -34,13 +38,10 @@ export default function Incidents() {
                 </div>
 
                 <div>
-                  {/* <a
-                    href="applicantNew"
-                    className="text-black btn shadow-md bg-white border focus:bg-gray-200"
-                  >
+                  <NavLink to="/IncidentReportNew" className="btn-success btn">
                     <Plus size={18} className="mr-2" />
-                    Add New
-                  </a> */}
+                    Add News
+                  </NavLink>
                 </div>
               </div>
             </div>
@@ -61,7 +62,7 @@ export default function Incidents() {
               </div>
             </div>
           </div>
- 
+
           {/* Resolved */}
           <div className="bg-gradient-to-r from-green-600 to-green-500 rounded-lg shadow-md border border-green-600 p-5 hover:shadow-lg transition">
             <div className="flex items-center gap-4">
@@ -133,7 +134,9 @@ export default function Incidents() {
         <div className="relative flex flex-col mb-8 bg-white rounded shadow-lg dark:bg-dark-card grid gird-cols-1 lg:col-span-2">
           <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
             <div className="relative flex flex-wrap justify-between p-5 ">
-              <h4 className="mb-2 sm:mb-0 text-xl font-bold">Incident Reports</h4>
+              <h4 className="mb-2 sm:mb-0 text-xl font-bold">
+                Incident Reports
+              </h4>
               <div className="flex"></div>
             </div>
             <hr className="m-0" />
@@ -166,10 +169,7 @@ export default function Incidents() {
                     <tr>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="iq-media-group iq-media-group-1">
-                          <h6 className="font-bold dark:text-white">
-                            {" "}
-                            #343
-                          </h6>
+                          <h6 className="font-bold dark:text-white"> #343</h6>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -202,10 +202,7 @@ export default function Incidents() {
                     <tr className="bg-secondary-200 dark:bg-dark-strip">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="iq-media-group iq-media-group-1">
-                          <h6 className="font-bold dark:text-white">
-                            {" "}
-                           #356
-                          </h6>
+                          <h6 className="font-bold dark:text-white"> #356</h6>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

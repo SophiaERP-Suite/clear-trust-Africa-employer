@@ -16,6 +16,7 @@ import ProfileUpdate from "../pages/employer/employer/EmployerUpdate";
 import Security from "../pages/employer/Security";
 import HelpSupportPage from "../pages/employer/Help";
 import PaymentRedirect from "../pages/employer/payment/PaymentRedirect";
+import IncidentReportNew from "../pages/employer/incident/IncidentReportNew";
 
 function AppRoutes() {
   return (
@@ -30,6 +31,7 @@ function AppRoutes() {
         <Route path="Profile" element={<Profile />} />
         <Route path="Tracker" element={<DBSTrackerModule />} />
         <Route path="IncidentMgt" element={<Incidents />} />
+        <Route path="IncidentReportNew" element={<IncidentReportNew />} />
         <Route path="Payment" element={<PaymentDashboard />} />
         <Route path="Reports" element={<Reports />} />
         <Route path="Communication" element={<CommunicationsPage />} />

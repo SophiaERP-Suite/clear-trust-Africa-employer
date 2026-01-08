@@ -8,7 +8,6 @@ export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
-
     if (!token) {
       setCheckingAuth(false);
       window.location.replace("http://localhost:5174/xt/login");
@@ -28,7 +27,7 @@ export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
         throw new Error("Unauthorized");
       })
       .then((data) => {
-        localStorage.setItem('accessToken', token);
+        localStorage.setItem("accessToken", token);
         loadUser(data.user);
       })
       .catch((err) => {
@@ -47,3 +46,42 @@ export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
 
   return <>{children}</>;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
