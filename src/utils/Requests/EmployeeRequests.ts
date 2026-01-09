@@ -1,7 +1,7 @@
 const BaseURL = "http://localhost:5181";
+  const token = localStorage.getItem('accessToken');
 
 export const fetchApplicants = async (pageNumber=1, limit=10) => {
-  const token = localStorage.getItem('accessToken');
   const response = await fetch(`${BaseURL}/applicants?pageNumber=${pageNumber}&limit=${limit}`, {
     method: 'GET',
     headers: {
@@ -12,7 +12,6 @@ export const fetchApplicants = async (pageNumber=1, limit=10) => {
 }
 
 export const fetchApplicantById = async (applicantId: number) => {
-  const token = localStorage.getItem('accessToken');
   const response = await fetch(`${BaseURL}/applicants/${applicantId}`, {
     method: 'GET',
     headers: {
@@ -23,7 +22,6 @@ export const fetchApplicantById = async (applicantId: number) => {
 }
 
 export const createEmployee = async (data: FormData) => {
-  const token = localStorage.getItem('accessToken');
   const response = await fetch(`${BaseURL}/applicants`, {
     method: 'POST',
     headers: {
@@ -35,7 +33,6 @@ export const createEmployee = async (data: FormData) => {
 }
 
 export const uploadDocuments = async (data: FormData) => {
-  const token = localStorage.getItem('accessToken');
   const response = await fetch(`${BaseURL}/applicants/docs`, {
     method: 'POST',
     headers: {
@@ -47,7 +44,6 @@ export const uploadDocuments = async (data: FormData) => {
 }
 
 export const fetchApplicantDocsById = async (applicantId: number, pageNumber=1, limit=5) => {
-  const token = localStorage.getItem('accessToken');
   const response = await fetch(`${BaseURL}/applicants/${applicantId}/docs?pageNumber=${pageNumber}&limit=${limit}`, {
     method: 'GET',
     headers: {

@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from './useAuth';
 import { fetchUser } from './Requests/AuthRequests';
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJwZXRlcnNvbi5vbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJqdGkiOiIwOTgyYTM2MS1kMGZlLTQ4MjktYTlkNS0zODkxNWM4NjRlYzgiLCJleHAiOjE3NjgxNDE3MzYsImlzcyI6IkNsZWFyVHJ1c3RBZnJpY2EiLCJhdWQiOiJDbGVhclRydXN0QWZyaWNhVXNlcnMifQ.zHrNdcAF44rm1CxPKDgVOKzISShW96ByaGYJVpNwong"
 
 export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
   const { user, loadUser } = useAuth();
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
-
+    const token = localStorage.getItem('accessToken');
+  
     if (!token) {
       setCheckingAuth(false);
-      window.location.replace("http://localhost:5174/xt/login");
+      window.location.replace("https://cleartrustafrica.com/xt/login");
       return;
     }
 
@@ -34,7 +34,7 @@ export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
       .catch((err) => {
         console.error(err);
         localStorage.removeItem("accessToken");
-        window.location.replace("http://localhost:5174/xt/login");
+        window.location.replace("https://cleartrustafrica.com/xt/login");
       })
       .finally(() => {
         setCheckingAuth(false);
