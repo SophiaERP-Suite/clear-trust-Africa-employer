@@ -46,13 +46,14 @@ interface EmployeeData {
 
 interface DbsChecks {
   dbsApplicationId: number;
-  userId: number
-  requestedById: number
-  dbsTypeId: number
-  status: string
-  submittedAt: string
-  completedAt: string
-  dateCreated: string
+  userId: number;
+  requestedById: number;
+  dbsTypeId: number;
+  status: number;
+  statusName: string;
+  submittedAt: string;
+  completedAt: string;
+  dateCreated: string;
   user: string;
   requestedBy: string;
   dbsType: string;
@@ -72,12 +73,12 @@ interface UserDocumentValues {
   dateCreated: string;
 }
 
-const statusStyles: Record<string, string> = {
-  Draft: 'bg-orange-200',
-  Submitted: 'bg-blue-200',
-  'In Review': 'bg-purple-200',
-  Completed: 'bg-green-200',
-  Rejected: 'bg-red-200',
+const statusStyles: Record<number, string> = {
+  1: 'bg-orange-200',
+  2: 'bg-blue-200',
+  3': 'bg-purple-200',
+  4: 'bg-green-200',
+  5: 'bg-red-200',
 };
 
 function AdminApplicantsNew() {
@@ -611,7 +612,7 @@ function AdminApplicantsNew() {
                                       statusStyles[data.status] ?? 'bg-gray-200'
                                     }`}
                                   >
-                                    {data.status}
+                                    {data.statusName}
                                   </p>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
