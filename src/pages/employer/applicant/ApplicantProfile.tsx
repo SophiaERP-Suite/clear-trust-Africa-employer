@@ -76,7 +76,7 @@ interface UserDocumentValues {
 const statusStyles: Record<number, string> = {
   1: 'bg-orange-200',
   2: 'bg-blue-200',
-  3': 'bg-purple-200',
+  3: 'bg-purple-200',
   4: 'bg-green-200',
   5: 'bg-red-200',
 };
