@@ -1,12 +1,13 @@
 export interface User {
+  userId: number;
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
   userRole: string;
-  organizationId: number;
-  organizationName: string;
-  organizationType: string;
+  organisationId: number;
+  organisationName: string;
+  organisationType: string;
   roleScope: number;
 }
 

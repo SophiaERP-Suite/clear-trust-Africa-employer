@@ -931,17 +931,17 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                   onClick={() => setOpen(!open)}
                                 >
                                   <div className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#ff7b002f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
-                                    { user && user.organizationName[0] }
+                                    { user && user.organisationName[0] }
                                   </div>
                                   <div className="caption ml-3 d-none d-md-block ">
                                     <h6
                                       className="mb-0 caption-title mr-4"
                                       style={{}}
                                     >
-                                      { user && user.organizationName }
+                                      { user && user.organisationName }
                                     </h6>
                                     <p className="mb-0 font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
-                                      { user && user.organizationType }
+                                      { user && user.organisationType }
                                     </p>
                                   </div>
                                 </a>
@@ -995,7 +995,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
             </ul>
             <div className="footer-second text-secondary-700 flex flex-wrap dark:text-white text-sm">
               © {new Date().getFullYear()} Powered by{" "}
-              <a
+              {/* <a
                 className="text-primary-500 dark:text-primary-500 ml-1"
                 href="https://sophiaerp.com"
                 target="_blank"
@@ -1003,7 +1003,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
               >
                 Sophia ERP
               </a>{" "}
-              and{" "}
+              and{" "} */}
               <a
                 className="text-primary-500 dark:text-primary-500 ml-1"
                 href="https://techiefy.co.uk"
