@@ -1006,7 +1006,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
             </ul>
             <div className="footer-second text-secondary-700 flex flex-wrap dark:text-white text-sm">
               © {new Date().getFullYear()} Powered by{" "}
-              <a
+              {/* <a
                 className="text-primary-500 dark:text-primary-500 ml-1"
                 href="https://sophiaerp.com"
                 target="_blank"
@@ -1014,7 +1014,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
               >
                 Sophia ERP
               </a>{" "}
-              and{" "}
+              and{" "} */}
               <a
                 className="text-primary-500 dark:text-primary-500 ml-1"
                 href="https://techiefy.co.uk"
