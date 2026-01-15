@@ -17,33 +17,139 @@ import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
 import { useForm } from "react-hook-form";
-import { createEmployee } from "../../../utils/Requests/EmployeeRequests.js";
+import { createEmployee, fetchCitiesByStateId, fetchCountries, fetchStatesByCountryId } from "../../../utils/Requests/EmployeeRequests.js";
 import { handleCreateEmployee } from "../../../utils/ResponseHandlers/EmployeeResponse.js";
 import { toast } from 'react-toastify';
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 interface ApplicantFormValues {
   FirstName: string;
   LastName: string;
+  OtherNames: string;
   ProfileImage: string;
   Phone: string;
   Email: string;
   IdentificationNumber: string;
   DateOfBirth: string;
   Gender: string;
+  CountryId: string;
+  StateId: string;
+  CityId: string;
+  BirthPlace: string;
+  LastAddress: string;
+  CurrentAddressDuration: string;
   Address: string;
 }
 
+interface CountryData {
+  countryId: number;
+  name: string;
+  code: string;
+}
+
+interface StateData {
+  stateId: number;
+  name: string;
+  code: string;
+}
+
+interface CityData {
+  cityId: number;
+  name: string;
+  code: string;
+}
+
 function AdminEmployeesNew() {
-  const { register, reset, handleSubmit, formState } = useForm<ApplicantFormValues>();
+  const {
+    register,
+    reset,
+    handleSubmit,
+    watch,
+    setValue,
+    formState
+  } = useForm<ApplicantFormValues>();
+  const [countries, setCountries] = useState<CountryData[]>([]);
+  const [states, setStates] = useState<StateData[]>([]);
+  const [cities, setCities] = useState<CityData[]>([]);
   const { errors } = formState;
+  const selectedCountry = watch('CountryId');
+  const selectedState = watch('StateId');
+
+  useEffect(() => {
+    fetchCountries()
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          setCountries(data);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, []);
+
+  useEffect(() => {
+    if (!selectedCountry || selectedCountry == 'default') {
+      setStates([]);
+      setValue('StateId', 'default');
+      setValue('CityId', 'default')
+      return;
+    }
+    fetchStatesByCountryId(Number(selectedCountry))
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          setStates(data);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, [selectedCountry, setValue]);
+
+  useEffect(() => {
+    if (!selectedState || selectedState == 'default') {
+      setCities([]);
+      setValue('CityId', 'default')
+      return;
+    }
+    fetchCitiesByStateId(Number(selectedState))
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          setCities(data);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, [selectedState, setValue]);
 
   const addApplicant = async (data: ApplicantFormValues) => {
     if (!errors.FirstName && !errors.LastName &&
       !errors.ProfileImage && !errors.Phone &&
       !errors.Email && !errors.IdentificationNumber &&
       !errors.DateOfBirth && !errors.Gender &&
-      !errors.Address
+      !errors.Address && !errors.CountryId &&
+      !errors.LastAddress && !errors.StateId &&
+      !errors.OtherNames && !errors.BirthPlace &&
+      !errors.CityId && !errors.CurrentAddressDuration
     ) {
       const loader = document.getElementById('query-loader');
       const text = document.getElementById('query-text');
@@ -56,12 +162,19 @@ function AdminEmployeesNew() {
       const formData = new FormData();
       formData.append('FirstName', data.FirstName);
       formData.append('LastName', data.LastName);
+      formData.append('OtherNames', data.OtherNames);
       formData.append('Phone', data.Phone);
       formData.append('Email', data.Email);
       formData.append('IdentificationNumber', data.IdentificationNumber);
       formData.append('DateOfBirth', data.DateOfBirth);
       formData.append('Gender', data.Gender);
       formData.append('Address', data.Address);
+      formData.append('StateId', data.StateId);
+      formData.append('CountryId', data.CountryId);
+      formData.append('CityId', data.CityId);
+      formData.append('BirthPlace', data.BirthPlace);
+      formData.append('LastAddress', data.LastAddress);
+      formData.append('CurrentAddressDuration', data.CurrentAddressDuration);
       formData.append('ProfileImage', data.ProfileImage[0]);
       const res = await createEmployee(formData);
       handleCreateEmployee(res, loader, text, { toast }, reset);
@@ -158,6 +271,27 @@ function AdminEmployeesNew() {
                     <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="lname"
+                      >
+                        Other Names
+                      </label>
+                      <div>
+                        <input
+                          type="text"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('OtherNames', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.OtherNames?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="mobno"
                       >
                         Mobile Number
@@ -246,6 +380,27 @@ function AdminEmployeesNew() {
                     <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="lname"
+                      >
+                        Place Of Birth
+                      </label>
+                      <div>
+                        <input
+                          type="text"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('BirthPlace', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.BirthPlace?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
                         Identification Number (NIN, SSN, SIN)
@@ -291,6 +446,119 @@ function AdminEmployeesNew() {
                         <p className='error-msg'>{errors.Gender?.message}</p>
                       </div>
                     </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Country
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('CountryId', {
+                              required: 'Required',
+                              pattern: {
+                                value: /^(?!default$).+$/,
+                                message: 'Required'
+                              }
+                            })
+                          }
+                        >
+                          <option value="default">Select Country</option>
+                          {
+                            countries.map((data, index) => (
+                              <option key={index} value={data.countryId}>{data.name}</option>
+                            ))
+                          }
+                        </select>
+                        <p className='error-msg'>{errors.CountryId?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        State
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('StateId', {
+                              required: 'Required',
+                              pattern: {
+                                value: /^(?!default$).+$/,
+                                message: 'Required'
+                              }
+                            })
+                          }
+                          disabled={!states.length}
+                        >
+                          <option value="default">Select State</option>
+                          {
+                            states.map((data, index) => (
+                              <option key={index} value={data.stateId}>{data.name}</option>
+                            ))
+                          }
+                        </select>
+                        <p className='error-msg'>{errors.StateId?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        City
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('CityId', {
+                              required: 'Required',
+                              pattern: {
+                                value: /^(?!default$).+$/,
+                                message: 'Required'
+                              }
+                            })
+                          }
+                          disabled={!cities.length}
+                        >
+                          <option value="default">Select City</option>
+                          {
+                            cities.map((data, index) => (
+                              <option key={index} value={data.cityId}>{data.name}</option>
+                            ))
+                          }
+                        </select>
+                        <p className='error-msg'>{errors.CityId?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="lname"
+                      >
+                        How long applicant has lived in current address
+                      </label>
+                      <div>
+                        <input
+                          type="text"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('CurrentAddressDuration', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        />
+                        <p className='error-msg'>{errors.CurrentAddressDuration?.message}</p>
+                      </div>
+                    </div>
                     <div className="lg:col-span-2">
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
@@ -309,6 +577,26 @@ function AdminEmployeesNew() {
                           required
                         ></textarea>
                         <p className='error-msg'>{errors.Address?.message}</p>
+                      </div>
+                    </div>
+                    <div className="lg:col-span-2">
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="Address"
+                      >
+                        Former Address
+                      </label>
+                      <div>
+                        <textarea
+                          className="w-full h-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('LastAddress', {
+                              required: 'Required'
+                            })
+                          }
+                          required
+                        ></textarea>
+                        <p className='error-msg'>{errors.LastAddress?.message}</p>
                       </div>
                     </div>
                   </div>

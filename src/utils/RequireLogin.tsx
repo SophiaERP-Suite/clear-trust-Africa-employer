@@ -7,7 +7,7 @@ export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJwZXRlcnNvbi5vbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4gLSBPcmdhbmlzYXRpb24iLCJqdGkiOiJjZjA1ZDA5OS02Y2IzLTRhNjktOWQ4NC1kNTc4NmE3NDhiODUiLCJleHAiOjE3Njg2ODI5MjAsImlzcyI6IkNsZWFyVHJ1c3RBZnJpY2EiLCJhdWQiOiJDbGVhclRydXN0QWZyaWNhVXNlcnMifQ.TCwu4K8J1LNC5vLRo1qppKv4NJQ25KG6TVLN2MOkZWc";
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJwZXRlcnNvbi5vbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4gLSBPcmdhbmlzYXRpb24iLCJqdGkiOiI4OWE4ODMwMC00NWE4LTQ5M2UtYmFlZi1mYTA3N2Q5MTU1YTgiLCJleHAiOjE3Njg4MjUzMjYsImlzcyI6IkNsZWFyVHJ1c3RBZnJpY2EiLCJhdWQiOiJDbGVhclRydXN0QWZyaWNhVXNlcnMifQ.bGoSjig_4uC-S0ootxpw-oLRuEXVBt_tWJZT0c-Pm5k";
     if (!token) {
       setCheckingAuth(false);
       window.location.replace("https://cleartrustafrica.com/xt/login");

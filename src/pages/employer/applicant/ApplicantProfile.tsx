@@ -33,6 +33,7 @@ interface EmployeeData {
   userId: number;
   firstName: string;
   lastName: string;
+  otherNames: string;
   profileImage: string;
   phone: string;
   email: string;
@@ -42,6 +43,12 @@ interface EmployeeData {
   address: string;
   organisationId: number;
   role: string;
+  countryName: string;
+  stateName: string;
+  cityName: string;
+  birthPlace: string;
+  lastAddress: string;
+  currentAddressDuration: string;
 }
 
 interface DbsChecks {
@@ -501,6 +508,12 @@ function AdminApplicantsNew() {
                     </div>
                     <div className="p-6">
                       <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">Other Names:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{employee.otherNames ?? "None Provided"}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
                         <h6 className="mb-1 dark:text-white">Email:</h6>
                         <p className="mb-3 dark:text-secondary-600">
                           <a href="#">{employee.email}</a>
@@ -525,15 +538,45 @@ function AdminApplicantsNew() {
                         </p>
                       </div>
                       <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">BirthPlace:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{employee.birthPlace ?? "None Provided"}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
                         <h6 className="mb-1 dark:text-white">Identification Number:</h6>
                         <p className="mb-3 dark:text-secondary-600">
                           <a href="#">{employee.identificationNumber}</a>
                         </p>
                       </div>
                       <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">Country:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{employee.countryName ?? "None Provided"}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">State:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{employee.stateName ?? "None Provided"}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">City:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{employee.cityName ?? "None Provided"}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
                         <h6 className="mb-1 dark:text-white">Address:</h6>
                         <p className="mb-3 dark:text-secondary-600">
-                          <a href="#">{employee.address}</a>
+                          <a href="#">{`${employee.address} ${employee.currentAddressDuration && `(${employee.currentAddressDuration})`}`}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">Last Address:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{employee.lastAddress ?? "None Provided"}</a>
                         </p>
                       </div>
                     </div>
@@ -545,12 +588,12 @@ function AdminApplicantsNew() {
                   <div className="relative flex flex-col mb-8  bg-white shadow rounded-xl dark:bg-dark-card">
                     <div className="p-5 border-b dark:border-secondary-800 dark:border-secondary-800 flex justify-between">
                       <h4 className="card-title mb-0 dark:text-white">
-                        DBS Checks
+                        CTA Checks
                       </h4>
                       <div className="relative">
                         <button className="btn btn-success mr-2 mb-2" onClick={() => setOpendbsTypes(!opendbsTypes)}>
                           <Plus size={18} className="mr-2" />
-                          New DBS Check
+                          New CTA Check
                         </button>
                         {opendbsTypes && (<div className="absolute top-8 mt-2 w-30 bg-white border shadow-lg z-1">
                           {
