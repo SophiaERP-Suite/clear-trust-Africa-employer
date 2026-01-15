@@ -393,13 +393,13 @@ function AdminApplicantsNew() {
           {(dbsRequestData && employee) && (
             <div className="h-fit w-80 lg:w-fit">
               <div className="flex justify-start">
-                <p className="font-semibold text-black py-1 text-lg"><UserLock size={22} className="mr-2" /> Request DBS Check for { `${employee.firstName}` }</p>
+                <p className="font-semibold text-black py-1 text-lg"><UserLock size={22} className="mr-2" /> Request CTA Check for { `${employee.firstName}` }</p>
               </div>
               <div className="flex justify-start">
                 <div className="my-2">
                   <p className="py-1">Employee Name: {`${employee.firstName} ${employee.lastName}`}</p>
-                  <p className="py-1">DBS Check Type: {dbsRequestData.typeName}</p>
-                  <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.typeCost.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2})}` }</p>
+                  <p className="py-1">CTA Check Type: {dbsRequestData.typeName}</p>
+                  <p className="py-1">CTA Check Cost: { `NGN ${dbsRequestData.typeCost.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2})}` }</p>
                 </div>
               </div>
               
