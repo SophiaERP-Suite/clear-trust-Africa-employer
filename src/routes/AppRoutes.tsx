@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Dashboard from "../pages/employer/Dashboard";
 import EmployerLayout from "../layout/EmployerLayout";
 import ApplicantNew from "../pages/employer/applicant/ApplicantNew";
@@ -8,7 +8,7 @@ import DBSTrackerModule from "../pages/employer/Tracker/DbsTracker";
 import Incidents from "../pages/employer/incident/incident";
 import Reports from "../pages/employer/reports/Reports";
 import CommunicationsPage from "../pages/employer/communication/Communication";
-import PaymentDashboard from "../pages/employer/Payment";
+import PaymentDashboard from "../pages/employer/payment/Payment";
 import ControlPanel from "../pages/employer/controlpanel/ControlPanel";
 import Pricing from "../pages/employer/pricing/Pricing";
 import Profile from "../pages/employer/employer/EmployerProfile";
@@ -27,13 +27,17 @@ function AppRoutes() {
         <Route path="Dashboard" element={<Dashboard />} />
         <Route path="Employee" element={<Applicants />} />
         <Route path="EmployeeNew" element={<ApplicantNew />} />
+        <Route path="/EmployeeNew/:id" element={<ApplicantNew />} />
         <Route path="EmployeeProfile/:id" element={<ApplicantProfile />} />
         <Route path="ProfileUpdate" element={<ProfileUpdate />} />
         <Route path="Profile" element={<Profile />} />
         <Route path="Tracker" element={<DBSTrackerModule />} />
         <Route path="IncidentMgt" element={<Incidents />} />
         <Route path="IncidentReportForm" element={<IncidentReportForm />} />
-        <Route path="/IncidentReportEdit/:id" element={<IncidentReportForm />} />
+        <Route
+          path="/IncidentReportEdit/:id"
+          element={<IncidentReportForm />}
+        />
         <Route
           path="IncidentReportDetails/:irid"
           element={<IncidentReportDetails />}

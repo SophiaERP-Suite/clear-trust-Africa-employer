@@ -1,58 +1,73 @@
 const BaseURL = "http://localhost:5181";
 
-export const fetchApplicants = async (pageNumber=1, limit=10) => {
-  const token = localStorage.getItem('accessToken');
-  const response = await fetch(`${BaseURL}/applicants?pageNumber=${pageNumber}&limit=${limit}`, {
-    method: 'GET',
-    headers: {
-      "Authorization": `Bearer ${token}`
+export const fetchApplicants = async (pageNumber = 1, limit = 10) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await fetch(
+    `${BaseURL}/applicants?pageNumber=${pageNumber}&limit=${limit}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
-  })
-  return response
-}
+  );
+  return response;
+};
 
 export const fetchApplicantById = async (applicantId: number) => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem("accessToken");
   const response = await fetch(`${BaseURL}/applicants/${applicantId}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      "Authorization": `Bearer ${token}`
-    }
-  })
-  return response
-}
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};
 
 export const createEmployee = async (data: FormData) => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem("accessToken");
   const response = await fetch(`${BaseURL}/applicants`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     body: data,
-  })
-  return response
-}
+  });
+  return response;
+};
+
+export const updateEmployee = async (data: FormData, employeeId: number) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await fetch(`${BaseURL}/applicants/${employeeId}/update`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: data,
+  });
+  return response;
+};
 
 export const uploadDocuments = async (data: FormData) => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem("accessToken");
   const response = await fetch(`${BaseURL}/applicants/docs`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     body: data,
-  })
-  return response
-}
+  });
+  return response;
+};
 
 export const fetchApplicantDocsById = async (applicantId: number) => {
-  const token = localStorage.getItem('accessToken');
+  const token = localStorage.getItem("accessToken");
   const response = await fetch(`${BaseURL}/applicants/${applicantId}/docs`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      "Authorization": `Bearer ${token}`
-    }
-  })
-  return response
-}
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};

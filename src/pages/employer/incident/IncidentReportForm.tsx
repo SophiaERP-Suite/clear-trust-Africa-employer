@@ -256,7 +256,6 @@ export default function IncidentReportForm() {
         incidentLocation: formData.incidentLocation,
         reportedById: Number(formData.reporterId),
         accusedEmployeeId: Number(formData.accusedEmployeeId) || 0,
-        // recordedById: Number(formData.recorderId) || 0,
         severityLevel: formData.severityLevel,
         notifyEmployee: formData.notifyEmployee,
         hasInjury: formData.hasInjury,

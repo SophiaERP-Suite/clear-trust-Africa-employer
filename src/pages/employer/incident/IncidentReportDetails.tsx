@@ -13,6 +13,7 @@ import {
   Eye,
   ArrowUpNarrowWide,
   CheckCheck,
+  ArrowRight,
 } from "lucide-react";
 import hashids from "../../../utils/hashids";
 import {
@@ -24,9 +25,12 @@ import { toast, ToastContainer } from "react-toastify";
 import { useAuth } from "../../../utils/useAuth";
 import ChatPanel from "../../../utils/ChatPanel";
 import Modal from "../../../utils/modal";
-import { fetchDbsPartners } from "../../../utils/Requests/IncidentEscalationRequests";
+import {
+  fetchDbsPartners,
+  fetchEscalations,
+} from "../../../utils/Requests/IncidentEscalationRequests";
 
-interface IncidentReport {
+export interface IncidentReport {
   incidentReportId: number;
   incidentTitle: string;
   incidentTypeId: number;
@@ -56,6 +60,11 @@ export interface DbsPartners {
   partnerName: string;
 }
 
+export interface EscalationDto {
+  partnerId: number;
+  partnerName: string;
+}
+
 type ModalType = "add" | "edit" | "delete" | null;
 
 export default function IncidentDetails() {
@@ -63,6 +72,7 @@ export default function IncidentDetails() {
   const decoded = hashids.decode(irid || "");
   const originalId = decoded.length > 0 ? Number(decoded[0]) : null;
   const [attachments, setAttachments] = useState<IncidentAttachment[]>([]);
+  const [escalation, setEscalation] = useState<EscalationDto[]>([]);
   const [incident, setIncident] = useState<IncidentReport | null>(null);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -109,7 +119,8 @@ export default function IncidentDetails() {
 
   useEffect(() => {
     getDbsPartners();
-  }, []);
+    getEscalations(Number(originalId));
+  }, [originalId]);
 
   const getDbsPartners = async () => {
     try {
@@ -122,19 +133,27 @@ export default function IncidentDetails() {
     }
   };
 
+  const getEscalations = async (originalId: number) => {
+    try {
+      const data = await fetchEscalations(originalId);
+      setEscalation(data);
+    } catch (err: any) {
+      console.error("Error fetching partners:", err);
+      toast.error("Failed to load partners");
+    }
+  };
+
   useEffect(() => {
     if (user) {
       setCurrentUserId(user?.userId);
       setCurrentUserName(user?.lastName + " " + user?.firstName);
     }
-  }, [user]);
 
-  useEffect(() => {
     fetchIncidentDetails();
     if (originalId) {
       fetchIncidentAttachments(Number(originalId));
     }
-  }, [originalId]);
+  }, [user, originalId]);
 
   const fetchIncidentDetails = async () => {
     if (!originalId) return;
@@ -335,6 +354,7 @@ export default function IncidentDetails() {
         return;
       }
 
+      getEscalations(Number(originalId));
       toast.success("Escalation created successfully");
       closeModal();
     } catch (error) {
@@ -444,7 +464,7 @@ export default function IncidentDetails() {
                           </button>
 
                           <button
-                            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 gap-3"
+                            className="hidden items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 gap-3"
                             onClick={() => {
                               setIsOpen(false);
                               openAddModal();
@@ -455,7 +475,7 @@ export default function IncidentDetails() {
                           </button>
 
                           <button
-                            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 gap-3"
+                            className="hidden items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 gap-3"
                             onClick={() => {
                               setIsOpen(false);
                               setShowChat(true);
@@ -468,7 +488,7 @@ export default function IncidentDetails() {
                           <div className="border-t my-1"></div>
 
                           <button
-                            className="flex items-center w-full px-4 py-2 text-sm text-green-600 hover:bg-red-50 gap-3"
+                            className="hidden items-center w-full px-4 py-2 text-sm text-green-600 hover:bg-red-50 gap-3"
                             onClick={() => {
                               if (
                                 window.confirm(
@@ -484,7 +504,10 @@ export default function IncidentDetails() {
                             <CheckCheck size={16} />
                             Confirm Closure
                           </button>
-                          {/* <button
+
+                          <div className="hidden border-t my-1"></div>
+
+                          <button
                             className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 gap-3"
                             onClick={() => {
                               if (
@@ -500,7 +523,7 @@ export default function IncidentDetails() {
                           >
                             <Trash2 size={16} />
                             Delete Report
-                          </button> */}
+                          </button>
                         </div>
                       </div>
                     )}
@@ -689,7 +712,14 @@ export default function IncidentDetails() {
                             {att.fileName}
                           </p>
                           <p className="text-xs text-gray-500">
-                            {new Date(att.dateCreated).toLocaleDateString()}
+                            {new Date(att.dateCreated).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )}
                           </p>
                         </div>
                       </div>
@@ -753,6 +783,32 @@ export default function IncidentDetails() {
                 </p>
               </div>
             </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-lg mt-6">
+            <div className="border-b">
+              <div className="p-5">
+                <h4 className="text-lg font-bold">
+                  Escalations ({escalation.length})
+                </h4>
+              </div>
+            </div>
+            {escalation && (
+              <div className="space-y-4 p-5">
+                {escalation.map((e) => (
+                  <div>
+                    <p className="text-sm text-black mb-1">
+                      <ArrowRight /> {e.partnerName}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {escalation.length === 0 && (
+              <div className="pb-3 text-center text-black">
+                There are no escalations
+              </div>
+            )}
           </div>
         </div>
       </div>

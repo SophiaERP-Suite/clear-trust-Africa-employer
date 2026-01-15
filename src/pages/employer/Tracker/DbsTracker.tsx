@@ -6,7 +6,6 @@ import {
   Search,
   Filter,
   Download,
-  // Plus,
   Eye,
   RefreshCw,
   FileText,
@@ -19,16 +18,14 @@ import {
   ChevronRightIcon,
 } from "lucide-react";
 
-export default function DBSTrackerModule() {
+export default function CTTrackerModule() {
   const [activeView, setActiveView] = useState("dashboard");
-  //   const [selectedCheck, setSelectedCheck] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Sample DBS checks data
-  const dbsChecks = [
+  const CTChecks = [
     {
-      id: "DBS-2025-001",
+      id: "CT-2025-001",
       employeeName: "Sarah Johnson",
       employeeId: "EMP-1001",
       department: "Healthcare",
@@ -38,7 +35,7 @@ export default function DBSTrackerModule() {
       applicationDate: "2025-01-05",
       issueDate: "2025-01-20",
       expiryDate: "2025-01-20",
-      certificateNumber: "DBS-001234567890",
+      certificateNumber: "CT-001234567890",
       result: "Clear",
       updateService: true,
       lastUpdated: "2025-01-28",
@@ -47,7 +44,7 @@ export default function DBSTrackerModule() {
         "https://ui-avatars.com/api/?name=Sarah+Johnson&background=10b981&color=fff",
     },
     {
-      id: "DBS-2025-002",
+      id: "CT-2025-002",
       employeeName: "Michael Chen",
       employeeId: "EMP-1002",
       department: "Education",
@@ -57,7 +54,7 @@ export default function DBSTrackerModule() {
       applicationDate: "2023-11-10",
       issueDate: "2023-11-25",
       expiryDate: "2025-11-25",
-      certificateNumber: "DBS-001234567891",
+      certificateNumber: "CT-001234567891",
       result: "Clear",
       updateService: true,
       lastUpdated: "2025-01-15",
@@ -66,7 +63,7 @@ export default function DBSTrackerModule() {
         "https://ui-avatars.com/api/?name=Michael+Chen&background=3b82f6&color=fff",
     },
     {
-      id: "DBS-2025-003",
+      id: "CT-2025-003",
       employeeName: "Emma Williams",
       employeeId: "EMP-1003",
       department: "Social Care",
@@ -76,7 +73,7 @@ export default function DBSTrackerModule() {
       applicationDate: "2022-12-01",
       issueDate: "2022-12-18",
       expiryDate: "2023-12-18",
-      certificateNumber: "DBS-001234567892",
+      certificateNumber: "CT-001234567892",
       result: "Clear",
       updateService: false,
       lastUpdated: "2023-06-10",
@@ -85,7 +82,7 @@ export default function DBSTrackerModule() {
         "https://ui-avatars.com/api/?name=Emma+Williams&background=ef4444&color=fff",
     },
     {
-      id: "DBS-2025-004",
+      id: "CT-2025-004",
       employeeName: "James Anderson",
       employeeId: "EMP-1004",
       department: "Administration",
@@ -104,7 +101,7 @@ export default function DBSTrackerModule() {
         "https://ui-avatars.com/api/?name=James+Anderson&background=f59e0b&color=fff",
     },
     {
-      id: "DBS-2025-005",
+      id: "CT-2025-005",
       employeeName: "Lisa Martinez",
       employeeId: "EMP-1005",
       department: "Healthcare",
@@ -123,7 +120,7 @@ export default function DBSTrackerModule() {
         "https://ui-avatars.com/api/?name=Lisa+Martinez&background=8b5cf6&color=fff",
     },
     {
-      id: "DBS-2025-006",
+      id: "CT-2025-006",
       employeeName: "David Thompson",
       employeeId: "EMP-1006",
       department: "Education",
@@ -133,7 +130,7 @@ export default function DBSTrackerModule() {
       applicationDate: "2023-09-15",
       issueDate: "2023-10-02",
       expiryDate: "2025-10-02",
-      certificateNumber: "DBS-001234567893",
+      certificateNumber: "CT-001234567893",
       result: "Clear",
       updateService: true,
       lastUpdated: "2025-01-10",
@@ -145,16 +142,16 @@ export default function DBSTrackerModule() {
 
   // Dashboard statistics
   const stats = {
-    total: dbsChecks.length,
-    valid: dbsChecks.filter((c) => c.status === "Valid").length,
-    expiringSoon: dbsChecks.filter((c) => c.status === "Expiring Soon").length,
-    expired: dbsChecks.filter((c) => c.status === "Expired").length,
-    pending: dbsChecks.filter(
+    total: CTChecks.length,
+    valid: CTChecks.filter((c) => c.status === "Valid").length,
+    expiringSoon: CTChecks.filter((c) => c.status === "Expiring Soon").length,
+    expired: CTChecks.filter((c) => c.status === "Expired").length,
+    pending: CTChecks.filter(
       (c) => c.status === "Pending" || c.status === "Under Review"
     ).length,
     complianceRate: Math.round(
-      (dbsChecks.filter((c) => c.status === "Valid").length /
-        dbsChecks.length) *
+      (CTChecks.filter((c) => c.status === "Valid").length /
+        CTChecks.length) *
         100
     ),
   };
@@ -181,7 +178,7 @@ export default function DBSTrackerModule() {
   //     }
   //   };
 
-  const filteredChecks = dbsChecks.filter((check) => {
+  const filteredChecks = CTChecks.filter((check) => {
     const matchesSearch =
       check.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       check.employeeId.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -205,10 +202,10 @@ export default function DBSTrackerModule() {
                   <Shield className="text-[rgb(112_22_208/0.9)] mr-2" size={36} />
                   <div>
                     <h3 className="mb-0 text-black">
-                      DBS Tracker & Compliance
+                      CT Tracker & Compliance
                     </h3>
                     <p className="text-secondary-600 text-black">
-                      Dashboard <ChevronRightIcon size={14} /> DBS Tracker{" "}
+                      Dashboard <ChevronRightIcon size={14} /> CT Tracker{" "}
                     </p>
                   </div>
                 </div>
@@ -337,7 +334,7 @@ export default function DBSTrackerModule() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4">
                 <div className="space-y-3">
-                  {dbsChecks
+                  {CTChecks
                     .filter((c) => c.status === "Expiring Soon")
                     .map((check) => (
                       <div
@@ -380,7 +377,7 @@ export default function DBSTrackerModule() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4">
                 <div className="space-y-3">
-                  {dbsChecks
+                  {CTChecks
                     .filter((c) => c.status === "Expired")
                     .map((check) => (
                       <div
@@ -426,7 +423,7 @@ export default function DBSTrackerModule() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 p-4">
                 <div className="space-y-3">
-                  {dbsChecks
+                  {CTChecks
                     .filter(
                       (c) =>
                         c.status === "Pending" || c.status === "Under Review"
@@ -481,7 +478,7 @@ export default function DBSTrackerModule() {
                   />
                   <input
                     type="text"
-                    placeholder="Search by name, employee ID, or DBS number..."
+                    placeholder="Search by name, employee ID, or CT number..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -650,14 +647,14 @@ export default function DBSTrackerModule() {
               <AlertTriangle className="text-red-600 mt-1" size={24} />
               <div className="flex-1">
                 <h3 className="font-bold text-red-900 mb-2">
-                  Critical: Expired DBS Checks
+                  Critical: Expired CT Checks
                 </h3>
                 <p className="text-red-700 mb-4">
-                  {stats.expired} employee(s) have expired DBS checks and may
+                  {stats.expired} employee(s) have expired CT checks and may
                   not be compliant to work in regulated positions.
                 </p>
                 <div className="space-y-2">
-                  {dbsChecks
+                  {CTChecks
                     .filter((c) => c.status === "Expired")
                     .map((check) => (
                       <div
@@ -692,11 +689,11 @@ export default function DBSTrackerModule() {
                   Warning: Expiring Soon
                 </h3>
                 <p className="text-yellow-700 mb-4">
-                  {stats.expiringSoon} DBS check(s) will expire within the next
+                  {stats.expiringSoon} CT check(s) will expire within the next
                   30 days. Renewal should be initiated immediately.
                 </p>
                 <div className="space-y-2">
-                  {dbsChecks
+                  {CTChecks
                     .filter((c) => c.status === "Expiring Soon")
                     .map((check) => (
                       <div

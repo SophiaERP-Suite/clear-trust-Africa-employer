@@ -30,6 +30,7 @@ interface DataResponse {
   }
 }
 
+
 export const handleCreateEmployee = async (res: any, loader: HTMLElement | null, text: HTMLElement | null, { toast }: Props, reset: any, msg="Data added successfully") => {
   try {
     if (loader) {
@@ -61,6 +62,7 @@ export const handleCreateEmployee = async (res: any, loader: HTMLElement | null,
           toast.warning(responseData.message);
           console.log(responseData.message);
         }
+       
       } catch (error: any) {
         console.error("Parsing error:", error.message);
         console.log(resText);

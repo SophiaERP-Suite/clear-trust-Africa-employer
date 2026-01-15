@@ -16,15 +16,27 @@ import "../../../assets2/js/libs.min.js";
 import "../../../assets2/js/slider-tabs.js";
 import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
-import { ChevronRightIcon, Plus, Users, UserLock, Trash2, Eye, CheckCheck, X } from "lucide-react";
+import {
+  ChevronRightIcon,
+  Plus,
+  Users,
+  UserLock,
+  Trash2,
+  Eye,
+  CheckCheck,
+  X,
+} from "lucide-react";
 import { fetchApplicants } from "../../../utils/Requests/EmployeeRequests.js";
-import Tippy from '@tippyjs/react';
+import Tippy from "@tippyjs/react";
 import { NavLink } from "react-router-dom";
 import Hashids from "hashids";
-import { fetchDbsTypes, submitDbsRequest } from "../../../utils/Requests/DbsRequests.js";
-import Modal from 'react-modal';
+import {
+  fetchDbsTypes,
+  submitDbsRequest,
+} from "../../../utils/Requests/DbsRequests.js";
+import Modal from "react-modal";
 import { handleDbsRequest } from "../../../utils/ResponseHandlers/DbsResponse.js";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 interface EmployeeData {
   userId: number;
@@ -42,7 +54,7 @@ interface EmployeeData {
 }
 
 export interface DbsTypes {
-  dbsApplicationTypeId: number;
+  dbsTypeId: number;
   typeName: string;
   typeCost: number;
 }
@@ -58,83 +70,85 @@ function AdminEmployees() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [dbsTypes, setDbsTypes] = useState<DbsTypes[]>([]);
-  const hashIds = new Hashids('ClearTrustAfricaEncode', 10);
+  const hashIds = new Hashids("ClearTrustAfricaEncode", 10);
   const [openRowId, setOpenRowId] = useState<string | null>(null);
   const [modalState, setModalState] = useState(false);
-  const [dbsRequestData, setDbsRequestData] = useState<DbsCheckRequest | null>(null);
+  const [dbsRequestData, setDbsRequestData] = useState<DbsCheckRequest | null>(
+    null
+  );
 
   const toggleDropDrown = (id: string) => {
-    setOpenRowId(prev => (prev === id ? null : id));
-  }
+    setOpenRowId((prev) => (prev === id ? null : id));
+  };
 
   useEffect(() => {
     fetchApplicants(page, limit)
-    .then(res => {
-      if (res.status === 200) {
-        res.json()
-        .then(data => {
-          console.log(data);
-          setEmployees(data.data.users);
-          setTotalEmployees(data.data.totalCount);
-        })
-      } else {
-        res.text()
-        .then(data => {
-          console.log(JSON.parse(data));
-        })
-      }
-    })
-    .catch((err) => console.log(err))
+      .then((res) => {
+        if (res.status === 200) {
+          res.json().then((data) => {
+            console.log(data);
+            setEmployees(data.data.users);
+            setTotalEmployees(data.data.totalCount);
+          });
+        } else {
+          res.text().then((data) => {
+            console.log(JSON.parse(data));
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   }, [page, limit]);
 
   const submitRequest = async (data: DbsCheckRequest) => {
-    const loader = document.getElementById('query-loader');
-    const text = document.getElementById('query-text');
+    const loader = document.getElementById("query-loader");
+    const text = document.getElementById("query-text");
     if (loader) {
-      loader.style.display = 'flex';
+      loader.style.display = "flex";
     }
     if (text) {
-      text.style.display = 'none';
+      text.style.display = "none";
     }
     const formData = new FormData();
-    formData.append('UserId', String(data.employee.userId));
-    formData.append('DbsApplicationTypeId', String(data.requestType.dbsApplicationTypeId));
-    formData.append('Status', String(data.requestType.typeCost > 0 ? 1 : 2));
+    formData.append("UserId", String(data.employee.userId));
+    formData.append(
+      "dbsTypeId",
+      String(data.requestType.dbsTypeId)
+    );
+    formData.append("Status", String(data.requestType.typeCost > 0 ? 1 : 2));
     const res = await submitDbsRequest(formData);
-    handleDbsRequest(res, loader, text, { toast })
-    .finally(() => setModalState(false));
-  }
+    handleDbsRequest(res, loader, text, { toast }).finally(() =>
+      setModalState(false)
+    );
+  };
 
   const switchData = (data: DbsCheckRequest) => {
-    toggleDropDrown('');
+    toggleDropDrown("");
     setDbsRequestData(data);
     setModalState(true);
-  }
+  };
 
   useEffect(() => {
     fetchDbsTypes()
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
-          res.json()
-            .then(data => {
-              console.log(data);
-              setDbsTypes(data.data);
-            })
+          res.json().then((data) => {
+            console.log(data);
+            setDbsTypes(data.data);
+          });
         } else {
-          res.text()
-            .then(data => {
-              console.log(JSON.parse(data));
-            })
+          res.text().then((data) => {
+            console.log(JSON.parse(data));
+          });
         }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
   }, []);
 
   const refetchData = async () => {
     try {
       const res = await fetchApplicants(page, limit);
       if (res.status === 200) {
-        const data = await res.json()
+        const data = await res.json();
         setEmployees(data.data.users);
         setTotalEmployees(data.data.totalCount);
       } else {
@@ -142,47 +156,71 @@ function AdminEmployees() {
         console.log(JSON.parse(resText));
       }
     } catch (err) {
-       console.log(err)
+      console.log(err);
     }
-  }
+  };
   return (
     <>
-      <Modal isOpen={modalState} onRequestClose={() => { setModalState(false); }}
+      <Modal
+        isOpen={modalState}
+        onRequestClose={() => {
+          setModalState(false);
+        }}
         style={{
-        content: {
-          width: 'fit-content',
-          height: 'fit-content',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          backgroundColor: 'rgb(255 255 255)',
-          borderRadius: '0.5rem',
-          boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'
-        },
-        overlay: {
-          backgroundColor: 'rgba(255, 255, 255, 0.7)'
-        }
-      }}
+          content: {
+            width: "fit-content",
+            height: "fit-content",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "rgb(255 255 255)",
+            borderRadius: "0.5rem",
+            boxShadow:
+              "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+          },
+          overlay: {
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
+          },
+        }}
       >
         {dbsRequestData && (
           <div className="h-fit w-80 lg:w-fit">
             <div className="flex justify-start">
-              <p className="font-semibold text-black py-1 text-lg"><UserLock size={22} className="mr-2" /> Request DBS Check for { `${dbsRequestData.employee.firstName}` }</p>
+              <p className="font-semibold text-black py-1 text-lg">
+                <UserLock size={22} className="mr-2" /> Request DBS Check for{" "}
+                {`${dbsRequestData.employee.firstName}`}
+              </p>
             </div>
             <div className="flex justify-start">
               <div className="my-2">
-                <p className="py-1">Employee Name: {`${dbsRequestData.employee.firstName} ${dbsRequestData.employee.lastName}`}</p>
-                <p className="py-1">DBS Check Type: {dbsRequestData.requestType.typeName}</p>
-                <p className="py-1">DBS Check Cost: { `NGN ${dbsRequestData.requestType.typeCost.toFixed(2)}` }</p>
+                <p className="py-1">
+                  Employee Name:{" "}
+                  {`${dbsRequestData.employee.firstName} ${dbsRequestData.employee.lastName}`}
+                </p>
+                <p className="py-1">
+                  DBS Check Type: {dbsRequestData.requestType.typeName}
+                </p>
+                <p className="py-1">
+                  DBS Check Cost:{" "}
+                  {`NGN ${dbsRequestData.requestType.typeCost.toFixed(2)}`}
+                </p>
               </div>
             </div>
-            
+
             <div className="flex justify-end my-2 gap-2">
-              <button className="btn text-white bg-black" onClick={() => setModalState(false) }>
+              <button
+                className="btn text-white bg-black"
+                onClick={() => setModalState(false)}
+              >
                 <X size={18} className="mr-2" />
                 Cancel
               </button>
-              <button className="btn btn-success" onClick={() => {submitRequest(dbsRequestData)}}>
+              <button
+                className="btn btn-success"
+                onClick={() => {
+                  submitRequest(dbsRequestData);
+                }}
+              >
                 <div className="dots hidden" id="query-loader">
                   <div className="dot"></div>
                   <div className="dot"></div>
@@ -196,8 +234,8 @@ function AdminEmployees() {
             </div>
           </div>
         )}
-        
       </Modal>
+
       <div
         className="p-6 lg:p-8 footer-inner mx-auto main-container container"
         x-bind:className="setting.page_layout"
@@ -208,13 +246,9 @@ function AdminEmployees() {
             <div>
               <h3 className="mb-0 text-black">Employee Management</h3>
               <p className="text-secondary-600">
-                <NavLink to="/Dashboard">
-                  Dashboard
-                </NavLink>
+                <NavLink to="/Dashboard">Dashboard</NavLink>
                 <ChevronRightIcon size={14} />
-                <NavLink to="/Employee">
-                  Employee Mgt {" "}
-                </NavLink>
+                <NavLink to="/Employee">Employee Mgt </NavLink>
               </p>
             </div>
           </div>
@@ -226,19 +260,17 @@ function AdminEmployees() {
           </div>
         </div>
 
-        <div className="flex flex-wrap rounded-md contet-inner">
+        <div className="flex flex-wrap rounded-lg contet-inner">
           <div className="flex-auto w-full">
-            <div className="relative flex flex-col mb-8  bg-white dark:bg-dark-card shadow rounded">
-              <div className="flex justify-between flex-auto p-5 border-b dark:border-secondary-800 rounded">
-                <h4 className="mb-0 font-bold">
-                  Employees List
-                </h4>
+            <div className="relative flex flex-col mb-8  bg-white dark:bg-dark-card shadow rounded-lg">
+              <div className="flex justify-between flex-auto p-5 border-b dark:border-secondary-800">
+                <h4 className="mb-0 font-bold">Employees List</h4>
                 <a href="/ApplicantNew"></a>
               </div>
               <div className="pb-6 pt-2 px-0">
                 <div className="overflow-x-hidden">
                   <div className=" overflow-x-hidden p-5">
-                    <div className="flex flex-wrap justify-between my-6 mx-5">
+                    <div className="flex flex-wrap justify-between my-2">
                       <div className="flex justify-center items-center mb-1">
                         <label
                           className="inline-block text-black dark:text-white"
@@ -252,7 +284,10 @@ function AdminEmployees() {
                             aria-label=".form-select-sm example"
                             id="show"
                             value={limit}
-                            onChange={(e) => { setLimit(Number(e.target.value)); refetchData(); }}
+                            onChange={(e) => {
+                              setLimit(Number(e.target.value));
+                              refetchData();
+                            }}
                           >
                             <option value={10}>10</option>
                             <option value={25}>25</option>
@@ -275,8 +310,11 @@ function AdminEmployees() {
                         />
                       </div>
                     </div>
-                    <div className="flex flex-wrap justify-between mx-5 overflow-x-auto">
-                      <table className="min-w-full divide-y divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
+                    <div className="border dark:border-secondary-800 rounded-lg overflow-x-auto">
+                      <table
+                        id="basic-table"
+                        className="min-w-full overflow-hidden divide-y divide-secondary-200 dark:divide-secondary-800"
+                      >
                         <thead>
                           <tr className="bg-secondary-100 dark:bg-dark-bg">
                             <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
@@ -303,8 +341,7 @@ function AdminEmployees() {
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-secondary-200 dark:divide-secondary-800">
-                          {
-                            employees.map((data: EmployeeData, index) => (
+                          {employees.map((data: EmployeeData, index) => (
                             <tr key={data.userId ?? index}>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <div className="iq-media-group iq-media-group-1">
@@ -315,7 +352,12 @@ function AdminEmployees() {
                                 </div>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
-                                <NavLink to={`/EmployeeProfile/${hashIds.encode(String(data.userId))}`} className="flex items-center">
+                                <NavLink
+                                  to={`/EmployeeProfile/${hashIds.encode(
+                                    String(data.userId)
+                                  )}`}
+                                  className="flex items-center"
+                                >
                                   <img
                                     className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
                                     src={data.profileImage}
@@ -336,37 +378,57 @@ function AdminEmployees() {
                                 {data.gender}
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
-                                {(new Date(data.dateOfBirth)).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                {new Date(data.dateOfBirth).toLocaleDateString(
+                                  "en-GB",
+                                  {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                  }
+                                )}
                               </td>
                               <td className="px-6 py-4">
                                 <div className="flex items-center list-user-action">
-                                  <Tippy content='Request New DBS Check'>
+                                  <Tippy content="Request New DBS Check">
                                     <a
                                       className="btn btn-primary btn-icon btn-sm mr-1"
                                       href="#"
-                                        type="button"
-                                        onClick={() => toggleDropDrown(String(data.userId))}
+                                      type="button"
+                                      onClick={() =>
+                                        toggleDropDrown(String(data.userId))
+                                      }
                                     >
                                       <span className="btn-inner">
                                         <UserLock />
                                       </span>
                                     </a>
                                   </Tippy>
-                                  {
-                                    openRowId === String(data.userId) && (
-                                      <div className="absolute right-8 mt-2 w-30 bg-white border shadow-lg z-1">
-                                        {
-                                            dbsTypes.map((dbsData, index) => (
-                                            <button key={dbsData.dbsApplicationTypeId ?? index} onClick={() => switchData({ requestType: dbsData, employee: data })} className="block w-full px-4 py-2 hover:bg-secondary-200 text-left">
-                                              {`${dbsData.typeName}`}
-                                            </button>
-                                          ))
-                                        }
-                                      </div>
-                                    )
-                                  }
-                                  <Tippy content='Preview Applicant Profile'>
-                                    <NavLink  to={`/EmployeeProfile/${hashIds.encode(String(data.userId))}`}
+                                  {openRowId === String(data.userId) && (
+                                    <div className="absolute right-8 mt-2 w-30 bg-white border shadow-lg z-1">
+                                      {dbsTypes.map((dbsData, index) => (
+                                        <button
+                                          key={
+                                            dbsData.dbsTypeId ??
+                                            index
+                                          }
+                                          onClick={() =>
+                                            switchData({
+                                              requestType: dbsData,
+                                              employee: data,
+                                            })
+                                          }
+                                          className="block w-full px-4 py-2 hover:bg-secondary-200 text-left"
+                                        >
+                                          {`${dbsData.typeName}`}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  )}
+                                  <Tippy content="Preview Applicant Profile">
+                                    <NavLink
+                                      to={`/EmployeeProfile/${hashIds.encode(
+                                        String(data.userId)
+                                      )}`}
                                       className="btn btn-info btn-icon btn-sm mr-1"
                                     >
                                       <span className="btn-inner">
@@ -374,7 +436,7 @@ function AdminEmployees() {
                                       </span>
                                     </NavLink>
                                   </Tippy>
-                                  <Tippy content='Remove Applicant'>
+                                  <Tippy content="Remove Applicant">
                                     <a
                                       className="btn btn-danger btn-icon btn-sm mr-1"
                                       href="#"
@@ -388,52 +450,67 @@ function AdminEmployees() {
                                 </div>
                               </td>
                             </tr>
-                            ))
-                          }
-                          {
-                            employees.length === 0 ? <tr>
-                              <div className="px-6 py-4 whitespace-nowrap">
-                                <span  className="px-6 py-4 text-left font-medium text-black dark:text-white">There are currently no registered employees in your organization</span>
-                              </div>
-                            </tr> : <></>
-                          }
+                          ))}
                         </tbody>
                       </table>
+                      {employees.length === 0 ? (
+                        <p className="px-6 py-4 text-center whitespace-nowrap">
+                          <span className="px-6 py-4 text-center font-medium text-black dark:text-white">
+                            There are currently no registered employees in your
+                            organization
+                          </span>
+                        </p>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                     <div className="flex flex-wrap justify-between my-6 mx-5">
-                        <div className="flex justify-center items-center mb-1">
-                          <p className="text-black">
-                            Showing { employees.length > 0 ? ((page * limit) - limit) + 1 : 0 } to { employees.length > 0 ? (((page * limit) - limit) + 1) + (employees.length - 1) : 0 } of { totalEmployees } entries
-                          </p>
-                        </div>
-                        <div className="inline-flex flex-wrap">
-                          {
-                            page > 1 && <a
+                      <div className="flex justify-center items-center mb-1">
+                        <p className="text-black">
+                          Showing{" "}
+                          {employees.length > 0 ? page * limit - limit + 1 : 0}{" "}
+                          to{" "}
+                          {employees.length > 0
+                            ? page * limit - limit + 1 + (employees.length - 1)
+                            : 0}{" "}
+                          of {totalEmployees} entries
+                        </p>
+                      </div>
+                      <div className="inline-flex flex-wrap">
+                        {page > 1 && (
+                          <a
                             href="#"
-                            onClick={() => { if (page > 1) {setPage(page - 1); refetchData();} }}
-                            className="border-t border-b border-l text-primary-500 border-secondary-500 px-2 py-1 rounded-l dark:border-secondary-800"
+                            onClick={() => {
+                              if (page > 1) {
+                                setPage(page - 1);
+                                refetchData();
+                              }
+                            }}
+                            className="border-t border-b border-l rounded-md text-primary-500 border-secondary-500 px-2 py-1 rounded-l dark:border-secondary-800"
                           >
                             Previous
                           </a>
-                          }
+                        )}
+                        <a
+                          href="#"
+                          className="border text-white border-secondary-500 rounded-md cursor-pointer bg-primary-500 px-4 py-1 dark:border-secondary-800"
+                        >
+                          {page}
+                        </a>
+                        {page * limit < totalEmployees && (
                           <a
                             href="#"
-                            className="border text-white border-secondary-500 cursor-pointer bg-primary-500 px-4 py-1 dark:border-secondary-800"
-                          >
-                            { page }
-                          </a>
-                          {
-                            (page * limit) < totalEmployees && <a
-                            href="#"
-                            onClick={() => { setPage(page + 1); refetchData(); }}
-                            className="border-r border-t border-b text-primary-500 border-secondary-500 px-4 py-1 rounded-r dark:border-secondary-800"
+                            onClick={() => {
+                              setPage(page + 1);
+                              refetchData();
+                            }}
+                            className="border-r border-t border-b text-primary-500 border-secondary-500 px-4 py-1 rounded-md dark:border-secondary-800"
                           >
                             Next
                           </a>
-                          }
-                          
-                        </div>
+                        )}
                       </div>
+                    </div>
                   </div>
                 </div>
               </div>

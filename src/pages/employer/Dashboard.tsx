@@ -64,13 +64,13 @@ function EmployerDashboard() {
             </div>
           </div>
 
-          {/* Pending DBS Checks */}
+          {/* Pending CT Checks */}
           <div className="flex items-center gap-4 p-5 bg-gradient-to-r from-orange-500 to-orange-400 rounded-lg shadow-md hover:shadow-lg transition">
             <div className="bg-white/20 w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-sm">
               <Clipboard size={36} className="text-white" />
             </div>
             <div>
-              <p className="text-sm text-orange-50">Pending DBS Checks</p>
+              <p className="text-sm text-orange-50">Pending CT Checks</p>
               <h2 className="text-3xl font-bold text-white">3</h2>
             </div>
           </div>
@@ -988,7 +988,7 @@ function EmployerDashboard() {
             <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
               <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
                 <h4 className="text-lg font-semibold dark:text-white">
-                  Pending DBS Checks
+                  Pending CT Checks
                 </h4>
               </div>
               <div className="p-5">

@@ -4,9 +4,17 @@ import { useState, useRef, useEffect, type JSX } from "react";
 import DashboardHead from "../components/DashboardHead";
 import main_logo from "../assets2/img/cleartrust_logo.png";
 import mini_logo from "../assets2/img/cleartrust_logo_mini.png";
-import { ArrowRight, ArrowLeft, Menu, X, Bell, Search, CircleQuestionMark } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowLeft,
+  Menu,
+  X,
+  Bell,
+  Search,
+  CircleQuestionMark,
+} from "lucide-react";
 import { useAuth } from "../utils/useAuth";
-import Modal from 'react-modal';
+import Modal from "react-modal";
 
 interface NavItem {
   path: string;
@@ -56,8 +64,8 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
   }, []);
 
   useEffect(() => {
-    Modal.setAppElement('#cta-full-body');
-  }, [])
+    Modal.setAppElement("#cta-full-body");
+  }, []);
 
   return (
     <>
@@ -116,22 +124,52 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                   className="py-0 flex items-center p-2 ml-2 hover:text-primary-500 active:text-primary-500 focus:text-primary-500 focus"
                   href="#"
                 >
-                  <div className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#0000ff2f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
-                      { user && `${user.firstName[0]} ${user.lastName[0]}` }
+                  <div
+                    className="h-12 w-12 border rounded-full"
+                    style={{
+                      backgroundColor: "#0000ff2f",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "#000000",
+                      borderWidth: "1px",
+                      borderColor: "#000",
+                    }}
+                  >
+                    {user && `${user.firstName[0]} ${user.lastName[0]}`}
                   </div>
                   <div className="caption ml-3 d-none d-md-block ">
                     <h6 className="mb-0 caption-title mr-4" style={{}}>
-                      { user && `${user.firstName} ${user.lastName}` }
+                      <span className="text-sm">
+                        {" "}
+                        {user && `${user.firstName}`}
+                      </span>
+                      <br />
+                      <span className="text-sm">
+                        {" "}
+                        {user && `${user.lastName}`}
+                      </span>
                     </h6>
                     <p className="mb-0 text-sm font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
-                      { user && user.userRole }
+                      {user && user.userRole}
                     </p>
                   </div>
                 </a>
               ) : (
                 <a className="py-0 flex justify-center" href="#">
-                  <span className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#0000ff2f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
-                      { user && `${user.firstName[0]} ${user.lastName[0]}` }
+                  <span
+                    className="h-12 w-12 border rounded-full"
+                    style={{
+                      backgroundColor: "#0000ff2f",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "#000000",
+                      borderWidth: "1px",
+                      borderColor: "#000",
+                    }}
+                  >
+                    {user && `${user.firstName[0]} ${user.lastName[0]}`}
                   </span>
                 </a>
               )}
@@ -194,15 +232,35 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                     className="py-0 flex items-center p-2 ml-2 hover:text-primary-500 active:text-primary-500 focus:text-primary-500 focus"
                     href="#"
                   >
-                    <span className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#0000ff2f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
-                      { user && `${user.firstName[0]} ${user.lastName[0]}` }
+                    <span
+                      className="h-12 w-12 border rounded-full"
+                      style={{
+                        backgroundColor: "#0000ff2f",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        color: "#000000",
+                        borderWidth: "1px",
+                        borderColor: "#000",
+                      }}
+                    >
+                      {user && `${user.firstName[0]} ${user.lastName[0]}`}
                     </span>
                     <div className="caption ml-3 d-none d-md-block ">
-                      <span className="mb-0 caption-title mr-4" style={{}}>
-                        { user && `${user.firstName} ${user.lastName}` }
+                      <span className="mb-0 text-black caption-title mr-4" style={{}}>
+                        <span className="text-sm">
+                          {" "}
+                          {user && `${user.firstName}`}
+                        </span>
+                        <br />
+                        <span className="text-sm">
+                          {" "}
+                          {user && `${user.lastName}`}
+                        </span>
                       </span>
+                      <br/>
                       <span className="mb-0 text-sm font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
-                        { user && user.userRole }
+                        {user && user.userRole}
                       </span>
                     </div>
                   </a>
@@ -886,7 +944,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                 </div>
                               </div>
                             </li>
-                             <li className="relative flex items-center pl-2 border-r group">
+                            <li className="relative flex items-center pl-2 border-r group">
                               <a
                                 href="help"
                                 className="block p-3 hover:text-primary-500 text-secondary-600"
@@ -930,18 +988,29 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                   href="#"
                                   onClick={() => setOpen(!open)}
                                 >
-                                  <div className="h-12 w-12 border rounded-full" style={{ backgroundColor: "#ff7b002f", display: "flex", justifyContent: "center", alignItems: "center", color: "#000000", borderWidth: "1px", borderColor: "#000"}}>
-                                    { user && user.organisationName[0] }
+                                  <div
+                                    className="h-12 w-12 border rounded-full"
+                                    style={{
+                                      backgroundColor: "#ff7b002f",
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                      color: "#000000",
+                                      borderWidth: "1px",
+                                      borderColor: "#000",
+                                    }}
+                                  >
+                                    {user && user.organisationName[0]}
                                   </div>
                                   <div className="caption ml-3 d-none d-md-block ">
                                     <h6
                                       className="mb-0 caption-title mr-4"
                                       style={{}}
                                     >
-                                      { user && user.organisationName }
+                                      {user && user.organisationName}
                                     </h6>
                                     <p className="mb-0 font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
-                                      { user && user.organisationType }
+                                      {user && user.organisationType}
                                     </p>
                                   </div>
                                 </a>
@@ -959,7 +1028,9 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                           <a>Settings</a>
                                         </li>
                                         <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
-                                          <button onClick={logout}>Logout</button>
+                                          <button onClick={logout}>
+                                            Logout
+                                          </button>
                                         </li>
                                       </ul>
                                     </div>
@@ -977,7 +1048,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
             </nav>
           </div>
           {/* Page Content */}
-          <div className="" id='cta-full-body'>
+          <div className="" id="cta-full-body">
             <Outlet />
           </div>
 
