@@ -25,6 +25,7 @@ import { fetchDbsTypes, submitDbsRequest } from "../../../utils/Requests/DbsRequ
 import Modal from 'react-modal';
 import { handleDbsRequest } from "../../../utils/ResponseHandlers/DbsResponse.js";
 import { toast } from 'react-toastify';
+import HtmlRenderer from "../../../layout/HTMLRenderer.js";
 
 interface EmployeeData {
   userId: number;
@@ -45,6 +46,7 @@ export interface DbsTypes {
   dbsTypeId: number;
   typeName: string;
   typeCost: number;
+  description: string;
 }
 
 interface DbsCheckRequest {
@@ -61,6 +63,7 @@ function AdminEmployees() {
   const hashIds = new Hashids('ClearTrustAfricaEncode', 10);
   const [openRowId, setOpenRowId] = useState<string | null>(null);
   const [modalState, setModalState] = useState(false);
+  const [modalDescState, setModalDescState] = useState(false);
   const [dbsRequestData, setDbsRequestData] = useState<DbsCheckRequest | null>(null);
 
   const toggleDropDrown = (id: string) => {
@@ -176,6 +179,11 @@ function AdminEmployees() {
                 <p className="py-1">CTA Check Cost: { `NGN ${dbsRequestData.requestType.typeCost.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2})}` }</p>
               </div>
             </div>
+            <div className="flex justify-end my-2">
+              <button className="text-sm underline text-blue-700" onClick={() => setModalDescState(true)}>
+                View Description
+              </button>
+            </div>
             
             <div className="flex justify-end my-2 gap-2">
               <button className="btn text-white bg-black" onClick={() => setModalState(false) }>
@@ -192,6 +200,44 @@ function AdminEmployees() {
                   <CheckCheck size={18} className="mr-2" />
                   Proceed
                 </span>
+              </button>
+            </div>
+          </div>
+        )}
+        
+      </Modal>
+      <Modal isOpen={modalDescState} onRequestClose={() => { setModalDescState(false); }}
+        style={{
+        content: {
+          width: 'fit-content',
+          height: 'fit-content',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'rgb(255 255 255)',
+          borderRadius: '0.5rem',
+          boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'
+        },
+        overlay: {
+          backgroundColor: 'rgba(255, 255, 255, 0.7)'
+        }
+      }}
+      >
+        {dbsRequestData && (
+          <div className="h-fit w-80 lg:w-fit">
+            <div className="flex justify-start">
+              <p className="font-semibold text-black py-1 text-lg"><UserLock size={22} className="mr-2" /> Description On {dbsRequestData.requestType.typeName} CTA Check</p>
+            </div>
+            <div className="flex justify-start">
+              <div className="my-2">
+                <HtmlRenderer html={dbsRequestData.requestType.description} />
+              </div>
+            </div>
+            
+            <div className="flex justify-end my-2 gap-2">
+              <button className="btn text-white bg-black" onClick={() => setModalDescState(false) }>
+                <CheckCheck size={18} className="mr-2" />
+                Done
               </button>
             </div>
           </div>
