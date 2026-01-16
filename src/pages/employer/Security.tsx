@@ -140,14 +140,14 @@ export default function Security() {
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     {/* Current Password */}
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-black mb-2">
+                      <label className="block text-md font-medium text-black mb-2">
                         Current Password <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
                         <input
                           type={showCurrentPassword ? "text" : "password"}
                           placeholder="Enter current password"
-                          className="form-control text-black text-sm"
+                          className="form-control text-black text-md"
                           {...register("CurrentPassword", {
                             required: "Current password is required",
                           })}
@@ -175,14 +175,14 @@ export default function Security() {
 
                     {/* New Password */}
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-black mb-2">
+                      <label className="block text-md font-medium text-black mb-2">
                         New Password <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
                         <input
                           type={showNewPassword ? "text" : "password"}
                           placeholder="Enter new password"
-                          className="form-control text-black text-sm"
+                          className="form-control text-black text-md"
                           {...register("NewPassword", {
                             required: "New password is required",
                             minLength: {
@@ -238,7 +238,7 @@ export default function Security() {
 
                     {/* Confirm Password */}
                     <div className="mb-4">
-                      <label className="block text-sm font-medium text-black mb-2">
+                      <label className="block text-md font-medium text-black mb-2">
                         Confirm New Password{" "}
                         <span className="text-red-500">*</span>
                       </label>
@@ -246,7 +246,7 @@ export default function Security() {
                         <input
                           type={showConfirmPassword ? "text" : "password"}
                           placeholder="Confirm new password"
-                          className="form-control text-black text-sm"
+                          className="form-control text-black text-md"
                           {...register("ConfirmPassword", {
                             required: "Please confirm your password",
                             validate: (value) =>
@@ -310,12 +310,12 @@ export default function Security() {
                         <h2 className="text-lg font-semibold text-slate-900">
                           Login History
                         </h2>
-                        <p className="text-sm text-slate-500">
+                        <p className="text-md text-slate-500">
                           Recent account access activity
                         </p>
                       </div>
                     </div>
-                    {/* <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                    {/* <button className="text-md text-blue-600 hover:text-blue-700 font-medium">
                       View All
                     </button> */}
                   </div>
@@ -346,7 +346,7 @@ export default function Security() {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center justify-between mb-1">
-                                <p className="text-sm font-medium text-slate-900">
+                                <p className="text-md font-medium text-slate-900">
                                   {audit.deviceType}
                                 </p>
                                 <span
@@ -411,7 +411,7 @@ export default function Security() {
                   </div>
                 </div>
                 <div className="bg-white p-6">
-                  <p className="text-sm text-slate-500 pb-2">
+                  <p className="text-md text-slate-500 pb-2">
                     Protect your account with an additional security layer
                   </p>
                   {/* {twoFactorEnabled && (
@@ -419,7 +419,7 @@ export default function Security() {
                       <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
                         <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                         <div>
-                          <p className="text-sm font-medium text-green-900">
+                          <p className="text-md font-medium text-green-900">
                             2FA is Active
                           </p>
                           <p className="text-xs text-green-700 mt-1">
@@ -429,10 +429,10 @@ export default function Security() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-3">
-                        <button className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                        <button className="px-4 py-2 border border-slate-200 rounded-lg text-md font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                           View Backup Codes
                         </button>
-                        <button className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                        <button className="px-4 py-2 border border-slate-200 rounded-lg text-md font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                           Reset 2FA
                         </button>
                       </div>
@@ -443,7 +443,7 @@ export default function Security() {
                     <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-3">
                       <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
                       <div>
-                        <p className="text-sm font-medium text-yellow-900">
+                        <p className="text-md font-medium text-yellow-900">
                           2FA is Disabled
                         </p>
                         <p className="text-xs text-yellow-700 mt-1">

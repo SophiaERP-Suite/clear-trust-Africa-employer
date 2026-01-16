@@ -4,7 +4,6 @@ import EmployerLayout from "../layout/EmployerLayout";
 import ApplicantNew from "../pages/employer/applicant/ApplicantNew";
 import Applicants from "../pages/employer/applicant/Applicants";
 import ApplicantProfile from "../pages/employer/applicant/ApplicantProfile";
-import DBSTrackerModule from "../pages/employer/Tracker/DbsTracker";
 import Incidents from "../pages/employer/incident/incident";
 import Reports from "../pages/employer/reports/Reports";
 import CommunicationsPage from "../pages/employer/communication/Communication";
@@ -18,6 +17,7 @@ import HelpSupportPage from "../pages/employer/Help";
 import PaymentRedirect from "../pages/employer/payment/PaymentRedirect";
 import IncidentReportDetails from "../pages/employer/incident/IncidentReportDetails";
 import IncidentReportForm from "../pages/employer/incident/IncidentReportForm";
+import DBSTrackerModule from "../pages/employer/Tracker/DbsTracker";
 
 function AppRoutes() {
   return (

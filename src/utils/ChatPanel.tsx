@@ -91,9 +91,9 @@ export default function ChatPanel({
     setIsSending(true);
 
     const formData = new FormData();
-    formData.append("Comments", newMessage); // ✅ EXACT name
+    formData.append("Comments", newMessage); 
     if (selectedFile) {
-      formData.append("File", selectedFile); // ✅ EXACT name
+      formData.append("File", selectedFile); 
     }
 
     try {
@@ -151,9 +151,7 @@ export default function ChatPanel({
         <div className="border-b p-4 flex justify-between items-center">
           <div>
             <h3 className="text-lg font-semibold">Incident Comments</h3>
-            {/* <p className="text-sm text-gray-500">
-              {participants.length} participants
-            </p> */}
+         
           </div>
           <button
             onClick={onClose}
