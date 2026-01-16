@@ -82,9 +82,7 @@ export default function IncidentDetails() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [modalType, setModalType] = useState<ModalType>(null);
   const navigate = useNavigate();
-  const [selectedPartnerId, setSelectedPartnerId] = useState<number | null>(
-    null
-  );
+  
   const [dbsPartners, setDbsPartners] = useState<DbsPartners[]>([]);
 
   const { user } = useAuth();
@@ -375,7 +373,6 @@ export default function IncidentDetails() {
 
   const closeModal = () => {
     setModalType(null);
-    setSelectedPartnerId(null);
   };
 
   return (

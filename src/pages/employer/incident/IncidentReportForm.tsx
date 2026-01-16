@@ -5,7 +5,6 @@ import {
   ChevronRightIcon,
   X,
   CheckCheck,
-  ArrowLeft,
 } from "lucide-react";
 import { fetchApplicants } from "../../../utils/Requests/EmployeeRequests";
 import hashids from "../../../utils/hashids";

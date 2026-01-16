@@ -1,15 +1,34 @@
 import { CheckCheck, ChevronRightIcon, User } from "lucide-react";
-import { NavLink } from "react-router-dom";
-import type { EmployerOrgDto } from "./EmployerProfile";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../utils/useAuth";
 import { useState, useEffect } from "react";
-import { fetchOrganisationData } from "../../../utils/Requests/OrganisationProfile";
+import {
+  fetchOrganisationData,
+  UpdateOrganisationData,
+} from "../../../utils/Requests/OrganisationProfile";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+
+export interface UpdateOrgFormValues {
+  Name: string;
+  Address: string;
+  RegistrationNumber: string;
+  TIN: string;
+}
 
 function ProfileUpdate() {
-  const [employer, setEmployer] = useState<EmployerOrgDto | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useAuth();
+  const navigate = useNavigate();
   const organisationId = user?.organisationId;
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<UpdateOrgFormValues>();
 
   useEffect(() => {
     fetchOrgData();
@@ -20,7 +39,35 @@ function ProfileUpdate() {
     if (!employerData) {
       return;
     }
-    setEmployer(employerData.data);
+    reset({
+      Name: employerData.data.name || "",
+      Address: employerData.data.address || "",
+      RegistrationNumber: employerData.data.registrationNumber || "",
+      TIN: employerData.data.tin || "",
+    });
+  };
+
+  const onSubmit = async (data: UpdateOrgFormValues) => {
+    setIsLoading(true);
+
+    try {
+      const updateInfoResult = await UpdateOrganisationData(
+        data,
+        Number(organisationId)
+      );
+
+      if (updateInfoResult) {
+        toast.success("Organisation updated successfully!");
+        navigate("/Profile");
+      } else {
+        toast.error("Failed to update organisation");
+      }
+    } catch (error) {
+      console.error("Error updating organisation:", error);
+      toast.error("An error occurred while updating organisation");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -51,6 +98,7 @@ function ProfileUpdate() {
             </div>
           </div>
         </div>
+
         <div className="lg:flex lg:grid-cols-2 gap-8">
           <div className="flex-auto w-full">
             <div className="relative flex flex-col mb-8 text-secondary-500 bg-white shadow rounded -mt-2 dark:bg-dark-card">
@@ -59,6 +107,7 @@ function ProfileUpdate() {
                   Organisation Profile Update
                 </h4>
               </div>
+
               <div className="p-5">
                 <div className="border-red-700 border rounded-lg bg-red-100 p-5 mb-5 text-sm">
                   <span className="text-red-800">
@@ -66,74 +115,122 @@ function ProfileUpdate() {
                     be deactivated pending another verification
                   </span>
                 </div>
-                <form>
+
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                   <div className="grid lg:grid-cols-2 gap-x-8 gap-y-5">
                     <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="fname"
+                        htmlFor="name"
                       >
-                        Name
+                        Name <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
                         className="form-control text-black text-md"
-                        id="fname"
-                        placeholder="First Name"
-                        defaultValue={employer?.name}
+                        id="name"
+                        placeholder="Organisation Name"
+                        {...register("Name", {
+                          required: "Organisation name is required",
+                        })}
                       />
+                      {errors.Name && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.Name.message}
+                        </p>
+                      )}
                     </div>
+
                     <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="lname"
+                        htmlFor="address"
                       >
-                        Address
+                        Address <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
                         className="form-control text-black text-md"
-                        id="lname"
-                        placeholder="Last Name"
-                        defaultValue={employer?.address}
+                        id="address"
+                        placeholder="Address"
+                        {...register("Address", {
+                          required: "Address is required",
+                        })}
                       />
+                      {errors.Address && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.Address.message}
+                        </p>
+                      )}
                     </div>
+
                     <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="add1"
+                        htmlFor="regNumber"
                       >
-                        Registration No
+                        Registration No <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
                         className="form-control text-black text-md"
-                        id="add1"
-                        placeholder="Street Address 1"
-                        defaultValue={employer?.registrationNumber}
+                        id="regNumber"
+                        placeholder="Registration Number"
+                        {...register("RegistrationNumber", {
+                          required: "Registration number is required",
+                        })}
                       />
+                      {errors.RegistrationNumber && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {errors.RegistrationNumber.message}
+                        </p>
+                      )}
                     </div>
+
                     <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="add2"
+                        htmlFor="tin"
                       >
                         TIN
                       </label>
                       <input
                         type="text"
                         className="form-control text-black text-md"
-                        id="add2"
-                        placeholder="Street Address 2"
-                        defaultValue={employer?.tin || "No TIN provided"}
+                        id="tin"
+                        placeholder="Tax Identification Number"
+                        {...register("TIN")}
                       />
                     </div>
                   </div>
+
                   <hr className="mt-5" />
 
-                  <div className="flex justify-end">
-                    <button type="submit" className="btn btn-success">
-                      <CheckCheck /> Submit
+                  <div className="flex justify-end gap-3">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      onClick={() => navigate("/Profile")}
+                      disabled={isLoading}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-success"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <span className="animate-spin mr-2">⏳</span>
+                          Updating...
+                        </>
+                      ) : (
+                        <>
+                          <CheckCheck className="mr-2" size={18} />
+                          Submit
+                        </>
+                      )}
                     </button>
                   </div>
                 </form>

@@ -1,0 +1,28 @@
+export type AuditDto = {
+  auditTrailId: number;
+  userId: number;
+  userName: string | null;
+  actionId: number;
+  actionName: string;
+  description: string;
+  status: number;
+  statusName: string;
+  refID: number;
+  organisationId: number | null;
+  organisationName: string | null;
+  moduleId: number | null;
+  moduleName: string | null;
+  outletId: number | null;
+  outletName: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  city: string | null;
+  country: string | null;
+  countryCode: string | null;
+  ipAddress: string | null;
+  userAgent: string | null;
+  deviceType: string | null;
+  path: string | null;
+  actionDate: string;
+  actionDateFormatted: string;
+};

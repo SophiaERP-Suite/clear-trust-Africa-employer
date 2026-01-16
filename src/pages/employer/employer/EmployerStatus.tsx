@@ -10,54 +10,50 @@ import {
 export type EmployerStatus = 1 | 2 | 3 | 4;
 
 interface StatusBadgeProps {
-  status: number;
+  status: EmployerStatus;
   className?: string;
 }
+
+type StatusConfig = {
+  label: string;
+  icon: React.ReactElement;
+  className: string;
+};
+
+const statusConfig: Record<EmployerStatus, StatusConfig> = {
+  1: {
+    label: "Active",
+    icon: <CheckCircle size={12} />,
+    className: "bg-green-500 text-white",
+  },
+  2: {
+    label: "Inactive",
+    icon: <PauseCircle size={12} />,
+    className: "bg-gray-500 text-white",
+  },
+  3: {
+    label: "Suspended",
+    icon: <AlertTriangle size={12} />,
+    className: "bg-orange-500 text-white",
+  },
+  4: {
+    label: "Pending Verification",
+    icon: <Clock size={12} />,
+    className: "bg-yellow-500 text-white",
+  },
+};
+
+const fallbackConfig: StatusConfig = {
+  label: "Unknown",
+  icon: <HelpCircle size={12} />,
+  className: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300",
+};
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({
   status,
   className = "",
 }) => {
-  //  status configuration
-  const statusConfig: Record<
-    EmployerStatus,
-    {
-      label: string;
-      icon: React.ReactElement;
-      className: string;
-    }
-  > = {
-    1: {
-      label: "Active",
-      icon: <CheckCircle size={12} />,
-      className:
-        "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
-    },
-    2: {
-      label: "Inactive",
-      icon: <PauseCircle size={12} />,
-      className:
-        "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300",
-    },
-    3: {
-      label: "Suspended",
-      icon: <AlertTriangle size={12} />,
-      className:
-        "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300",
-    },
-    4: {
-      label: "Pending Verification",
-      icon: <Clock size={12} />,
-      className:
-        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
-    },
-  };
-
-  const config = statusConfig[status] || {
-    label: "Unknown Status",
-    icon: <HelpCircle size={12} />,
-    className: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300",
-  };
+  const config = statusConfig[status] ?? fallbackConfig;
 
   return (
     <span
@@ -72,8 +68,8 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
 export default StatusBadge;
 
 export const STATUS = {
-  ACTIVE: 1 as const,
-  INACTIVE: 2 as const,
-  SUSPENDED: 3 as const,
-  PENDING: 4 as const,
+  ACTIVE: 1,
+  INACTIVE: 2,
+  SUSPENDED: 3,
+  PENDING: 4,
 } as const;

@@ -30,12 +30,6 @@ type ModalProps = {
   onCancel: () => void;
 };
 
-interface ModalConfirmPayload {
-  inputValue?: string;
-  inputValue2?: string;
-  dropdownValue?: string;
-}
-
 const colorMap = {
   red: "btn-danger",
   green: "btn-success",
