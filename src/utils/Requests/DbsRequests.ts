@@ -45,4 +45,3 @@ export const verifyDbsPayment = async (tx_ref: string) => {
   return response;
 };
 
-

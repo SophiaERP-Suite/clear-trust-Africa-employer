@@ -82,3 +82,32 @@ export const fetchCitiesByStateId = async (stateId: number) => {
   })
   return response
 }
+
+export const submitApplicantAddress = async (data: FormData, userId: number) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await fetch(`${BaseURL}/applicants/${userId}/address`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: data,
+  });
+  return response;
+};
+
+
+export const fetchApplicantAddresses = async (userId: number, filterData: object) => {
+  const params = new URLSearchParams();
+  Object.entries(filterData).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== "") {
+      params.append(key, value);
+    }
+  })
+  const response = await fetch(`${BaseURL}/applicants/${userId}/address/?${params}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};

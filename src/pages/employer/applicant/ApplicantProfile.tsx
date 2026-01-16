@@ -18,7 +18,7 @@ import "../../../assets2/js/sweet-alert.js";
 import "../../../assets2/js/swiper-slider.js";
 import { NavLink, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchApplicantById, fetchApplicantDocsById, uploadDocuments } from "../../../utils/Requests/EmployeeRequests.js";
+import { fetchApplicantAddresses, fetchApplicantById, fetchApplicantDocsById, fetchCitiesByStateId, fetchCountries, fetchStatesByCountryId, submitApplicantAddress, uploadDocuments } from "../../../utils/Requests/EmployeeRequests.js";
 import Hashids from "hashids";
 import { fetchDbsChecksByUserId, fetchDbsTypes, submitDbsRequest } from "../../../utils/Requests/DbsRequests.js";
 import Tippy from "@tippyjs/react";
@@ -81,6 +81,30 @@ interface UserDocumentValues {
   dateCreated: string;
 }
 
+interface FormerAddressFormValues {
+  Evidence: string;
+  CountryId: string;
+  StateId: string;
+  CityId: string;
+  MovedIn: string;
+  MovedOut: string;
+  Address: string;
+}
+
+interface AddressData {
+  formerAddressId: number;
+  countryName: string;
+  stateName: string;
+  cityName: string;
+  countryId: string;
+  stateId: string;
+  cityId: string;
+  address: string;
+  movedIn: string;
+  movedOut: string;
+  evidence: string;
+}
+
 const statusStyles: Record<number, string> = {
   1: 'bg-orange-200',
   2: 'bg-blue-200',
@@ -88,6 +112,37 @@ const statusStyles: Record<number, string> = {
   4: 'bg-green-200',
   5: 'bg-red-200',
 };
+
+interface CountryData {
+  countryId: number;
+  name: string;
+  code: string;
+}
+
+interface StateData {
+  stateId: number;
+  name: string;
+  code: string;
+}
+
+interface CityData {
+  cityId: number;
+  name: string;
+  code: string;
+}
+
+const compareDateDifference = (startDateString: string, endDateString: string) => {
+  const endDate = new Date(startDateString);
+  const startDate = new Date(endDateString);
+
+  let diff = endDate.getFullYear() - startDate.getFullYear();
+  const birthdayPassed = endDate.getMonth() > startDate.getMonth()
+    || (endDate.getMonth() === startDate.getMonth() && endDate.getDate() >= startDate.getDate());
+  if (!birthdayPassed) {
+    diff--;
+  }
+  return diff > 1 ? `${diff} Years` : `${diff} Year`;
+}
 
 function AdminApplicantsNew() {
   const { id } = useParams();
@@ -97,10 +152,24 @@ function AdminApplicantsNew() {
   const [dbsChecks, setDbsChecks] = useState<DbsChecks[]>([]);
   const [docModalState, setDocModalState] = useState(false);
   const [dbsModalState, setDbsModalState] = useState(false);
+  const [addressModalState, setAddressModalState] = useState(false);
   const [dbsDescModalState, setDbsDescModalState] = useState(false);
   const { register, reset, handleSubmit, formState } = useForm<DocumentFormValues>();
   const { errors } = formState;
+  const {
+    register: addressReg,
+    reset: resetAddress,
+    handleSubmit: submitAddress,
+    formState: addressForm,
+    watch,
+    setValue,
+  } = useForm<FormerAddressFormValues>();
+  const { errors: addressErrors } = addressForm;
   const [userDocuments, setUserDocuments] = useState<UserDocumentValues[]>([]);
+  const [userAddresses, setUserAddresses] = useState<AddressData[]>([]);
+  const [totalAddresses, setTotalAddresses] = useState(0);
+  const [addressPage, setAddressPage] = useState(1);
+  const addressLimit = 3;
   const [dbsTypes, setdbsTypes] = useState<DbsTypes[]>([]);
   const [dbsRequestData, setDbsRequestData] = useState<DbsTypes | null>(null);
   const [opendbsTypes, setOpendbsTypes] = useState(false);
@@ -110,6 +179,11 @@ function AdminApplicantsNew() {
   const [docPage, setDocPage] = useState(1);
   const docLimit = 3;
   const [totalDocs, setTotalDocs] = useState(0);
+  const [countries, setCountries] = useState<CountryData[]>([]);
+  const [states, setStates] = useState<StateData[]>([]);
+  const [cities, setCities] = useState<CityData[]>([]);
+  const selectedCountry = watch('CountryId');
+  const selectedState = watch('StateId');
 
   useEffect(() => {
       fetchApplicantById(hashedId)
@@ -149,6 +223,107 @@ function AdminApplicantsNew() {
       })
       .catch((err) => console.log(err))
   }, [hashedId, dbsPage, dbsLimit]);
+
+  useEffect(() => {
+      fetchApplicantAddresses(hashedId, { pageNumber: addressPage, limit: addressLimit })
+      .then(res => {
+        if (res.status === 200) {
+          res.json()
+          .then(data => {
+            console.log(data);
+            setUserAddresses(data.data.addresses);
+            setTotalAddresses(data.data.totalCount);
+          })
+        } else {
+          res.text()
+          .then(data => {
+            console.log(JSON.parse(data));
+          })
+        }
+      })
+      .catch((err) => console.log(err))
+  }, [hashedId, addressPage, addressLimit]);
+
+  const refetchAddressData = async () => {
+    try {
+      const res = await fetchApplicantAddresses(hashedId, { pageNumber: addressPage, limit: addressLimit });
+      if (res.status === 200) {
+        const data = await res.json()
+        setUserAddresses(data.data.addresses);
+        setTotalAddresses(data.data.totalCount);
+      } else {
+        const resText = await res.text();
+        console.log(JSON.parse(resText));
+      }
+    } catch (err) {
+        console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchCountries()
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          setCountries(data);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, []);
+
+  useEffect(() => {
+    if (!selectedCountry || selectedCountry == 'default') {
+      setStates([]);
+      setValue('StateId', 'default');
+      setValue('CityId', 'default')
+      return;
+    }
+    fetchStatesByCountryId(Number(selectedCountry))
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          setStates(data);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, [selectedCountry, setValue]);
+
+  useEffect(() => {
+    if (!selectedState || selectedState == 'default') {
+      setCities([]);
+      setValue('CityId', 'default')
+      return;
+    }
+    fetchCitiesByStateId(Number(selectedState))
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          setCities(data);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, [selectedState, setValue]);
   
   const refetchDbsData = async () => {
     try {
@@ -223,8 +398,8 @@ function AdminApplicantsNew() {
   
   const uploadDocument = async (data: DocumentFormValues) =>{
     if (!errors.File && !errors.DocumentType){
-      const loader = document.getElementById('query-loader');
-      const text = document.getElementById('query-text');
+      const loader = document.getElementById('query-loader-1');
+      const text = document.getElementById('query-text-1');
       if (loader) {
         loader.style.display = 'flex';
       }
@@ -273,6 +448,37 @@ function AdminApplicantsNew() {
     const res = await submitDbsRequest(formData);
     handleDbsRequest(res, loader, text, { toast })
     .finally(() => setDbsModalState(false));
+  }
+
+  const addNewAddress = async (data: FormerAddressFormValues) => {
+    if (!addressErrors.Evidence && !addressErrors.CountryId &&
+      !addressErrors.StateId && !addressErrors.CityId &&
+      !addressErrors.Address && !addressErrors.MovedIn &&
+      !addressErrors.MovedOut
+    ) {
+      const loader = document.getElementById('query-loader-2');
+      const text = document.getElementById('query-text-2');
+      if (loader) {
+        loader.style.display = 'flex';
+      }
+      if (text) {
+        text.style.display = 'none';
+      }
+      const formData = new FormData();
+      formData.append("Evidence", data.Evidence[0]);
+      formData.append("CountryId", data.CountryId);
+      formData.append("StateId", data.StateId);
+      formData.append("CityId", data.CityId);
+      formData.append("Address", data.Address);
+      formData.append("MovedIn", data.MovedIn);
+      formData.append("MovedOut", data.MovedOut);
+      const res = await submitApplicantAddress(formData, hashedId);
+      handleCreateEmployee(res, loader, text, { toast }, resetAddress)
+      .finally(async () => {
+        setAddressModalState(false);
+        refetchAddressData()
+      });
+    }
   }
 
   return (
@@ -361,14 +567,238 @@ function AdminApplicantsNew() {
                   Cancel
                 </button>
                 <button className="btn btn-success">
-                  <div className="dots hidden" id="query-loader">
+                  <div className="dots hidden" id="query-loader-1">
                     <div className="dot"></div>
                     <div className="dot"></div>
                     <div className="dot"></div>
                   </div>
-                  <span id="query-text">
+                  <span id="query-text-1">
                     <CheckCheck size={18} className="mr-2" />
                     Upload
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+      </Modal>
+      <Modal isOpen={addressModalState} onRequestClose={() => { setAddressModalState(false); }}
+        style={{
+        content: {
+          width: 'fit-content',
+          height: 'fit-content',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'rgb(255 255 255)',
+          borderRadius: '0.5rem',
+          boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'
+        },
+        overlay: {
+          backgroundColor: 'rgba(255, 255, 255, 0.7)'
+        }
+      }}
+      >
+        
+          <div className="max-h-[85vh] overflow-y-auto w-75 lg:w-[800px]">
+            <div className="flex justify-start">
+              <p className="font-semibold text-black py-1 text-lg"><Upload size={20} className="mr-2" /> Add New Residential Address {employee && `For ${employee.firstName}`}</p>
+            </div>
+            <form
+                  onSubmit={submitAddress(addNewAddress)}
+                  noValidate
+                >
+              <div className="grid grid-col-1 lg:grid-col-2 mt-2 gap-x-8">
+                <div>
+                  <label
+                    className="inline-block mb-2 text-secondary-600 dark:text-white"
+                    htmlFor="email"
+                  >
+                    Country
+                  </label>
+                  <div>
+                    <select
+                      className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      {
+                        ...addressReg('CountryId', {
+                          required: 'Required',
+                          pattern: {
+                            value: /^(?!default$).+$/,
+                            message: 'Required'
+                          }
+                        })
+                      }
+                    >
+                      <option value="default">Select Country</option>
+                      {
+                        countries.map((data, index) => (
+                          <option key={index} value={data.countryId}>{data.name}</option>
+                        ))
+                      }
+                    </select>
+                    <p className='error-msg'>{addressErrors.CountryId?.message}</p>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    className="inline-block mb-2 text-secondary-600 dark:text-white"
+                    htmlFor="email"
+                  >
+                    State
+                  </label>
+                  <div>
+                    <select
+                      className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      {
+                        ...addressReg('StateId', {
+                          required: 'Required',
+                          pattern: {
+                            value: /^(?!default$).+$/,
+                            message: 'Required'
+                          }
+                        })
+                      }
+                      disabled={!states.length}
+                    >
+                      <option value="default">Select State</option>
+                      {
+                        states.map((data, index) => (
+                          <option key={index} value={data.stateId}>{data.name}</option>
+                        ))
+                      }
+                    </select>
+                    <p className='error-msg'>{addressErrors.StateId?.message}</p>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    className="inline-block mb-2 text-secondary-600 dark:text-white"
+                    htmlFor="email"
+                  >
+                    City
+                  </label>
+                  <div>
+                    <select
+                      className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      {
+                        ...addressReg('CityId', {
+                          required: 'Required',
+                          pattern: {
+                            value: /^(?!default$).+$/,
+                            message: 'Required'
+                          }
+                        })
+                      }
+                      disabled={!cities.length}
+                    >
+                      <option value="default">Select City</option>
+                      {
+                        cities.map((data, index) => (
+                          <option key={index} value={data.cityId}>{data.name}</option>
+                        ))
+                      }
+                    </select>
+                    <p className='error-msg'>{addressErrors.CityId?.message}</p>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    className="inline-block mb-2 text-secondary-600 dark:text-white"
+                    htmlFor="email"
+                  >
+                    Evidence Of Occupancy
+                  </label>
+                  <div>
+                    <input
+                      type="file"
+                      className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                        {
+                        ...addressReg('Evidence', {
+                          required: 'Required'
+                        })
+                      }
+                      required
+                    />
+                    <p className='error-msg'>{addressErrors.Evidence?.message}</p>
+                  </div>
+                </div>
+                <div className="lg:col-span-2">
+                  <label
+                    className="inline-block mb-2 text-secondary-600 dark:text-white"
+                    htmlFor="Address"
+                  >
+                    Address
+                  </label>
+                  <div>
+                    <textarea
+                      className="w-full h-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      {
+                        ...addressReg('Address', {
+                          required: 'Required'
+                        })
+                      }
+                      required
+                    ></textarea>
+                    <p className='error-msg'>{addressErrors.Address?.message}</p>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    className="inline-block mb-2 text-secondary-600 dark:text-white"
+                    htmlFor="email"
+                  >
+                    Move In Date
+                  </label>
+                  <div>
+                    <input
+                      type="date"
+                      className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      {
+                        ...addressReg('MovedIn', {
+                          required: 'Required'
+                        })
+                      }
+                      required
+                    />
+                    <p className='error-msg'>{addressErrors.MovedIn?.message}</p>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    className="inline-block mb-2 text-secondary-600 dark:text-white"
+                    htmlFor="email"
+                  >
+                    Move Out Date
+                  </label>
+                  <div>
+                    <input
+                      type="date"
+                      className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      {
+                        ...addressReg('MovedOut', {
+                          required: 'Required'
+                        })
+                      }
+                      required
+                    />
+                    <p className='error-msg'>{addressErrors.MovedOut?.message}</p>
+                  </div>
+                </div>
+              </div>
+              <hr className="mt-5" />
+              <div className="flex justify-end my-2 gap-2">
+                <button className="btn text-white bg-black" onClick={() => setAddressModalState(false) }>
+                  <X size={18} className="mr-2" />
+                  Cancel
+                </button>
+                <button className="btn btn-success">
+                  <div className="dots hidden" id="query-loader-2">
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                    <div className="dot"></div>
+                  </div>
+                  <span id="query-text-2">
+                    <CheckCheck size={18} className="mr-2" />
+                    Add Address
                   </span>
                 </button>
               </div>
@@ -897,6 +1327,112 @@ function AdminApplicantsNew() {
                             (docPage * docLimit) < totalDocs && <a
                             href="#"
                             onClick={() => { setDocPage(docPage + 1); refetchDocData(); }}
+                            className="border-r border-t border-b text-primary-500 border-secondary-500 px-4 py-1 rounded-r dark:border-secondary-800"
+                          >
+                            Next
+                          </a>
+                          }
+                          
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                    <div className="relative flex flex-col mb-8  bg-white shadow rounded-xl dark:bg-dark-card">
+                    <div className="p-5 border-b dark:border-secondary-800 dark:border-secondary-800 flex justify-between flex-wrap">
+                      <h4 className="card-title mb-0 dark:text-white">
+                        Previous Residential Addresses
+                      </h4>
+                      <button className="btn btn-success mr-2 mb-2" onClick={() => setAddressModalState(true)}>
+                        <Plus size={18} className="mr-2" />
+                        Add New Address
+                      </button>
+                    </div>
+                    <div className="p-6">
+                      <div className="flex flex-wrap justify-between overflow-x-auto h-fit">
+                        <table className="min-w-full divide-y divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
+                          <thead>
+                            <tr className="bg-secondary-100 dark:bg-dark-bg">
+                              <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                                S/N
+                              </th>
+                              <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                                Address
+                              </th>
+                              <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                                Duration
+                              </th>
+                              <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                                Evidence
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-secondary-200 dark:divide-secondary-800">
+                            {
+                              userAddresses.map((data, index) => (
+                              <tr key={index}>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                  <div className="iq-media-group iq-media-group-1">
+                                    <h6 className="font-bold dark:text-white">
+                                      {" "}
+                                      #{index + 1}
+                                    </h6>
+                                  </div>
+                                </td>
+                                <td className="px-6 py-4 text-gray-900">
+                                  <p>{data.address}</p>
+                                  <p className="text-sm">{`${data.cityName}, ${data.stateName}, ${data.countryName}`}</p>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                                  {`
+                                    ${(new Date(data.movedIn)).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
+                                    - ${(new Date(data.movedOut)).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
+                                    (${compareDateDifference(data.movedOut, data.movedIn)})
+                                  `}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
+                                  <a className="text-sm underline text-blue-700" href={data.evidence} target="_blank">
+                                    View Evidence
+                                  </a>
+                                </td>
+                              </tr>
+                              ))
+                            }
+                          </tbody>
+                        </table>
+                        {
+                          userAddresses.length === 0 ? <tr>
+                            <div className="py-4 whitespace-nowrap">
+                                  <span className="px-6 py-4 text-left font-medium text-black dark:text-white">No other address has been added for { employee.firstName }</span>
+                            </div>
+                          </tr> : <></>
+                        }
+                      </div>
+                      <div className="flex flex-wrap justify-between my-6 mx-5">
+                        <div className="flex justify-center items-center mb-1">
+                          <p className="text-black">
+                            Showing { userAddresses.length > 0 ? ((addressPage * addressLimit) - addressLimit) + 1 : 0 } to { userAddresses.length > 0 ? (((addressPage * addressLimit) - addressLimit) + 1) + (userAddresses.length - 1) : 0 } of { totalAddresses } entries
+                          </p>
+                        </div>
+                        <div className="inline-flex flex-wrap">
+                          {
+                            addressPage > 1 && <a
+                            href="#"
+                            onClick={() => { if (addressPage > 1) {setAddressPage(addressPage - 1); refetchAddressData();} }}
+                            className="border-t border-b border-l text-primary-500 border-secondary-500 px-2 py-1 rounded-l dark:border-secondary-800"
+                          >
+                            Previous
+                          </a>
+                          }
+                          <a
+                            href="#"
+                            className="border text-white border-secondary-500 cursor-pointer bg-primary-500 px-4 py-1 dark:border-secondary-800"
+                          >
+                            { addressPage }
+                          </a>
+                          {
+                            (addressPage * addressLimit) < totalAddresses && <a
+                            href="#"
+                            onClick={() => { setAddressPage(addressPage + 1); refetchAddressData(); }}
                             className="border-r border-t border-b text-primary-500 border-secondary-500 px-4 py-1 rounded-r dark:border-secondary-800"
                           >
                             Next
