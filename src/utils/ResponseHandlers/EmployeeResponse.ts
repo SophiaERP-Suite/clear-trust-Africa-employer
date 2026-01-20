@@ -43,7 +43,9 @@ export const handleCreateEmployee = async (res: any, loader: HTMLElement | null,
       const responseData: DataResponse = await res.json();
       console.log(responseData);
       toast.success(responseData.message ?? msg);
-      reset();
+      if (reset) {
+        reset();
+      }
     } else {
       console.log(res.status)
       const resText = await res.text();
@@ -62,7 +64,6 @@ export const handleCreateEmployee = async (res: any, loader: HTMLElement | null,
           toast.warning(responseData.message);
           console.log(responseData.message);
         }
-       
       } catch (error: any) {
         console.error("Parsing error:", error.message);
         console.log(resText);
