@@ -15,7 +15,6 @@ import {
   RefreshCcw,
   ChevronLeft,
   ChevronRight,
-  Edit,
   Pen,
 } from "lucide-react";
 

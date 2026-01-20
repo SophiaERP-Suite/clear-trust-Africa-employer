@@ -24,7 +24,7 @@ function EmploymentLayout() {
     {
       path: "/Tracker",
       icon: <ClipboardList size={25} />,
-      label: "DBS Tracker",
+      label: "CT Tracker",
     },
     {
       path: "/IncidentMgt",
@@ -37,11 +37,11 @@ function EmploymentLayout() {
       icon: <File size={25} />,
       label: "Payment Log",
     },
-    {
-      path: "/Reports",
-      icon: <BarChart3 size={25} />,
-      label: "Reports & Analytics",
-    },
+    // {
+    //   path: "/Reports",
+    //   icon: <BarChart3 size={25} />,
+    //   label: "Reports & Analytics",
+    // },
 
     {
       path: "/Communication",

@@ -22,22 +22,22 @@ export const fetchDbsPartners = async (): Promise<DbsPartners[]> => {
   return data;
 }
 
-// export const fetchEscalations = async (incidentReportId: number): Promise<Escalations[]> => {
-//   const token = localStorage.getItem("accessToken");
+export const fetchEscalations = async (incidentReportId: number) => {
+  const token = localStorage.getItem("accessToken");
 
-//   const response = await fetch(`${BaseURL}/api/employer/IncidentEscalation/${incidentReportId}/GetAll`, {
-//     method: "GET",
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//       "Content-Type": "application/json",
-//     },
-//   });
+  const response = await fetch(`${BaseURL}/api/employer/IncidentEscalation/${incidentReportId}/GetAll`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
 
-//   if (!response.ok) {
-//     throw new Error("Failed to fetch DBS partners");
-//   }
+  if (!response.ok) {
+    throw new Error("Failed to fetch DBS partners");
+  }
 
-//   const data: DbsPartners[] = await response.json();
-//   console.log("dbs pattners", data);
-//   return data;
-// };
+  const data = await response.json();
+  // console.log("escalations", data);
+  return data;
+};

@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import {
   type ChatMessage,
-  type ChatParticipant,
   fetchIncidentChatMessages,
   sendChatMessage,
 } from "./Requests/IncidentChatRequests";
@@ -34,7 +33,6 @@ export default function ChatPanel({
 }: ChatPanelProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [participants, setParticipants] = useState<ChatParticipant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -93,9 +91,9 @@ export default function ChatPanel({
     setIsSending(true);
 
     const formData = new FormData();
-    formData.append("Comments", newMessage); // ✅ EXACT name
+    formData.append("Comments", newMessage); 
     if (selectedFile) {
-      formData.append("File", selectedFile); // ✅ EXACT name
+      formData.append("File", selectedFile); 
     }
 
     try {
@@ -153,9 +151,7 @@ export default function ChatPanel({
         <div className="border-b p-4 flex justify-between items-center">
           <div>
             <h3 className="text-lg font-semibold">Incident Comments</h3>
-            {/* <p className="text-sm text-gray-500">
-              {participants.length} participants
-            </p> */}
+         
           </div>
           <button
             onClick={onClose}
@@ -168,17 +164,7 @@ export default function ChatPanel({
         {/* Participants List (Optional Sidebar) */}
         <div className="border-b bg-gray-50">
           <div className="flex items-center gap-2 overflow-x-auto">
-            {participants.map((participant) => (
-              <div
-                key={participant.userId}
-                className="flex flex-col items-center px-3 py-1 bg-white rounded-lg border"
-              >
-                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
-                  {participant.userName.charAt(0)}
-                </div>
-                <span className="text-xs mt-1">{participant.userName}</span>
-              </div>
-            ))}
+          
           </div>
         </div>
 

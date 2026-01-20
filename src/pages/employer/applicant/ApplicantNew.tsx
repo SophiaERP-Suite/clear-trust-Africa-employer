@@ -37,8 +37,8 @@ interface ApplicantFormValues {
   StateId: string;
   CityId: string;
   BirthPlace: string;
-  LastAddress: string;
-  CurrentAddressDuration: string;
+  CurrentAddressDurationCount: number;
+  CurrentAddressDurationUnit: string;
   Address: string;
 }
 
@@ -147,9 +147,9 @@ function AdminEmployeesNew() {
       !errors.Email && !errors.IdentificationNumber &&
       !errors.DateOfBirth && !errors.Gender &&
       !errors.Address && !errors.CountryId &&
-      !errors.LastAddress && !errors.StateId &&
+      !errors.CurrentAddressDurationCount && !errors.StateId &&
       !errors.OtherNames && !errors.BirthPlace &&
-      !errors.CityId && !errors.CurrentAddressDuration
+      !errors.CityId && !errors.CurrentAddressDurationUnit
     ) {
       const loader = document.getElementById('query-loader');
       const text = document.getElementById('query-text');
@@ -160,6 +160,8 @@ function AdminEmployeesNew() {
         text.style.display = 'none';
       }
       const formData = new FormData();
+      const duration =
+        `${data.CurrentAddressDurationCount} ${data.CurrentAddressDurationUnit}${data.CurrentAddressDurationCount > 0 && 's'}`
       formData.append('FirstName', data.FirstName);
       formData.append('LastName', data.LastName);
       formData.append('OtherNames', data.OtherNames);
@@ -173,8 +175,7 @@ function AdminEmployeesNew() {
       formData.append('CountryId', data.CountryId);
       formData.append('CityId', data.CityId);
       formData.append('BirthPlace', data.BirthPlace);
-      formData.append('LastAddress', data.LastAddress);
-      formData.append('CurrentAddressDuration', data.CurrentAddressDuration);
+      formData.append('CurrentAddressDuration', duration);
       formData.append('ProfileImage', data.ProfileImage[0]);
       const res = await createEmployee(formData);
       handleCreateEmployee(res, loader, text, { toast }, reset);
@@ -218,7 +219,7 @@ function AdminEmployeesNew() {
           <div className="flex-auto w-full">
             <div className="relative flex flex-col mb-8 text-secondary-500 bg-white shadow rounded -mt-2 dark:bg-dark-card">
               <div className="flex justify-between flex-auto p-6 border-b dark:border-secondary-800">
-                <h4 className="mb-0 dark:text-white">Applicant Information</h4>
+                <h4 className="mb-0 dark:text-white">General Information</h4>
               </div>
               <div className="p-6 ">
                 <form
@@ -340,7 +341,7 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        Applicant Photo
+                       Photo
                       </label>
                       <div>
                         <input
@@ -403,7 +404,7 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        Identification Number (NIN, SSN, SIN)
+                        Unique Personal Identification Number (eg: NIN, UPI, etc...)
                       </label>
                       <div>
                         <input
@@ -538,25 +539,48 @@ function AdminEmployeesNew() {
                         <p className='error-msg'>{errors.CityId?.message}</p>
                       </div>
                     </div>
-                    <div>
-                      <label
+                    <div className="grid grid-cols-2 gap-x-6">
+                      <div className="col-span-2">
+                        <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="lname"
-                      >
-                        How long applicant has lived in current address
-                      </label>
+                          htmlFor="lname"
+                        >
+                          Length of Residency in Current Address
+                        </label>
+                      </div>
                       <div>
                         <input
-                          type="text"
+                          type="number"
+                          placeholder="Duration"
                           className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
-                            ...register('CurrentAddressDuration', {
+                            ...register('CurrentAddressDurationCount', {
                               required: 'Required'
                             })
                           }
                           required
                         />
-                        <p className='error-msg'>{errors.CurrentAddressDuration?.message}</p>
+                        <p className='error-msg'>{errors.CurrentAddressDurationCount?.message}</p>
+                      </div>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('CurrentAddressDurationUnit', {
+                              required: 'Required',
+                              pattern: {
+                                value: /^(?!default$).+$/,
+                                message: 'Required'
+                              }
+                            })
+                          }
+                        >
+                          <option value="default">Select Unit</option>
+                          <option value="Week">Weeks</option>
+                          <option value="Month">Months</option>
+                          <option value="Year">Years</option>
+                        </select>
+                        <p className='error-msg'>{errors.CurrentAddressDurationUnit?.message}</p>
                       </div>
                     </div>
                     <div className="lg:col-span-2">
@@ -579,26 +603,6 @@ function AdminEmployeesNew() {
                         <p className='error-msg'>{errors.Address?.message}</p>
                       </div>
                     </div>
-                    <div className="lg:col-span-2">
-                      <label
-                        className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="Address"
-                      >
-                        Former Address
-                      </label>
-                      <div>
-                        <textarea
-                          className="w-full h-20 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                          {
-                            ...register('LastAddress', {
-                              required: 'Required'
-                            })
-                          }
-                          required
-                        ></textarea>
-                        <p className='error-msg'>{errors.LastAddress?.message}</p>
-                      </div>
-                    </div>
                   </div>
                   <hr className="mt-5" />
                   <button type="submit" className="btn btn-success">
@@ -609,7 +613,7 @@ function AdminEmployeesNew() {
                     </div>
                     <span id="query-text">
                       <CheckCheck size={18} className="mr-2" />
-                      Create Applicant
+                      Create Record
                     </span>
                   </button>
                 </form>

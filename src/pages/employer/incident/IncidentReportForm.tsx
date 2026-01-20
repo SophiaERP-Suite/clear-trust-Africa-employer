@@ -5,7 +5,6 @@ import {
   ChevronRightIcon,
   X,
   CheckCheck,
-  ArrowLeft,
 } from "lucide-react";
 import { fetchApplicants } from "../../../utils/Requests/EmployeeRequests";
 import hashids from "../../../utils/hashids";
@@ -256,7 +255,6 @@ export default function IncidentReportForm() {
         incidentLocation: formData.incidentLocation,
         reportedById: Number(formData.reporterId),
         accusedEmployeeId: Number(formData.accusedEmployeeId) || 0,
-        // recordedById: Number(formData.recorderId) || 0,
         severityLevel: formData.severityLevel,
         notifyEmployee: formData.notifyEmployee,
         hasInjury: formData.hasInjury,
