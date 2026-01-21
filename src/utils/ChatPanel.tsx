@@ -66,7 +66,6 @@ export default function ChatPanel({
     try {
       const fetchedMessages = await fetchIncidentChatMessages(incidentReportId);
 
-      console.log("chat fetched message", fetchedMessages);
       setMessages(fetchedMessages);
     } catch (error) {
       console.error("Error loading chat:", error);

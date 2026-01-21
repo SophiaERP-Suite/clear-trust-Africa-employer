@@ -82,7 +82,7 @@ export default function IncidentDetails() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [modalType, setModalType] = useState<ModalType>(null);
   const navigate = useNavigate();
-  
+
   const [dbsPartners, setDbsPartners] = useState<DbsPartners[]>([]);
 
   const { user } = useAuth();
@@ -99,7 +99,6 @@ export default function IncidentDetails() {
 
         const data = await fetchIncidentAttachments(originalId);
         setAttachments(data);
-        console.log("attachment:", data);
       } catch (err: any) {
         console.error("Error loading attachments:", err);
       } finally {
@@ -124,7 +123,6 @@ export default function IncidentDetails() {
     try {
       const data = await fetchDbsPartners();
       setDbsPartners(data);
-      console.log("dbs", data);
     } catch (err: any) {
       console.error("Error fetching partners:", err);
       toast.error("Failed to load partners");
@@ -165,13 +163,13 @@ export default function IncidentDetails() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(
-          `Failed to fetch incident: ${response.status} - ${errorText}`
+          `Failed to fetch incident: ${response.status} - ${errorText}`,
         );
       }
 
@@ -236,7 +234,7 @@ export default function IncidentDetails() {
       }
 
       const updatedAttachments = await fetchIncidentAttachments(
-        Number(originalId)
+        Number(originalId),
       );
       setAttachments(updatedAttachments);
       toast.success("Delete Successful");
@@ -260,7 +258,7 @@ export default function IncidentDetails() {
           originalId!,
           Number(organisationId),
           file,
-          description
+          description,
         );
         return file.name;
       });
@@ -269,7 +267,7 @@ export default function IncidentDetails() {
 
       setNewFiles([]);
       const updatedAttachments = await fetchIncidentAttachments(
-        Number(originalId)
+        Number(originalId),
       );
       setAttachments(updatedAttachments);
       toast.success("Upload successful");
@@ -344,7 +342,7 @@ export default function IncidentDetails() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
-        }
+        },
       );
 
       if (!response) {
@@ -451,8 +449,8 @@ export default function IncidentDetails() {
                               setIsOpen(false);
                               navigate(
                                 `/IncidentReportEdit/${hashids.encode(
-                                  Number(originalId)
-                                )}`
+                                  Number(originalId),
+                                )}`,
                               );
                             }}
                           >
@@ -489,13 +487,10 @@ export default function IncidentDetails() {
                             onClick={() => {
                               if (
                                 window.confirm(
-                                  "Are you sure you want to close this report?"
+                                  "Are you sure you want to close this report?",
                                 )
                               ) {
-                                console.log("Delete confirmed");
-                                // Add delete logic here
                               }
-                              // setIsOpen(false);
                             }}
                           >
                             <CheckCheck size={16} />
@@ -509,7 +504,7 @@ export default function IncidentDetails() {
                             onClick={() => {
                               if (
                                 window.confirm(
-                                  "Are you sure you want to delete this incident report?"
+                                  "Are you sure you want to delete this incident report?",
                                 )
                               ) {
                                 console.log("Delete confirmed");
@@ -582,7 +577,7 @@ export default function IncidentDetails() {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
-                      }
+                      },
                     )}
                   </p>
                 </div>
@@ -715,7 +710,7 @@ export default function IncidentDetails() {
                                 day: "2-digit",
                                 month: "short",
                                 year: "numeric",
-                              }
+                              },
                             )}
                           </p>
                         </div>

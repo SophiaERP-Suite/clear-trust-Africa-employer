@@ -1,4 +1,4 @@
-import type { ChangePasswordFormValues } from "../../pages/employer/Security";
+import type { ChangePasswordFormValues } from "../../pages/employer/controlPanel/Security";
 
 const BaseURL = "http://localhost:5181";
 

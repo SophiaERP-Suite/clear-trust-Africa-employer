@@ -8,16 +8,15 @@ import Incidents from "../pages/employer/incident/incident";
 import Reports from "../pages/employer/reports/Reports";
 import CommunicationsPage from "../pages/employer/communication/Communication";
 import PaymentDashboard from "../pages/employer/payment/Payment";
-import ControlPanel from "../pages/employer/controlpanel/ControlPanel";
 import Pricing from "../pages/employer/pricing/Pricing";
 import Profile from "../pages/employer/employer/EmployerProfile";
 import ProfileUpdate from "../pages/employer/employer/EmployerUpdate";
-import Security from "../pages/employer/Security";
-import HelpSupportPage from "../pages/employer/Help";
 import PaymentRedirect from "../pages/employer/payment/PaymentRedirect";
 import IncidentReportDetails from "../pages/employer/incident/IncidentReportDetails";
 import IncidentReportForm from "../pages/employer/incident/IncidentReportForm";
 import DBSTrackerModule from "../pages/employer/Tracker/DbsTracker";
+import TrackerDetails from "../pages/employer/Tracker/TrackerDetails";
+import ControlPanel from "../pages/employer/controlPanel/ControlPanel";
 
 function AppRoutes() {
   return (
@@ -32,6 +31,7 @@ function AppRoutes() {
         <Route path="ProfileUpdate" element={<ProfileUpdate />} />
         <Route path="Profile" element={<Profile />} />
         <Route path="Tracker" element={<DBSTrackerModule />} />
+        <Route path="Tracker/:id" element={<TrackerDetails />} />
         <Route path="IncidentMgt" element={<Incidents />} />
         <Route path="IncidentReportForm" element={<IncidentReportForm />} />
         <Route
@@ -45,11 +45,12 @@ function AppRoutes() {
         <Route path="Payment" element={<PaymentDashboard />} />
         <Route path="Reports" element={<Reports />} />
         <Route path="Communication" element={<CommunicationsPage />} />
-        <Route path="ControlPanel" element={<ControlPanel />} />
+        {/* <Route path="ControlPanel" element={<ControlPanel />} /> */}
         <Route path="Pricing" element={<Pricing />} />
-        <Route path="Security" element={<Security />} />
-        <Route path="Help" element={<HelpSupportPage />} />
+        {/* <Route path="Security" element={<Security />} />
+        <Route path="Help" element={<HelpSupportPage />} /> */}
         <Route path="PaymentRedirect/:tx_ref" element={<PaymentRedirect />} />
+        <Route path="ControlPanel/*" element={<ControlPanel />} />
       </Route>
       {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
     </Routes>

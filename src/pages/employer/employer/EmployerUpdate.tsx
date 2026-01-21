@@ -58,7 +58,7 @@ function ProfileUpdate() {
 
       if (updateInfoResult) {
         toast.success("Organisation updated successfully!");
-        navigate("/Profile");
+        navigate("/ControlPanel");
       } else {
         toast.error("Failed to update organisation");
       }
@@ -89,7 +89,7 @@ function ProfileUpdate() {
                   <p className="text-secondary-600 text-black">
                     <NavLink to="/">Dashboard</NavLink>{" "}
                     <ChevronRightIcon size={14} />
-                    <NavLink to="/Profile">Organisation Profile</NavLink>{" "}
+                    <NavLink to="/ControlPanel">Organisation Profile</NavLink>{" "}
                     <ChevronRightIcon size={14} />
                     Organisation Profile Update{" "}
                   </p>

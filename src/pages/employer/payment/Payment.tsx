@@ -61,7 +61,6 @@ function PaymentDashboard() {
 
       const paymentData = await response.json();
       setPayment(paymentData.data);
-      console.log("Fetched payment data:", paymentData.data);
     } catch (error) {
       console.error("Error fetching incident data:", error);
       alert("Failed to load incident data. Please try again.");

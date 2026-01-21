@@ -70,7 +70,7 @@ export default function IncidentReportForm() {
   const { user } = useAuth();
   const organisationId = user?.organisationId;
 
-  // Incident Types
+  // Incident Types  ==>  Offence Type
   const incidentTypes: IncidentType[] = [
     { id: 1, name: "Safety Violation" },
     { id: 2, name: "Policy Breach" },
@@ -101,7 +101,6 @@ export default function IncidentReportForm() {
         }
 
         const data = await response.json();
-        console.log("Employees data:", data.data?.users); // Debug log
         setEmployees(data.data?.users || []);
       } catch (error) {
         console.error("Failed to fetch applicants:", error);
@@ -137,7 +136,6 @@ export default function IncidentReportForm() {
         }
 
         const incidentData = await response.json();
-        console.log("Fetched incident data:", incidentData); // Debug log
 
         setFormData({
           incidentTitle: incidentData.incidentTitle || "",
@@ -174,7 +172,6 @@ export default function IncidentReportForm() {
     >
   ) => {
     const { name, value, type } = e.target;
-    console.log("Input change:", { name, value, type }); // Debug log
 
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
@@ -200,7 +197,6 @@ export default function IncidentReportForm() {
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    console.log("Select change:", { name, value }); 
     const numValue = value === "" ? "" : Number(value);
     
     if (name === "reporterId") {
@@ -226,8 +222,6 @@ export default function IncidentReportForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log("Form data before submit:", formData); 
 
     if (
       !formData.reporterId ||

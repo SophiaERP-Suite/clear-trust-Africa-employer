@@ -1,84 +1,86 @@
+import { useEffect, useState, type JSX } from "react";
+import { fetchModulesByRoleIdAndPortalType } from "../utils/Requests/moduleRequest";
 import BaseDashboardLayout from "./BaseDashboardLayout";
-import {
-  LayoutDashboard,
-  ClipboardList,
-  BarChart3,
-  Users,
-  AlertTriangle,
-  MessageSquare,
-  Settings,
-  LogOut,
-  File,
-  User,
-  ShieldCheck,
-} from "lucide-react";
+import { getIconComponent } from "../utils/iconMapping";
+import { LogOut } from "lucide-react";
+
+interface ModuleDto {
+  moduleId: number;
+  moduleName: string;
+  moduleUrl: string;
+  iconName: string;
+  displayOrder: number;
+}
+
+interface NavItem {
+  path: string;
+  icon: JSX.Element;
+  label: string;
+}
 
 function EmploymentLayout() {
-  const navItems = [
-    {
-      path: "/Dashboard",
-      icon: <LayoutDashboard size={25} />,
-      label: "Dashboard",
-    },
-   
-    {
-      path: "/Tracker",
-      icon: <ClipboardList size={25} />,
-      label: "CT Tracker",
-    },
-    {
-      path: "/IncidentMgt",
-      icon: <AlertTriangle size={25} />,
-      label: "Incident Mgt",
-    },
+  const [navItems, setNavItems] = useState<NavItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    {
-      path: "/Payment",
-      icon: <File size={25} />,
-      label: "Payment Log",
-    },
-    // {
-    //   path: "/Reports",
-    //   icon: <BarChart3 size={25} />,
-    //   label: "Reports & Analytics",
-    // },
+  useEffect(() => {
+    fetchModules();
+  }, []);
 
-    {
-      path: "/Communication",
-      icon: <MessageSquare size={25} />,
-      label: "Communication",
-    },
+  const fetchModules = async () => {
+    try {
+      setLoading(true);
+      const data: ModuleDto[] = await fetchModulesByRoleIdAndPortalType(
+        "EMPLOYER",
+        2,
+      );
 
-     {
-      path: "/Employee",
-      icon: <Users size={25} />,
-      label: "Employee Mgt",
-    },
+      const mappedNavItems: NavItem[] = data
+        .sort((a, b) => a.displayOrder - b.displayOrder)
+        .map((module) => ({
+          path: module.moduleUrl,
+          icon: getIconComponent(module.iconName, 25),
+          label: module.moduleName,
+        }));
 
-    {
-      path: "/ControlPanel",
-      icon: <Settings size={25} />,
-      label: "Control Panel",
-    },
+      const hasLogout = data.some(
+        (m) => m.iconName.toLowerCase() === "log-out",
+      );
+      if (!hasLogout) {
+        mappedNavItems.push({
+          path: "/Logout",
+          icon: <LogOut size={25} />,
+          label: "Logout",
+        });
+      }
 
-    {
-      path: "/Profile",
-      icon: <User size={25} />,
-      label: "Profile",
-    },
+      setNavItems(mappedNavItems);
+    } catch (err: any) {
+      setNavItems([
+        {
+          path: "/Dashboard",
+          icon: getIconComponent("layout-dashboard", 25),
+          label: "Dashboard",
+        },
+        {
+          path: "/Logout",
+          icon: <LogOut size={25} />,
+          label: "Logout",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    {
-      path: "/Security",
-      icon: <ShieldCheck size={25} />,
-      label: "Security",
-    },
-
-    {
-      path: "/Logout",
-      icon: <LogOut size={25} />,
-      label: "Logout",
-    },
-  ];
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="loading">Loading...</div>
+        </div>
+      </div>
+    );
+  }
 
   return <BaseDashboardLayout navItems={navItems} title={"EMPLOYER"} />;
 }

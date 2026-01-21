@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import {
-  Lock,
-  Smartphone,
-  ShieldCheck,
   Clock,
   MapPin,
   Monitor,
-  ChevronRightIcon,
   CheckCheck,
   AlertCircle,
   EyeOff,
@@ -17,9 +13,9 @@ import { useForm } from "react-hook-form";
 import {
   GetAllLoginAuditTrailsByOrganisationAsync,
   UpdatePassword,
-} from "../../utils/Requests/SecurityRequests";
-import { useAuth } from "../../utils/useAuth";
-import type { AuditDto } from "../../types/audit";
+} from "../../../utils/Requests/SecurityRequests";
+import { useAuth } from "../../../utils/useAuth";
+import type { AuditDto } from "../../../types/audit";
 
 export interface ChangePasswordFormValues {
   CurrentPassword: string;
@@ -54,12 +50,11 @@ export default function Security() {
   const fetchLoginAuditTrail = async () => {
     try {
       const response = await GetAllLoginAuditTrailsByOrganisationAsync(
-        Number(organisationId)
+        Number(organisationId),
       );
 
       if (response) {
         setLoginAudit(response);
-        console.log("audit-data:", response);
       } else {
         throw new Error(await response.text());
       }
@@ -88,42 +83,23 @@ export default function Security() {
 
   return (
     <div
-      className="p-6 lg:p-8 footer-inner mx-auto main-container container"
+      className="footer-inner mx-auto main-container container"
       x-bind:className="setting.page_layout"
     >
       <ToastContainer />
-      {/* Header */}
-      <div className="flex flex-wrap mb-6 justify-between gap-4">
-        <div className="col-md-12">
-          <div className="flex flex-wrap items-center justify-between">
-            <div className="flex">
-              <ShieldCheck
-                className="text-[rgb(112_22_208/0.9)] mr-2 "
-                size={36}
-              />
-              <div>
-                <h3 className="mb-0 text-black">Security</h3>
-                <p className="text-secondary-600 text-black">
-                  Dashboard <ChevronRightIcon size={14} /> Security{" "}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <main className="max-w-7xl mx-auto py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <main className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-2 ">
+          <div className="lg:col-span-1">
             {/* Change Password */}
-            <div className="relative flex flex-col mb-8 bg-white rounded-lg shadow-md dark:bg-dark-card grid grid-cols-1">
+            <div className="relative  border flex flex-col mb-8 bg-white rounded-lg shadow-md dark:bg-dark-card grid grid-cols-1">
               <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
                 <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-100 rounded-full">
+                    {/* <div className="p-2 bg-blue-100 rounded-full">
                       <Lock className="w-5 h-5 text-blue-600" />
-                    </div>
+                    </div> */}
                     <div>
                       <h2 className="text-lg font-semibold text-slate-900">
                         Change Password
@@ -297,8 +273,11 @@ export default function Security() {
                 </div>
               </div>
             </div>
+          </div>
+          {/* Sidebar */}
+          <div className="space-y-6">
             {/* Login History */}
-            <div className="flex flex-col mb-8 bg-white rounded-lg shadow-md dark:bg-dark-card grid grid-cols-1">
+            <div className="border flex flex-col mb-8 bg-white rounded-lg shadow-md dark:bg-dark-card grid grid-cols-1">
               <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
                 <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
                   <div className="flex items-center justify-between">
@@ -310,9 +289,6 @@ export default function Security() {
                         <h2 className="text-lg font-semibold text-slate-900">
                           Login History
                         </h2>
-                        <p className="text-md text-slate-500">
-                          Recent account access activity
-                        </p>
                       </div>
                     </div>
                     {/* <button className="text-md text-blue-600 hover:text-blue-700 font-medium">
@@ -321,141 +297,66 @@ export default function Security() {
                   </div>
                 </div>
                 <div className="bg-white p-6">
+                  <p className="text-sm text-slate-500">
+                    Recent account access activity
+                  </p>
                   <div className="space-y-3">
-                    <div className="space-y-3">
-                      {loginAudit?.length > 0 ? (
-                        loginAudit.map((audit) => (
+                    {loginAudit?.length > 0 ? (
+                      loginAudit.map((audit) => (
+                        <div
+                          key={audit.auditTrailId}
+                          className="flex items-start gap-3 p-3 border border-slate-200 rounded-md"
+                        >
                           <div
-                            key={audit.auditTrailId}
-                            className="flex items-start gap-3 p-3 border border-slate-200 rounded-md"
+                            className={`p-2 rounded-lg ${
+                              audit.statusName === "Success"
+                                ? "bg-green-100"
+                                : "bg-red-100"
+                            }`}
                           >
-                            <div
-                              className={`p-2 rounded-lg ${
+                            <Monitor
+                              className={`w-4 h-4 ${
                                 audit.statusName === "Success"
-                                  ? "bg-green-100"
-                                  : "bg-red-100"
+                                  ? "text-green-600"
+                                  : "text-red-600"
                               }`}
-                            >
-                              <Monitor
-                                className={`w-4 h-4 ${
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="text-md font-medium text-slate-900">
+                                {audit.deviceType}
+                              </p>
+                              <span
+                                className={`text-xs px-2 py-1 rounded-lg ${
                                   audit.statusName === "Success"
-                                    ? "text-green-600"
-                                    : "text-red-600"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-red-100 text-red-700"
                                 }`}
-                              />
+                              >
+                                {audit.statusName}
+                              </span>
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center justify-between mb-1">
-                                <p className="text-md font-medium text-slate-900">
-                                  {audit.deviceType}
-                                </p>
-                                <span
-                                  className={`text-xs px-2 py-1 rounded-lg ${
-                                    audit.statusName === "Success"
-                                      ? "bg-green-100 text-green-700"
-                                      : "bg-red-100 text-red-700"
-                                  }`}
-                                >
-                                  {audit.statusName}
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-4 text-xs text-slate-500">
-                                <span className="flex items-center gap-1">
-                                  <MapPin className="w-3 h-3" />
-                                  {audit.city}, {audit.country}
-                                </span>
-                                <span>{audit.actionDateFormatted}</span>
-                              </div>
+                            <div className="flex items-center gap-4 text-xs text-slate-500">
+                              <span className="flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                {audit.city}, {audit.country}
+                              </span>
+                              <span>{audit.actionDateFormatted}</span>
                             </div>
                           </div>
-                        ))
-                      ) : (
-                        <div className="text-center py-4 text-slate-500">
-                          No login history available
                         </div>
-                      )}
-                    </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-4 text-slate-500">
+                        No login history available
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>{" "}
             {/* <span>{loginAudit.ip}</span> */}
-          </div>
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Two-Factor Authentication */}
-            <div className="relative flex flex-col mb-8 bg-white rounded-lg shadow-md dark:bg-dark-card grid grid-cols-1">
-              <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
-                <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-100 rounded-full">
-                      <Smartphone className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <div className="flex-1">
-                      <h2 className="text-lg font-semibold text-slate-900">
-                        Two-Factor Authentication (2FA)
-                      </h2>
-                    </div>
-                    {/* <button
-                      onClick={() => setTwoFactorEnabled(!twoFactorEnabled)}
-                      className={`relative w-11 h-6 rounded-full transition-colors ${
-                        twoFactorEnabled ? "bg-green-600" : "bg-slate-300"
-                      }`}
-                    >
-                      <span
-                        className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                          twoFactorEnabled ? "translate-x-5" : "translate-x-0"
-                        }`}
-                      />
-                    </button> */}
-                  </div>
-                </div>
-                <div className="bg-white p-6">
-                  <p className="text-md text-slate-500 pb-2">
-                    Protect your account with an additional security layer
-                  </p>
-                  {/* {twoFactorEnabled && (
-                    <div className="space-y-4">
-                      <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-                        <div>
-                          <p className="text-md font-medium text-green-900">
-                            2FA is Active
-                          </p>
-                          <p className="text-xs text-green-700 mt-1">
-                            Your account is protected with authenticator app
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <button className="px-4 py-2 border border-slate-200 rounded-lg text-md font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-                          View Backup Codes
-                        </button>
-                        <button className="px-4 py-2 border border-slate-200 rounded-lg text-md font-medium text-slate-700 hover:bg-slate-50 transition-colors">
-                          Reset 2FA
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {!twoFactorEnabled && (
-                    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-3">
-                      <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
-                      <div>
-                        <p className="text-md font-medium text-yellow-900">
-                          2FA is Disabled
-                        </p>
-                        <p className="text-xs text-yellow-700 mt-1">
-                          Enable two-factor authentication to secure your
-                          account
-                        </p>
-                      </div>
-                    </div>
-                  )} */}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </main>

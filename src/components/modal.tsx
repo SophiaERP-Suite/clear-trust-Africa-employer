@@ -17,22 +17,24 @@ type ModalProps = {
   dropdownLabel?: string;
   dropdownOptions?: { value: string | number; label: string }[];
   dropdownPlaceholder?: string;
-  dropdownLabel2?: string;
-  dropdownOptions2?: { value: string | number; label: string }[];
-  dropdownPlaceholder2?: string;
   loading?: boolean;
   defaultInputValue?: string;
   defaultInputValue2?: string;
   defaultDropdownValue?: string;
-  defaultDropdownValue2?: string;
   onConfirm: (data: {
     inputValue?: string;
     inputValue2?: string;
     dropdownValue?: string;
-    dropdownValue2?: string;
   }) => void;
+
   onCancel: () => void;
 };
+
+interface ModalConfirmPayload {
+  inputValue?: string;
+  inputValue2?: string;
+  dropdownValue?: string;
+}
 
 const colorMap = {
   red: "btn-danger",
@@ -56,21 +58,16 @@ const Modal: React.FC<ModalProps> = ({
   dropdownLabel,
   dropdownOptions = [],
   dropdownPlaceholder = "Select an option",
-  dropdownLabel2,
-  dropdownOptions2 = [],
-  dropdownPlaceholder2 = "Select an option",
   loading = false,
   defaultInputValue = "",
   defaultInputValue2 = "",
   defaultDropdownValue = "",
-  defaultDropdownValue2 = "",
   onConfirm,
   onCancel,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [inputValue2, setInputValue2] = useState("");
   const [dropdownValue, setDropdownValue] = useState("");
-  const [dropdownValue2, setDropdownValue2] = useState("");
 
   // Update inputs when modal opens with default values
   useEffect(() => {
@@ -78,21 +75,13 @@ const Modal: React.FC<ModalProps> = ({
       setInputValue(defaultInputValue);
       setInputValue2(defaultInputValue2);
       setDropdownValue(defaultDropdownValue);
-      setDropdownValue2(defaultDropdownValue2);
     } else {
       // Clear when modal closes
       setInputValue("");
       setInputValue2("");
       setDropdownValue("");
-      setDropdownValue2("");
     }
-  }, [
-    isOpen,
-    defaultInputValue,
-    defaultInputValue2,
-    defaultDropdownValue,
-    defaultDropdownValue2,
-  ]);
+  }, [isOpen, defaultInputValue, defaultInputValue2, defaultDropdownValue]);
 
   if (!isOpen) return null;
 
@@ -164,27 +153,6 @@ const Modal: React.FC<ModalProps> = ({
           </div>
         )}
 
-        {/* Dropdown2 */}
-        {dropdownLabel2 && (
-          <div className="mt-4">
-            <label className="mb-1 block text-sm text-black font-medium">
-              {dropdownLabel2}
-            </label>
-            <select
-              value={dropdownValue2}
-              onChange={(e) => setDropdownValue2(e.target.value)}
-              className="form-control text-sm text-black"
-            >
-              <option value="">{dropdownPlaceholder2}</option>
-              {dropdownOptions2.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
         <div className="mt-6 flex justify-end gap-3">
           <button
             onClick={onCancel}
@@ -199,7 +167,6 @@ const Modal: React.FC<ModalProps> = ({
                 inputValue,
                 inputValue2,
                 dropdownValue,
-                dropdownValue2,
               })
             }
             disabled={loading}

@@ -23,6 +23,19 @@ export const submitDbsRequest = async (data: FormData) => {
   return response;
 };
 
+export const fetchDbsCheckById = async (id: number) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await fetch(`${BaseURL}/dbs-applications/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  console.log("check by id", response.json)
+  return response;
+};
+
 export const fetchDbsChecksByUserId = async (userId: number) => {
   const token = localStorage.getItem("accessToken");
   const response = await fetch(`${BaseURL}/dbs-applications/${userId}`, {
@@ -43,8 +56,19 @@ export const verifyDbsPayment = async (tx_ref: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
+  return response;
+};
+
+export const fetchDbsStatus = async () => {
+  const token = localStorage.getItem("accessToken");
+  const response = await fetch(`${BaseURL}/dbs-status`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response;
 };
 
@@ -56,20 +80,9 @@ export const fetchDbsChecks = async (filterData: object) => {
       params.append(key, value);
     }
   });
-  const url = `${BaseURL}/dbs-applications?${params}`;
+  const url = `${BaseURL}/dbs-applications/GetAllDBSApplicationByOrganisationId?${params}`;
   console.log(url);
   const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return response;
-};
-
-export const fetchDbsStatus = async () => {
-  const token = localStorage.getItem("accessToken");
-  const response = await fetch(`${BaseURL}/dbs-status`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token}`,

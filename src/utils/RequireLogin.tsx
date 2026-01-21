@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "./useAuth";
 import { fetchUser } from "./Requests/AuthRequests";
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBjbGVhcnRydXN0YWZyaWNhLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIC0gT3JnYW5pc2F0aW9uIiwianRpIjoiMWIyOTMxMWYtNzE4Mi00NjhjLWE2MDgtN2U4MWVhMjM0N2Q3IiwiZXhwIjoxNzY4ODU4MDA3LCJpc3MiOiJDbGVhclRydXN0QWZyaWNhIiwiYXVkIjoiQ2xlYXJUcnVzdEFmcmljYVVzZXJzIn0.QNx_S8yM4ZnXT1kHpOLKFyQHfoum2vlbnVWSh6nSSqY";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBjbGVhcnRydXN0YWZyaWNhLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIC0gT3JnYW5pc2F0aW9uIiwianRpIjoiNDFlNzYzYzItODNiYi00ZGQ3LWFiNWItOTI1M2RlN2MxMTRhIiwiZXhwIjoxNzY5MjU3MjAzLCJpc3MiOiJDbGVhclRydXN0QWZyaWNhIiwiYXVkIjoiQ2xlYXJUcnVzdEFmcmljYVVzZXJzIn0.FFwQD54A_pRdyg7d2D1oW9I6eK-9N4EUNyv_S9i_EAA";
 
 export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
   const { user, loadUser } = useAuth();

@@ -118,10 +118,10 @@ export default function Profile() {
 
   return (
     <div
-      className="p-6 lg:p-8 footer-inner mx-auto main-container container"
+      className="footer-inner mx-auto main-container container"
       x-bind:className="setting.page_layout"
     >
-      {/* Header */}
+      {/* Header
       <div className="flex flex-wrap mb-6 justify-between gap-4">
         <div className="col-md-12">
           <div className="flex flex-wrap items-center justify-between">
@@ -139,7 +139,7 @@ export default function Profile() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="space-y-4">
         {/* HEADER */}
@@ -245,10 +245,10 @@ export default function Profile() {
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
                 <tr className="bg-gray-50">
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     Document tYPE
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     Document
                   </th>
                 </tr>
