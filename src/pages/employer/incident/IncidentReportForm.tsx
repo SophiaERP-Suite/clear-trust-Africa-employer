@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   AlertTriangleIcon,
   ChevronRightIcon,
-  X,
   CheckCheck,
 } from "lucide-react";
-import { fetchApplicants } from "../../../utils/Requests/EmployeeRequests";
-import hashids from "../../../utils/hashids";
-import { useAuth } from "../../../utils/useAuth";
+import {
+  fetchApplicants,
+  fetchCitiesByStateId,
+  fetchCountries,
+  fetchStatesByCountryId,
+} from "../../../utils/Requests/EmployeeRequests";
+import { Controller, useForm } from "react-hook-form";
+import RichTextEditor from "../../../layout/RichTextEditor";
+import { createNewIncidentReport, fetchIncidentType } from "../../../utils/Requests/IncidentRequests";
+import { handleCreateEmployee } from "../../../utils/ResponseHandlers/EmployeeResponse";
+import { toast, ToastContainer } from 'react-toastify';
 
 interface IncidentType {
-  id: number;
+  incidentTypeId: number;
   name: string;
 }
 
@@ -21,64 +28,144 @@ interface Employee {
   lastName: string;
 }
 
+interface CountryData {
+  countryId: number;
+  name: string;
+  code: string;
+}
+
+interface StateData {
+  stateId: number;
+  name: string;
+  code: string;
+}
+
+interface CityData {
+  cityId: number;
+  name: string;
+  code: string;
+}
+
 interface IncidentReportFormData {
   incidentTitle: string;
   incidentTypeId: number;
   incidentDate: string;
   description: string;
   incidentLocation: string;
-  reporterId: number | "";
-  accusedEmployeeId: number | "";
-  // recorderId: number | "";
+  ReportedById: string;
+  accusedEmployeeId: string;
   severityLevel: number;
   notifyEmployee: boolean;
   hasInjury: boolean;
   incidentStatus: number;
+  countryId: string;
+  stateId: string;
+  cityId: string;
   organisationId: number;
 }
 
 export default function IncidentReportForm() {
-  const { id } = useParams<{ id: string }>();
-  const decoded = hashids.decode(id || "");
-  const originalId = decoded.length > 0 ? Number(decoded[0]) : null;
-  const navigate = useNavigate();
-  const isEditMode = !!id;
-  const decodedId = id ? (hashids.decode(id)[0] as number) : null;
-
-  // Form state
-  const [formData, setFormData] = useState<IncidentReportFormData>({
-    incidentTitle: "",
-    incidentTypeId: 0,
-    incidentDate: "",
-    description: "",
-    incidentLocation: "",
-    reporterId: "",
-    accusedEmployeeId: "",
-    // recorderId: "",
-    severityLevel: 1,
-    notifyEmployee: false,
-    hasInjury: false,
-    incidentStatus: 1,
-    organisationId: 1,
-  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState,
+    control
+  } = useForm<IncidentReportFormData>();
+  const { errors } = formState;
+  const [incidentType, setIncidentType] = useState<IncidentType[]>([]);
+  const [countries, setCountries] = useState<CountryData[]>([]);
+  const [states, setStates] = useState<StateData[]>([]);
+  const [cities, setCities] = useState<CityData[]>([]);
 
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(isEditMode);
-  const [uploadProgress, setUploadProgress] = useState(0);
+   const selectedCountry = watch('countryId');
+  const selectedState = watch('stateId');
 
-  const { user } = useAuth();
-  const organisationId = user?.organisationId;
+  useEffect(() => {
+    fetchCountries()
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          setCountries(data);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, []);
 
-  // Incident Types  ==>  Offence Type
-  const incidentTypes: IncidentType[] = [
-    { id: 1, name: "Safety Violation" },
-    { id: 2, name: "Policy Breach" },
-    { id: 3, name: "Misconduct" },
-    { id: 4, name: "Accident" },
-    { id: 5, name: "Harassment" },
-    { id: 6, name: "Other" },
-  ];
+  useEffect(() => {
+    if (!selectedCountry || selectedCountry == 'default') {
+      setStates([]);
+      setValue('stateId', 'default');
+      setValue('cityId', 'default')
+      return;
+    }
+    fetchStatesByCountryId(Number(selectedCountry))
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          setStates(data);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, [selectedCountry, setValue]);
+
+  useEffect(() => {
+    if (!selectedState || selectedState == 'default') {
+      setCities([]);
+      setValue('cityId', 'default')
+      return;
+    }
+    fetchCitiesByStateId(Number(selectedState))
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          setCities(data);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, [selectedState, setValue]);
+
+  useEffect(() => {
+    fetchIncidentType()
+    .then(res => {
+    if (res.status === 200) {
+        res.json()
+        .then(data => {
+        console.log(data);
+        setIncidentType(data.data);
+        })
+    } else {
+        res.text()
+        .then(data => {
+        console.log(JSON.parse(data));
+        })
+    }
+    })
+}, []);
 
   const severityLevels = [
     { value: 1, label: "Low", color: "text-green-600" },
@@ -87,279 +174,89 @@ export default function IncidentReportForm() {
     { value: 4, label: "Critical", color: "text-red-600" },
   ];
 
-  // Fetch employees
+  
+  const submitIncidentReport = async (data: IncidentReportFormData) => {
+     if (!errors.incidentTitle && !errors.incidentTypeId &&
+        !errors.incidentDate &&
+        !errors.description && !errors.incidentLocation &&
+        !errors.accusedEmployeeId && !errors.severityLevel &&
+        !errors.notifyEmployee && !errors.hasInjury &&
+        !errors.countryId && !errors.stateId &&
+        !errors.cityId
+      ) {
+        const loader = document.getElementById('query-loader');
+        const text = document.getElementById('query-text');
+        if (loader) {
+          loader.style.display = 'flex';
+        }
+        if (text) {
+          text.style.display = 'none';
+        }
+        const formData = new FormData();
+        formData.append('IncidentTitle', data.incidentTitle);
+        formData.append('IncidentTypeId', `${data.incidentTypeId}`);
+        formData.append('CountryId', data.countryId);
+        formData.append('IncidentDate', data.incidentDate);
+        formData.append('Description', data.description);
+        formData.append('IncidentLocation', data.incidentLocation);
+        formData.append('AccusedEmployeeId', data.accusedEmployeeId);
+        formData.append('ReportedById', data.ReportedById);
+        formData.append('SeverityLevel', `${data.severityLevel}`);
+        formData.append('NotifyEmployee', `${data.notifyEmployee}`);
+        formData.append('HasInjury', `${data.hasInjury}`);
+        formData.append('CityId', data.cityId);
+        formData.append('StateId', data.stateId);
+        const res = await createNewIncidentReport(formData);
+        handleCreateEmployee(res, loader, text, { toast }, reset);
+      }
+  }
+
   useEffect(() => {
     const controller = new AbortController();
-
-    const fetchData = async () => {
-      try {
-        const response = await fetchApplicants(1, 200);
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`HTTP ${response.status}: ${errorText}`);
+    fetchApplicants(1, 200)
+    .then(res => {
+        if (res.status === 200) {
+            res.json()
+            .then(data => {
+                console.log(data);
+                setEmployees(data.data?.users || []);
+            })
+        } else {
+            res.text()
+            .then(data => {
+                console.log(JSON.parse(data));
+            })
         }
-
-        const data = await response.json();
-        setEmployees(data.data?.users || []);
-      } catch (error) {
-        console.error("Failed to fetch applicants:", error);
-      }
-    };
-
-    fetchData();
+    })
+    .catch((err) => console.log(err))
 
     return () => controller.abort();
   }, []);
 
-  useEffect(() => {
-    if (!isEditMode || !originalId) return;
-
-    const fetchIncidentData = async () => {
-      setIsLoading(true);
-      try {
-        const token = localStorage.getItem("accessToken");
-        if (!token) throw new Error("Authentication required");
-
-        const response = await fetch(
-          `http://localhost:5181/api/employer/IncidentReports/${originalId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Failed to fetch incident: ${errorText}`);
-        }
-
-        const incidentData = await response.json();
-
-        setFormData({
-          incidentTitle: incidentData.incidentTitle || "",
-          incidentTypeId: incidentData.incidentTypeId || 0,
-          incidentDate: incidentData.incidentDate
-            ? new Date(incidentData.incidentDate).toISOString().slice(0, 16)
-            : "",
-          description: incidentData.description || "",
-          incidentLocation: incidentData.incidentLocation || "",
-          reporterId: incidentData.reportedById || "",
-          accusedEmployeeId: incidentData.accusedEmployeeId || "",
-          // recorderId: incidentData.recordedById || "",
-          severityLevel: incidentData.severityLevel || 1,
-          notifyEmployee: incidentData.notifyEmployee || false,
-          hasInjury: incidentData.hasInjury || false,
-          incidentStatus: incidentData.incidentStatus || 1,
-          organisationId: incidentData.organisationId || organisationId,
-        });
-      } catch (error) {
-        console.error("Error fetching incident data:", error);
-        alert("Failed to load incident data. Please try again.");
-        navigate("/IncidentMgt");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchIncidentData();
-  }, [isEditMode, originalId, organisationId, navigate]);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value, type } = e.target;
-
-    if (type === "checkbox") {
-      const checked = (e.target as HTMLInputElement).checked;
-      setFormData((prev) => ({
-        ...prev,
-        [name]: checked,
-      }));
-    } else if (type === "number" || name.includes("Id")) {
-      const numValue = value === "" ? "" : Number(value);
-      setFormData((prev) => ({
-        ...prev,
-        [name]: numValue,
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleSelectChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    const numValue = value === "" ? "" : Number(value);
-    
-    if (name === "reporterId") {
-      setFormData((prev) => ({
-        ...prev,
-        reporterId: numValue,
-      }));
-    } 
-    // else if (name === "recorderId") {
-    //   setFormData((prev) => ({
-    //     ...prev,
-    //     recorderId: numValue,
-    //   }));
-    else if (name === "accusedEmployeeId") {
-      setFormData((prev) => ({
-        ...prev,
-        accusedEmployeeId: numValue,
-      }));
-    } else {
-      handleInputChange(e);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (
-      !formData.reporterId ||
-      // !formData.recorderId ||
-      !formData.incidentTypeId
-    ) {
-      alert(
-        "Please fill in all required fields (Reported By, Recorded By, and Incident Type)"
-      );
-      return;
-    }
-
-    setIsSubmitting(true);
-    setUploadProgress(10);
-
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) throw new Error("Authentication required");
-
-      const payload = {
-        incidentTitle: formData.incidentTitle,
-        incidentTypeId: Number(formData.incidentTypeId),
-        incidentDate: new Date(formData.incidentDate).toISOString(),
-        description: formData.description,
-        incidentLocation: formData.incidentLocation,
-        reportedById: Number(formData.reporterId),
-        accusedEmployeeId: Number(formData.accusedEmployeeId) || 0,
-        severityLevel: formData.severityLevel,
-        notifyEmployee: formData.notifyEmployee,
-        hasInjury: formData.hasInjury,
-        incidentStatus: formData.incidentStatus,
-        organisationId: Number(formData.organisationId),
-      };
-
-
-      let url: string;
-      let method: string;
-
-      if (isEditMode && originalId) {
-        url = `http://localhost:5181/api/employer/IncidentReports/${originalId}/update`;
-        method = "PUT";
-      } else {
-        url = `http://localhost:5181/api/employer/IncidentReports/${organisationId}/register`;
-        method = "POST";
-      }
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || "Failed to save incident report");
-      }
-
-      const savedIncident = await response.json();
-      const incidentReportId =
-        savedIncident.incidentReportId ?? savedIncident.id;
-
-      if (!incidentReportId) {
-        throw new Error("Incident ID not returned");
-      }
-
-      const hashIncidentId = hashids.encode(incidentReportId);
-
-      setUploadProgress(100);
-      navigate(`/IncidentReportDetails/${hashIncidentId}`);
-    } catch (error) {
-      console.error(error);
-      alert(
-        error instanceof Error
-          ? error.message
-          : "An error occurred while saving the form"
-      );
-    } finally {
-      setIsSubmitting(false);
-      setUploadProgress(0);
-    }
-  };
-
-  // Handle cancel
-  const handleCancel = () => {
-    if (isEditMode && decodedId) {
-      navigate(`/IncidentReportDetails/${id}`);
-    } else {
-      navigate("/IncidentMgt");
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="p-6 lg:p-8 footer-inner mx-auto main-container container">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading incident data...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="p-6 lg:p-8 footer-inner mx-auto main-container container">
       {/* Header */}
+      <ToastContainer />
       <div className="mb-6">
         <div className="w-full mb-8">
           <div className="row">
             <div className="col-md-12">
-              <div className="flex flex-wrap items-center justify-between">
-                <div className="flex items-center">
-                  {/* <button
-                    onClick={handleCancel}
-                    className="mr-4 btn btn-outline btn-sm"
-                  >
-                    <ArrowLeft size={18} />
-                  </button> */}
-                  <AlertTriangleIcon
-                    className="text-[rgb(112_22_208/0.9)] mr-2"
-                    size={36}
-                  />
-                  <div>
-                    <h3 className="mb-0 text-black">
-                      {isEditMode
-                        ? "Edit Incident Report"
-                        : "New Incident Report"}
-                    </h3>
-                    <p className="text-secondary-600 text-black">
-                      Dashboard <ChevronRightIcon size={14} /> Incident
-                      Management <ChevronRightIcon size={14} />{" "}
-                      {isEditMode ? "Edit Report" : "New Report"}
-                    </p>
-                  </div>
+                <div className="flex flex-wrap items-center justify-between">
+                <div className="flex">
+                    <AlertTriangleIcon
+                        className="text-[rgb(112_22_208/0.9)] mr-2"
+                        size={36}
+                    />
+                    <div>
+                        <h3 className="mb-0 text-black">Incident Management</h3>
+                        <p className="text-secondary-600 text-black">
+                            <NavLink to="/Dashboard">Dashboard</NavLink>{" "}
+                            <ChevronRightIcon size={14} />{" "}
+                            <NavLink to="/IncidentMgt">Incident Management</NavLink>{" "}
+                            <ChevronRightIcon size={14} />{" "}
+                            <NavLink to="/IncidentMgt/Report/New">New Report</NavLink>{" "}
+                        </p>
+                    </div>
                 </div>
               </div>
             </div>
@@ -372,277 +269,359 @@ export default function IncidentReportForm() {
           <div className="relative flex flex-col mb-8 text-secondary-500 bg-white shadow rounded-lg -mt-2 dark:bg-dark-card">
             <div className="flex justify-between flex-auto p-6 border-b dark:border-secondary-800">
               <h4 className="mb-0 dark:text-white">
-                {isEditMode ? "Edit Incident Report" : "Incident Report"}
+                Incident Report
               </h4>
-              {isEditMode && (
-                <span className="px-3 py-1 text-xs font-semibold text-blue-700 bg-blue-100 rounded-full">
-                  Editing Mode
-                </span>
-              )}
             </div>
 
-            <div className="p-6">
-              {/* Loading Progress */}
-              {isSubmitting && (
-                <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-blue-700">
-                      {uploadProgress < 30
-                        ? "Preparing..."
-                        : uploadProgress < 60
-                        ? "Saving incident report..."
-                        : uploadProgress < 100
-                        ? "Processing..."
-                        : "Complete!"}
-                    </span>
-                    <span className="text-sm font-medium text-blue-700">
-                      {uploadProgress}%
-                    </span>
-                  </div>
-                  <div className="w-full bg-blue-200 rounded-full h-2">
-                    <div
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${uploadProgress}%` }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Debug info - remove in production */}
-              <div className="mb-4 p-3 bg-gray-100 rounded text-sm hidden">
-                <div>Debug Info:</div>
-                <div>Reporter ID: {formData.reporterId}</div>
-                {/* <div>Recorder ID: {formData.recorderId}</div> */}
-                <div>Employees count: {employees.length}</div>
-              </div>
-
+            <div className="p-6">      
               {/* Form */}
               <div>
-                <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Incident Title */}
-                    <div className="lg:col-span-2">
-                      <label className="block text-md text-black mb-2">
-                        Incident Title <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="incidentTitle"
-                        value={formData.incidentTitle}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        placeholder="Enter incident title"
-                        required
-                        disabled={isSubmitting}
-                      />
-                    </div>
-
-                    {/* Incident Type */}
-                    <div>
-                      <label className="block text-md text-black mb-2">
-                        Incident Type <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        name="incidentTypeId"
-                        value={formData.incidentTypeId}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                        disabled={isSubmitting}
+                <form onSubmit={handleSubmit(submitIncidentReport)}
+                  noValidate>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-5">
+                        <div>
+                            <label
+                                className="inline-block mb-2 text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Incident Title
+                            </label>
+                            <div>
+                                <input
+                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    type="text"
+                                    {
+                                        ...register('incidentTitle', {
+                                            required: 'Required'
+                                        })
+                                    }
+                            />
+                            <p className='error-msg'>{errors.incidentTitle?.message}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                className="inline-block mb-2 text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Incident Type
+                            </label>
+                            <div>
+                                <select
+                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    {
+                                        ...register('incidentTypeId', {
+                                            required: 'Required',
+                                            pattern: {
+                                            value: /^(?!default$).+$/,
+                                            message: 'Required'
+                                            }
+                                        })
+                                    }
+                                >
+                                    <option value="default">Select Incident Type</option>
+                                    {incidentType.map((data, index) => (
+                                        <option key={data.incidentTypeId ?? index} value={data.incidentTypeId}>
+                                            {data.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                <p className='error-msg'>{errors.incidentTypeId?.message}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                className="inline-block mb-2 text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Incident Date
+                            </label>
+                            <div>
+                                <input
+                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    type="datetime-local"
+                                    {
+                                        ...register('incidentDate', {
+                                            required: 'Required'
+                                        })
+                                    }
+                            />
+                            <p className='error-msg'>{errors.incidentDate?.message}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                className="inline-block mb-2 text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Severity Level
+                            </label>
+                            <div>
+                                <select
+                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    {
+                                        ...register('severityLevel', {
+                                            required: 'Required',
+                                            pattern: {
+                                            value: /^(?!default$).+$/,
+                                            message: 'Required'
+                                            }
+                                        })
+                                    }
+                                >
+                                    <option value="default">Select Sevelrity Level</option>
+                                    {severityLevels.map((level) => (
+                                        <option key={level.value} value={level.value}>
+                                            {level.label}
+                                        </option>
+                                    ))}
+                                </select>
+                                <p className='error-msg'>{errors.severityLevel?.message}</p>
+                            </div>
+                        </div>
+                        <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
                       >
-                        <option value={0}>Select Incident Type</option>
-                        {incidentTypes.map((type) => (
-                          <option key={type.id} value={type.id}>
-                            {type.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Incident Date */}
-                    <div>
-                      <label className="block text-md text-black mb-2">
-                        Incident Date <span className="text-red-500">*</span>
+                        Country
                       </label>
-                      <input
-                        type="datetime-local"
-                        name="incidentDate"
-                        value={formData.incidentDate}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                        disabled={isSubmitting}
-                      />
-                    </div>
-
-                    {/* Incident Location */}
-                    <div>
-                      <label className="block text-md text-black mb-2">
-                        Incident Location{" "}
-                        <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="incidentLocation"
-                        value={formData.incidentLocation}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        placeholder="e.g., Warehouse, Office Floor 2"
-                        required
-                        disabled={isSubmitting}
-                      />
-                    </div>
-
-                    {/* Severity Level */}
-                    <div>
-                      <label className="block text-md text-black mb-2">
-                        Severity Level <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        name="severityLevel"
-                        value={formData.severityLevel}
-                        onChange={handleInputChange}
-                        className="form-control"
-                        required
-                        disabled={isSubmitting}
-                      >
-                        {severityLevels.map((level) => (
-                          <option key={level.value} value={level.value}>
-                            {level.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Reported By */}
-                    <div>
-                      <label className="block text-md text-black mb-2">
-                        Reported By <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        name="reporterId" 
-                        value={formData.reporterId}
-                        onChange={handleSelectChange} 
-                        className="form-control"
-                        required
-                        disabled={isSubmitting}
-                      >
-                        <option value="">Select Employee</option>
-                        {employees.map((emp) => (
-                          <option key={emp.userId} value={emp.userId}>
-                            {emp.lastName} {emp.firstName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Accused Employee */}
-                    <div>
-                      <label className="block text-md text-black mb-2">
-                        Accused Employee
-                      </label>
-                      <select
-                        name="accusedEmployeeId"
-                        value={formData.accusedEmployeeId}
-                        onChange={handleSelectChange}
-                        className="form-control"
-                        disabled={isSubmitting}
-                      >
-                        <option value="">Select Employee (Optional)</option>
-                        {employees.map((emp) => (
-                          <option key={emp.userId} value={emp.userId}>
-                            {emp.lastName} {emp.firstName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Description */}
-                    <div className="lg:col-span-2">
-                      <label className="block text-md text-black mb-2">
-                        Description <span className="text-red-500">*</span>
-                      </label>
-                      <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        rows={5}
-                        className="form-control"
-                        placeholder="Provide detailed description of the incident..."
-                        required
-                        disabled={isSubmitting}
-                      />
-                    </div>
-
-                    {/* Checkboxes */}
-                    <div className="lg:col-span-2 flex flex-wrap gap-6">
-                      <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="hasInjury"
-                          checked={formData.hasInjury}
-                          onChange={handleInputChange}
-                          className="w-4 h-4 text-blue-600 border-gray-300 rounded-lg focus:ring-blue-500"
-                          id="hasInjury"
-                          disabled={isSubmitting}
-                        />
-                        <label
-                          htmlFor="hasInjury"
-                          className="ml-2 mb-0 text-md font-medium text-black"
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('countryId', {
+                              required: 'Required',
+                              pattern: {
+                                value: /^(?!default$).+$/,
+                                message: 'Required'
+                              }
+                            })
+                          }
                         >
-                          Incident resulted in injury
-                        </label>
-                      </div>
-
-                      <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          name="notifyEmployee"
-                          checked={formData.notifyEmployee}
-                          onChange={handleInputChange}
-                          className="w-4 h-4 text-blue-600 border-gray-300 rounded-lg focus:ring-blue-500"
-                          id="notifyEmployee"
-                          disabled={isSubmitting}
-                        />
-                        <label
-                          htmlFor="notifyEmployee"
-                          className="ml-2 mb-0 text-md font-medium text-black"
-                        >
-                          Notify employee
-                        </label>
+                          <option value="default">Select Country</option>
+                          {
+                            countries.map((data, index) => (
+                              <option key={index} value={data.countryId}>{data.name}</option>
+                            ))
+                          }
+                        </select>
+                        <p className='error-msg'>{errors.countryId?.message}</p>
                       </div>
                     </div>
-                  </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        State
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('stateId', {
+                              required: 'Required',
+                              pattern: {
+                                value: /^(?!default$).+$/,
+                                message: 'Required'
+                              }
+                            })
+                          }
+                          disabled={!states.length}
+                        >
+                          <option value="default">Select State</option>
+                          {
+                            states.map((data, index) => (
+                              <option key={index} value={data.stateId}>{data.name}</option>
+                            ))
+                          }
+                        </select>
+                        <p className='error-msg'>{errors.stateId?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        City
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('cityId', {
+                              required: 'Required',
+                              pattern: {
+                                value: /^(?!default$).+$/,
+                                message: 'Required'
+                              }
+                            })
+                          }
+                          disabled={!cities.length}
+                        >
+                          <option value="default">Select City</option>
+                          {
+                            cities.map((data, index) => (
+                              <option key={index} value={data.cityId}>{data.name}</option>
+                            ))
+                          }
+                        </select>
+                        <p className='error-msg'>{errors.cityId?.message}</p>
+                      </div>
+                    </div>
+                        <div>
+                            <label
+                                className="inline-block mb-2 text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Address
+                            </label>
+                            <div>
+                                <input
+                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    type="text"
+                                    {
+                                        ...register('incidentLocation', {
+                                            required: 'Required'
+                                        })
+                                    }
+                            />
+                            <p className='error-msg'>{errors.incidentLocation?.message}</p>
+                            </div>
+                        </div>
+                        <div className="lg:col-span-2">
+                            <label
+                                className="inline-block mb-2 text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Description
+                            </label>
+                            <div>
+                                <Controller
+                                    name="description"
+                                    control={control}
+                                    rules={{ required: 'Required' }}
+                                    render={({ field }) => (
+                                        <RichTextEditor
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            />
+                                    )}
+                                    />
+                                <p className='error-msg'>{errors.description?.message}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                className="inline-block mb-2 text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Reported By
+                            </label>
+                            <div>
+                                <select
+                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    {
+                                        ...register('ReportedById', {
+                                            required: 'Required',
+                                            pattern: {
+                                            value: /^(?!default$).+$/,
+                                            message: 'Required'
+                                            }
+                                        })
+                                    }
+                                >
+                                    <option value="default">Select Reporter</option>
+                                    {employees.map((emp) => (
+                                        <option key={emp.userId} value={emp.userId}>
+                                            {emp.lastName} {emp.firstName}
+                                        </option>
+                                    ))}
+                                </select>
+                                <p className='error-msg'>{errors.ReportedById?.message}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                className="inline-block mb-2 text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Accused
+                            </label>
+                            <div>
+                                <select
+                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    {
+                                        ...register('accusedEmployeeId', {
+                                            required: 'Required',
+                                            pattern: {
+                                            value: /^(?!default$).+$/,
+                                            message: 'Required'
+                                            }
+                                        })
+                                    }
+                                >
+                                    <option value="default">Select Accused</option>
+                                    {employees.map((emp) => (
+                                        <option key={emp.userId} value={emp.userId}>
+                                            {emp.lastName} {emp.firstName}
+                                        </option>
+                                    ))}
+                                </select>
+                                <p className='error-msg'>{errors.accusedEmployeeId?.message}</p>
+                            </div>
+                        </div>
+                        <div className="flex items-start">
+                            <input
+                                type="checkbox"
+                                className="mr-2 mt-1 ml-1"
+                                {
+                                ...register('hasInjury', {
+                                    required: false
+                                })
+                                }
+                            ></input>
+                            <label
+                                className="text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Sustained Injury?
+                            </label>
+                        </div>
+                        <div className="flex items-start">
+                            <input
+                                type="checkbox"
+                                className="mr-2 mt-1 ml-1"
+                                {
+                                ...register('notifyEmployee', {
+                                    required: false
+                                })
+                                }
+                            ></input>
+                            <label
+                                className="text-secondary-600 dark:text-white"
+                                htmlFor="email"
+                                >
+                                Notify Employee?
+                            </label>
+                        </div>
+                    </div>
 
                   {/* Action Buttons */}
                   <div className="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
-                    <button
-                      type="button"
-                      onClick={handleCancel}
-                      disabled={isSubmitting}
-                      className="btn btn-outline btn-secondary"
-                    >
-                      <X size={18} className="mr-2" />
-                      Cancel
-                    </button>
-
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="btn btn-success"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          {isEditMode ? "Updating..." : "Submitting..."}
-                        </>
-                      ) : (
-                        <>
-                          <CheckCheck size={18} className="mr-2" />
-                          {isEditMode ? "Update Report" : "Submit Report"}
-                        </>
-                      )}
-                    </button>
+                    <button className="btn btn-success">
+                      <div className="dots hidden" id="query-loader">
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                        <div className="dot"></div>
+                      </div>
+                      <span id="query-text">
+                        <CheckCheck size={18} className="mr-2" />
+                        Submit Report
+                      </span>
+                  </button>
                   </div>
                 </form>
               </div>

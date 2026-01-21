@@ -93,7 +93,7 @@ const Header = () => {
                           <a href="#">For Schools</a>
                         </li>
                         <li>
-                          <a href="#">For Other Organizations</a>
+                          <a href="#">For Other Organisations</a>
                         </li>
                       </ul>
                     </li>

@@ -35,6 +35,7 @@ interface EmployeeData {
   userId: number;
   firstName: string;
   lastName: string;
+  otherNames: string;
   profileImage: string;
   phone: string;
   email: string;
@@ -42,8 +43,14 @@ interface EmployeeData {
   dateOfBirth: string;
   gender: string;
   address: string;
-  organizationId: number;
+  organisationId: number;
   role: string;
+  countryName: string;
+  stateName: string;
+  cityName: string;
+  birthPlace: string;
+  lastAddress: string;
+  currentAddressDuration: string;
 }
 
 interface DbsChecks {
@@ -51,14 +58,16 @@ interface DbsChecks {
   userId: number;
   requestedById: number;
   dbsTypeId: number;
-  status: string;
+  status: number;
+  statusName: string;
   submittedAt: string;
   completedAt: string;
   dateCreated: string;
   user: string;
   requestedBy: string;
   dbsApplicationType: string;
-  dbsApplicationTypeCost: number;
+  dbsType: string;
+  dbsTypeCost: number;
 }
 
 interface DocumentFormValues {
@@ -86,9 +95,15 @@ function AdminApplicantsNew() {
     useForm<DocumentFormValues>();
   const { errors } = formState;
   const [userDocuments, setUserDocuments] = useState<UserDocumentValues[]>([]);
-  const [dbsTypes, setDbsTypes] = useState<DbsTypes[]>([]);
+  const [dbsTypes, setdbsTypes] = useState<DbsTypes[]>([]);
   const [dbsRequestData, setDbsRequestData] = useState<DbsTypes | null>(null);
-  const [openDbsTypes, setOpenDbsTypes] = useState(false);
+  const [opendbsTypes, setOpendbsTypes] = useState(false);
+  const [dbsPage, setDbsPage] = useState(1);
+  const dbsLimit = 3;
+  const [totalDbsChecks, setTotalDbsChecks] = useState(0);
+  const [docPage, setDocPage] = useState(1);
+  const docLimit = 3;
+  const [totalDocs, setTotalDocs] = useState(0);
 
   const navigate = useNavigate();
 
@@ -112,60 +127,98 @@ function AdminApplicantsNew() {
   }, [hashedId]);
 
   useEffect(() => {
-    fetchDbsChecksByUserId(hashedId)
-      .then((res) => {
+      fetchDbsChecksByUserId(hashedId, dbsPage, dbsLimit)
+      .then(res => {
         if (res.status === 200) {
           res.json().then((data) => {
             console.log(data);
             setDbsChecks(data.data.checks);
-          });
+            setTotalDbsChecks(data.data.totalCount);
+          })
         } else {
           res.text().then((data) => {
             console.log(JSON.parse(data));
           });
         }
       })
-      .catch((err) => console.log(err));
-  }, [hashedId]);
+      .catch((err) => console.log(err))
+  }, [hashedId, dbsPage, dbsLimit]);
+  
+  const refetchDbsData = async () => {
+    try {
+      const res = await fetchDbsChecksByUserId(hashedId, dbsPage, dbsLimit);
+      if (res.status === 200) {
+        const data = await res.json()
+        setDbsChecks(data.data.checks);
+        setTotalDbsChecks(data.data.totalCount);
+      } else {
+        const resText = await res.text();
+        console.log(JSON.parse(resText));
+      }
+    } catch (err) {
+        console.log(err)
+    }
+  }
 
   useEffect(() => {
-    fetchApplicantDocsById(hashedId)
-      .then((res) => {
-        if (res.status === 200) {
-          res.json().then((data) => {
-            console.log(data);
-            setUserDocuments(data.data.docs);
-          });
-        } else {
-          res.text().then((data) => {
-            console.log(JSON.parse(data));
-          });
-        }
-      })
-      .catch((err) => console.log(err));
-  }, [hashedId]);
+    fetchApplicantDocsById(hashedId, docPage, docLimit)
+    .then(res => {
+      if (res.status === 200) {
+        res.json()
+        .then(data => {
+          console.log(data);
+          setUserDocuments(data.data.docs);
+          setTotalDocs(data.data.totalCount);
+        })
+      } else {
+        res.text()
+        .then(data => {
+          console.log(JSON.parse(data));
+        })
+      }
+    })
+    .catch((err) => console.log(err))
+  }, [hashedId, docPage, docLimit]);
+
+  const refetchDocData = async () => {
+    try {
+      const res = await fetchApplicantDocsById(hashedId, docPage, docLimit);
+      if (res.status === 200) {
+        const data = await res.json()
+        setUserDocuments(data.data.docs);
+        setTotalDocs(data.data.totalCount);
+      } else {
+        const resText = await res.text();
+        console.log(JSON.parse(resText));
+      }
+    } catch (err) {
+        console.log(err)
+    }
+  }
 
   useEffect(() => {
-    fetchDbsTypes()
-      .then((res) => {
-        if (res.status === 200) {
-          res.json().then((data) => {
-            console.log(data);
-            setDbsTypes(data.data);
-          });
-        } else {
-          res.text().then((data) => {
-            console.log(JSON.parse(data));
-          });
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const uploadDocument = async (data: DocumentFormValues) => {
-    if (!errors.File && !errors.DocumentType) {
-      const loader = document.getElementById("query-loader");
-      const text = document.getElementById("query-text");
+      fetchDbsTypes()
+        .then(res => {
+          if (res.status === 200) {
+            res.json()
+              .then(data => {
+                console.log(data);
+                setdbsTypes(data.data);
+              })
+          } else {
+            res.text()
+              .then(data => {
+                console.log(JSON.parse(data));
+              })
+          }
+        })
+        .catch((err) => console.log(err))
+    }, []);
+  
+  const uploadDocument = async (data: DocumentFormValues) =>{
+    if (!errors.File && !errors.DocumentType){
+      const loader = document.getElementById('query-loader');
+      const text = document.getElementById('query-text');
       if (loader) {
         loader.style.display = "flex";
       }
@@ -195,7 +248,7 @@ function AdminApplicantsNew() {
   };
 
   const switchData = (data: DbsTypes) => {
-    setOpenDbsTypes(false);
+    setOpendbsTypes(false);
     setDbsRequestData(data);
     setDbsModalState(true);
   };
@@ -481,39 +534,20 @@ function AdminApplicantsNew() {
                     </div>
                     <div className="p-5">
                       <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">Other Names:</h6>
                         <p className="mb-3 dark:text-secondary-600">
-                          <span className="font-semibold">Email: </span>
-                          <a href="#">{employee.email}</a>
+                          <a href="#">{employee.otherNames ?? "None Provided"}</a>
                         </p>
                       </div>
                       <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">Email:</h6>
+                        <h6 className="mb-1 dark:text-white">BirthPlace:</h6>
                         <p className="mb-3 dark:text-secondary-600">
-                          <span className="font-semibold">Contact: </span>
-                          <a href="#">{employee.phone}</a>
+                          <a href="#">{employee.birthPlace ?? "None Provided"}</a>
                         </p>
                       </div>
                       <div className="mt-2">
-                        <p className="mb-3 dark:text-secondary-600">
-                          <span className="font-semibold">Gender: </span>
-                          <a href="#">{employee.gender}</a>
-                        </p>
-                      </div>
-                      <div className="mt-2">
-                        <p className="mb-3 dark:text-secondary-600">
-                          <span className="font-semibold">Date of Birth: </span>{" "}
-                          <a href="#">
-                            {new Date(employee.dateOfBirth).toLocaleDateString(
-                              "en-GB",
-                              {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                              }
-                            )}
-                          </a>
-                        </p>
-                      </div>
-                      <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">Identification Number:</h6>
                         <p className="mb-3 dark:text-secondary-600">
                           <span className="font-semibold">
                             Identification Number:
@@ -522,9 +556,33 @@ function AdminApplicantsNew() {
                         </p>
                       </div>
                       <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">Country:</h6>
                         <p className="mb-3 dark:text-secondary-600">
-                          <span className="font-semibold">Address: </span>
-                          <a href="#">{employee.address}</a>
+                          <a href="#">{employee.countryName ?? "None Provided"}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">State:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{employee.stateName ?? "None Provided"}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">City:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{employee.cityName ?? "None Provided"}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">Address:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{`${employee.address} ${employee.currentAddressDuration && `(${employee.currentAddressDuration})`}`}</a>
+                        </p>
+                      </div>
+                      <div className="mt-2">
+                        <h6 className="mb-1 dark:text-white">Last Address:</h6>
+                        <p className="mb-3 dark:text-secondary-600">
+                          <a href="#">{employee.lastAddress ?? "None Provided"}</a>
                         </p>
                       </div>
                     </div>
@@ -537,24 +595,18 @@ function AdminApplicantsNew() {
                   <div className="relative flex flex-col mb-8 bg-white shadow rounded-lg dark:bg-dark-card">
                     <div className="p-5 border-b dark:border-secondary-800 dark:border-secondary-800 flex items-center justify-between">
                       <h4 className="card-title mb-0 dark:text-white">
-                        CT Checks
+                        CTA Checks
                       </h4>
                       <div className="relative">
-                        <button
-                          className="btn btn-success "
-                          onClick={() => setOpenDbsTypes(!openDbsTypes)}
-                        >
+                        <button className="btn btn-success mr-2 mb-2" onClick={() => setOpendbsTypes(!opendbsTypes)}>
                           <Plus size={18} className="mr-2" />
-                          New CT Check
+                          New CTA Check
                         </button>
-                        {openDbsTypes && (
-                          <div className="absolute top-8 mt-2 w-30 bg-white border shadow-lg z-1">
-                            {dbsTypes.map((dbsData, index) => (
-                              <button
-                                key={dbsData.dbsTypeId ?? index}
-                                onClick={() => switchData(dbsData)}
-                                className="block w-full px-4 py-2 hover:bg-secondary-200 text-left"
-                              >
+                        {opendbsTypes && (<div className="absolute top-8 mt-2 w-30 bg-white border shadow-lg z-1">
+                          {
+                              dbsTypes.map((dbsData, index) => (
+                              <button key={dbsData.dbsTypeId ?? index} onClick={() => switchData(dbsData)} className="block w-full px-4 py-2 hover:bg-secondary-200 text-left">
+
                                 {`${dbsData.typeName}`}
                               </button>
                             ))}
@@ -669,6 +721,40 @@ function AdminApplicantsNew() {
                         ) : (
                           <></>
                         )}
+                      </div>
+                      <div className="flex flex-wrap justify-between my-6 mx-5">
+                        <div className="flex justify-center items-center mb-1">
+                          <p className="text-black">
+                            Showing { dbsChecks.length > 0 ? ((dbsPage * dbsLimit) - dbsLimit) + 1 : 0 } to { dbsChecks.length > 0 ? (((dbsPage * dbsLimit) - dbsLimit) + 1) + (dbsChecks.length - 1) : 0 } of { totalDbsChecks } entries
+                          </p>
+                        </div>
+                        <div className="inline-flex flex-wrap">
+                          {
+                            dbsPage > 1 && <a
+                            href="#"
+                            onClick={() => { if (dbsPage > 1) {setDbsPage(dbsPage - 1); refetchDbsData();} }}
+                            className="border-t border-b border-l text-primary-500 border-secondary-500 px-2 py-1 rounded-l dark:border-secondary-800"
+                          >
+                            Previous
+                          </a>
+                          }
+                          <a
+                            href="#"
+                            className="border text-white border-secondary-500 cursor-pointer bg-primary-500 px-4 py-1 dark:border-secondary-800"
+                          >
+                            { dbsPage }
+                          </a>
+                          {
+                            (dbsPage * dbsLimit) < totalDbsChecks && <a
+                            href="#"
+                            onClick={() => { setDbsPage(dbsPage + 1); refetchDbsData(); }}
+                            className="border-r border-t border-b text-primary-500 border-secondary-500 px-4 py-1 rounded-r dark:border-secondary-800"
+                          >
+                            Next
+                          </a>
+                          }
+                          
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -791,6 +877,40 @@ function AdminApplicantsNew() {
                         ) : (
                           <></>
                         )}
+                      </div>
+                      <div className="flex flex-wrap justify-between my-6 mx-5">
+                        <div className="flex justify-center items-center mb-1">
+                          <p className="text-black">
+                            Showing { userDocuments.length > 0 ? ((docPage * docLimit) - docLimit) + 1 : 0 } to { userDocuments.length > 0 ? (((docPage * docLimit) - docLimit) + 1) + (userDocuments.length - 1) : 0 } of { totalDocs } entries
+                          </p>
+                        </div>
+                        <div className="inline-flex flex-wrap">
+                          {
+                            docPage > 1 && <a
+                            href="#"
+                            onClick={() => { if (docPage > 1) {setDocPage(docPage - 1); refetchDocData();} }}
+                            className="border-t border-b border-l text-primary-500 border-secondary-500 px-2 py-1 rounded-l dark:border-secondary-800"
+                          >
+                            Previous
+                          </a>
+                          }
+                          <a
+                            href="#"
+                            className="border text-white border-secondary-500 cursor-pointer bg-primary-500 px-4 py-1 dark:border-secondary-800"
+                          >
+                            { docPage }
+                          </a>
+                          {
+                            (docPage * docLimit) < totalDocs && <a
+                            href="#"
+                            onClick={() => { setDocPage(docPage + 1); refetchDocData(); }}
+                            className="border-r border-t border-b text-primary-500 border-secondary-500 px-4 py-1 rounded-r dark:border-secondary-800"
+                          >
+                            Next
+                          </a>
+                          }
+                          
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -14,7 +14,8 @@ import {
   CircleQuestionMark,
 } from "lucide-react";
 import { useAuth } from "../utils/useAuth";
-import Modal from "react-modal";
+import Modal from 'react-modal';
+import Tippy from "@tippyjs/react";
 
 interface NavItem {
   path: string;
@@ -180,21 +181,31 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
             <ul className="sidebar-main-menu">
               {navItems.map((item) => (
                 <li key={item.path} className="nav-item">
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      `text-black  ${
-                        isOpen
-                          ? "nav-link"
-                          : "flex justify-center items-center gap-4 my-1 py-3 nav-link-sub"
-                      } ${isActive ? "active" : ""}`
-                    }
-                  >
-                    {item.icon}
-                    {isOpen ? (
-                      <span className="item-name">{item.label}</span>
-                    ) : null}
-                  </NavLink>
+                  {
+                    isOpen ? (
+                      <NavLink
+                        to={item.path}
+                        className={({ isActive }) =>
+                          `text-black  ${"nav-link"
+                          } ${isActive ? "active" : ""}`
+                        }
+                      >
+                        {item.icon}
+                        <span className="item-name">{item.label}</span>
+                      </NavLink>
+                    ) : (
+                        <Tippy content={item.label}>
+                          <NavLink
+                            to={item.path}
+                            className={({ isActive }) =>
+                              `text-black flex justify-center items-center gap-4 my-1 py-3 nav-link-sub" ${isActive ? "active" : ""}`
+                            }
+                          >
+                            {item.icon}
+                          </NavLink>
+                        </Tippy>
+                    )
+                  }
                 </li>
               ))}
             </ul>
@@ -1022,7 +1033,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                       </p>
                                       <ul className="py-2">
                                         <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
-                                          <a>Organization Profile</a>
+                                          <a>Organisation Profile</a>
                                         </li>
                                         <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
                                           <a>Settings</a>

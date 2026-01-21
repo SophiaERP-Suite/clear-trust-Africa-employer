@@ -1,17 +1,16 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "./useAuth";
-import { fetchUser } from "./Requests/AuthRequests";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBjbGVhcnRydXN0YWZyaWNhLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIC0gT3JnYW5pc2F0aW9uIiwianRpIjoiNDFlNzYzYzItODNiYi00ZGQ3LWFiNWItOTI1M2RlN2MxMTRhIiwiZXhwIjoxNzY5MjU3MjAzLCJpc3MiOiJDbGVhclRydXN0QWZyaWNhIiwiYXVkIjoiQ2xlYXJUcnVzdEFmcmljYVVzZXJzIn0.FFwQD54A_pRdyg7d2D1oW9I6eK-9N4EUNyv_S9i_EAA";
+import { useEffect, useState } from 'react';
+import { useAuth } from './useAuth';
+import { fetchUser } from './Requests/AuthRequests';
 
 export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
   const { user, loadUser } = useAuth();
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZW1haWwiOiJwZXRlcnNvbi5vbGFAZ21haWwuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4gLSBPcmdhbmlzYXRpb24iLCJqdGkiOiJkOTdjYzVkYS0xOTFiLTQ4YzktYTg0ZC0zYWNkYTM0MzY1ZGQiLCJleHAiOjE3NjkyNTg0NzcsImlzcyI6IkNsZWFyVHJ1c3RBZnJpY2EiLCJhdWQiOiJDbGVhclRydXN0QWZyaWNhVXNlcnMifQ.xCe-IGho894tMUdYuDK_s0st73xIQFQPFa-PgUNPGHc";
     if (!token) {
       setCheckingAuth(false);
-      window.location.replace("http://localhost:5174/xt/login");
+      window.location.replace("https://cleartrustafrica.com/xt/login");
       return;
     }
 
@@ -34,7 +33,7 @@ export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
       .catch((err) => {
         console.error(err);
         localStorage.removeItem("accessToken");
-        window.location.replace("http://localhost:5174/xt/login");
+        window.location.replace("https://cleartrustafrica.com/xt/login");
       })
       .finally(() => {
         setCheckingAuth(false);

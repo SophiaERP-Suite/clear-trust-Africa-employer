@@ -1,21 +1,17 @@
 const BaseURL = "http://localhost:5181";
-
-export const fetchApplicants = async (pageNumber = 1, limit = 10) => {
-  const token = localStorage.getItem("accessToken");
-  const response = await fetch(
-    `${BaseURL}/applicants?pageNumber=${pageNumber}&limit=${limit}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+const token = localStorage.getItem('accessToken');
+  
+export const fetchApplicants = async (pageNumber=1, limit=10) => {
+  const response = await fetch(`${BaseURL}/applicants?pageNumber=${pageNumber}&limit=${limit}`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `Bearer ${token}`
     }
-  );
+  });
   return response;
 };
 
 export const fetchApplicantById = async (applicantId: number) => {
-  const token = localStorage.getItem("accessToken");
   const response = await fetch(`${BaseURL}/applicants/${applicantId}`, {
     method: "GET",
     headers: {
@@ -26,7 +22,6 @@ export const fetchApplicantById = async (applicantId: number) => {
 };
 
 export const createEmployee = async (data: FormData) => {
-  const token = localStorage.getItem("accessToken");
   const response = await fetch(`${BaseURL}/applicants`, {
     method: "POST",
     headers: {
@@ -50,7 +45,6 @@ export const updateEmployee = async (data: FormData, employeeId: number) => {
 };
 
 export const uploadDocuments = async (data: FormData) => {
-  const token = localStorage.getItem("accessToken");
   const response = await fetch(`${BaseURL}/applicants/docs`, {
     method: "POST",
     headers: {
@@ -61,10 +55,39 @@ export const uploadDocuments = async (data: FormData) => {
   return response;
 };
 
-export const fetchApplicantDocsById = async (applicantId: number) => {
-  const token = localStorage.getItem("accessToken");
-  const response = await fetch(`${BaseURL}/applicants/${applicantId}/docs`, {
-    method: "GET",
+export const fetchApplicantDocsById = async (applicantId: number, pageNumber=1, limit=5) => {
+  const response = await fetch(`${BaseURL}/applicants/${applicantId}/docs?pageNumber=${pageNumber}&limit=${limit}`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+  return response;
+}
+
+export const fetchCountries = async () => {
+  const response = await fetch(`${BaseURL}/api/admin/Country/GetAll`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+  return response
+}
+
+export const fetchStatesByCountryId = async (countryId: number) => {
+  const response = await fetch(`${BaseURL}/api/admin/State/${countryId}/GetAll`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+  return response
+}
+
+export const fetchCitiesByStateId = async (stateId: number) => {
+  const response = await fetch(`${BaseURL}/api/admin/City/${stateId}/GetAll`, {
+    method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
     },

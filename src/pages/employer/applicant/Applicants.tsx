@@ -32,7 +32,7 @@ interface EmployeeData {
   dateOfBirth: string;
   gender: string;
   address: string;
-  organizationId: number;
+  organisationId: number;
   role: string;
 }
 
@@ -431,7 +431,15 @@ function AdminEmployees() {
                                 </div>
                               </td>
                             </tr>
-                          ))}
+                            ))
+                          }
+                          {
+                            employees.length === 0 ? <tr>
+                              <div className="px-6 py-4 whitespace-nowrap">
+                                <span  className="px-6 py-4 text-left font-medium text-black dark:text-white">There are currently no registered employees in your organisation</span>
+                              </div>
+                            </tr> : <></>
+                          }
                         </tbody>
                       </table>
                       {employees.length === 0 ? (

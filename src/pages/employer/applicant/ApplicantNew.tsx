@@ -117,6 +117,7 @@ function AdminEmployeesNew() {
         .then((res) => {
           if (res.status === 200) {
             res.json().then((data) => {
+              console.log("applicant", data);
               const employeeData = data.data.user;
               setEmployee(employeeData);
 

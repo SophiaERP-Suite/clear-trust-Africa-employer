@@ -94,3 +94,30 @@ export const fetchIncidentAttachments = async (incidentReportId: number) => {
   }
   return response.json();
 };
+
+export const fetchIncidentType = async () => {
+  const token = localStorage.getItem('accessToken');
+  const response = await fetch(`${BaseURL}/incident-type`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+  return response
+}
+
+export const createNewIncidentReport = async (data: FormData) => {
+  const token = localStorage.getItem("accessToken");
+  const response = await fetch(
+    `${BaseURL}/api/employer/IncidentReports`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: data,
+    }
+  );
+  return response;
+};
+
