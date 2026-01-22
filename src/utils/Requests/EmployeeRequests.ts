@@ -8,7 +8,7 @@ export const fetchApplicants = async (pageNumber=1, limit=10) => {
       "Authorization": `Bearer ${token}`
     }
   });
-  return response;
+  return response.json();
 };
 
 export const fetchApplicantById = async (applicantId: number) => {

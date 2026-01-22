@@ -2,12 +2,12 @@ import { ChevronRightIcon, File } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../utils/useAuth";
 
-interface DBSType {
+export interface DBSType {
   dbsTypeId: number;
   name: string;
 }
 
-interface DBSApplication {
+export interface DBSApplication {
   dbsApplicationId: number;
   dbsTypeId: number;
   status: string;
@@ -15,7 +15,7 @@ interface DBSApplication {
   dbsType: DBSType;
 }
 
-interface PaymentDto {
+export interface PaymentDto {
   paymentId: number;
   amount: number;
   currency: string;

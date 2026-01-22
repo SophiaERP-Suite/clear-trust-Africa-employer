@@ -19,17 +19,91 @@ import donald from "../../assets2/img/donald_adolphus.jpg";
 import rashkin from "../../assets2/img/isaiah_rashkin.jpg";
 import deborah from "../../assets2/img/deborah_wilkins.jpg";
 import femi from "../../assets2/img/femi_adebayo.jpg";
-import {
-  AlertTriangle,
-  Clipboard,
-  Folder,
-  Plus,
-  Users,
-} from "lucide-react";
+import { AlertTriangle, Clipboard, Folder, Plus, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../utils/useAuth";
+import type { PaymentDto } from "./payment/Payment";
+import { GetDbsChecksByOrganisationIdAndStatus } from "../../utils/Requests/DbsRequests.js";
 
 function EmployerDashboard() {
+  const [payment, setPayment] = useState<PaymentDto[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { user } = useAuth();
+  const organisationId = user?.organisationId;
+
+  useEffect(() => {
+    fetchPaymemts(Number(organisationId));
+  }, [organisationId]);
+
+  // useEffect(() => {
+  //   fetchPaymemts(Number(organisationId));
+  // }, [organisationId]);
+  const pendingStatusId = 1;
+  // useEffect(() => {
+  //   getPendingDbsChecks(dbsPage, dbsLimit, organisationId);
+  // }, [dbsPage, dbsLimit, organisationId]);
+
+  const getPendingDbsChecks = async (
+    dbsPage: number,
+    dbsLimit: number,
+    organisationId: number,
+  ) => {
+    const queryParams = new URLSearchParams({
+      pageNumber: dbsPage.toString(),
+      limit: dbsLimit.toString(),
+      OrganisationId: organisationId.toString(),
+    });
+    const pendingChecks = await GetDbsChecksByOrganisationIdAndStatus(
+      queryParams,
+      pendingStatusId,
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          res.json().then((data) => {
+            // setDbsChecks1(data.data.checks);
+            // setTotalDbsChecks(data.data.totalCount);
+          });
+        } else {
+          res.text().then((data) => {
+            console.log(JSON.parse(data));
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+  const fetchPaymemts = async (organisationId: number) => {
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (!token) throw new Error("Authentication required");
+
+      const response = await fetch(
+        `http://localhost:5181/api/payments/${organisationId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch incident: ${errorText}`);
+      }
+
+      const paymentData = await response.json();
+      setPayment(paymentData.data);
+    } catch (error) {
+      console.error("Error fetching incident data:", error);
+      alert("Failed to load incident data. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
- <div
+    <div
       className="p-6 lg:p-8 footer-inner mx-auto main-container container"
       x-bind:className="setting.page_layout"
     >
@@ -1321,89 +1395,73 @@ function EmployerDashboard() {
                   >
                     <thead>
                       <tr className="bg-secondary-200 dark:bg-dark-bg">
-                        <th className="px-6 py-3 text-left rtl:text-right text-secondary-600 whitespace-nowrap font-semibold dark:text-white">
-                          ORDERID
+                        <th className="px-6 py-3 text-left rtl:text-right text-black whitespace-nowrap font-semibold dark:text-white">
+                          Trxnref
                         </th>
-                        <th className="px-6 py-3 text-left rtl:text-right text-secondary-600 whitespace-nowrap font-semibold dark:text-white">
-                          APPLICANT
+                        <th className="px-6 py-3 text-left rtl:text-right text-black whitespace-nowrap font-semibold dark:text-white">
+                          Employee
                         </th>
-                        <th className="px-6 py-3 text-left rtl:text-right text-secondary-600 whitespace-nowrap font-semibold dark:text-white">
-                          AMOUNT PAID
+                        <th className="px-6 py-3 text-left rtl:text-right text-black whitespace-nowrap font-semibold dark:text-white">
+                          Amount Paid
                         </th>
-                        <th className="px-6 py-3 text-left rtl:text-right text-secondary-600 whitespace-nowrap font-semibold dark:text-white">
-                          CHECK TYPE
+                        <th className="px-6 py-3 text-left rtl:text-right text-black whitespace-nowrap font-semibold dark:text-white">
+                          Check Type
                         </th>
-                        <th className="px-6 py-3 text-left rtl:text-right text-secondary-600 whitespace-nowrap font-semibold dark:text-white">
-                          EXPIRATION
+                        <th className="px-6 py-3 text-left rtl:text-right text-black whitespace-nowrap font-semibold dark:text-white">
+                          Date
                         </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-secondary-200 dark:divide-secondary-800 dark:bg-dark-card dark:text-white">
-                      <tr>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="iq-media-group iq-media-group-1">
-                            <h6 className="font-bold dark:text-white"> #546</h6>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <img
-                              className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                              src={donald}
-                              alt="profile"
-                            />
-                            <h6 className="font-medium pl-1 mt-2 dark:text-white">
-                              Addidis Sportwear
-                            </h6>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
-                          ₦100,000
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap  text-gray-900">
-                          Full Check
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center mb-2">
-                            <h6 className="font-medium dark:text-white">
-                              10th November, 2025
-                            </h6>
-                          </div>
-                        </td>
-                      </tr>
-
-                      <tr className="bg-secondary-200 dark:bg-dark-strip">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="iq-media-group iq-media-group-1">
-                            <h6 className="font-bold dark:text-white"> #456</h6>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <img
-                              className="w-10 h-10 p-1 mr-3 rtl:mr-0 rtl:ml-3 text-primary-400 bg-primary-500/10 rounded-xl"
-                              src={femi}
-                              alt="profile"
-                            />
-                            <h6 className="font-medium pl-1 mt-2 dark:text-white">
-                              Femi Bankole
-                            </h6>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-900">
-                          ₦100,000
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-gray-900">
-                          Full Check
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center mb-2">
-                            <h6 className="font-medium dark:text-white">
-                              28th November, 2025
-                            </h6>
-                          </div>
-                        </td>
-                      </tr>
+                      {payment && payment.length > 0 ? (
+                        payment.map((item) => (
+                          <tr key={item.paymentId}>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="iq-media-group iq-media-group-1">
+                                <h6 className="font-bold dark:text-white">
+                                  #{item.txRef || "_"}
+                                </h6>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <h6 className="font-medium pl-1 mt-2 dark:text-white">
+                                  {item.userName || "_"}
+                                </h6>
+                              </div>
+                            </td>
+                            <td className="px-6 font-bold py-4 whitespace-nowrap text-gray-900">
+                              {item.currency || "_"}{" "}
+                              {item.amount?.toLocaleString() || "100,000"}{" "}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-gray-900">
+                              {item.dbsApplication?.dbsType?.name}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center mb-2">
+                                <h6 className="font-medium dark:text-white">
+                                  {" "}
+                                  {item.dateCreated
+                                    ? new Date(
+                                        item.dateCreated,
+                                      ).toLocaleDateString("en-US", {
+                                        day: "numeric",
+                                        month: "long",
+                                        year: "numeric",
+                                      })
+                                    : "—"}
+                                </h6>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td className="px-6 py-8 text-center text-gray-500">
+                            No payment data available
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
                 </div>

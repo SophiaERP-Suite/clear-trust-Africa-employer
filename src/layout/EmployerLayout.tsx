@@ -3,6 +3,8 @@ import { fetchModulesByRoleIdAndPortalType } from "../utils/Requests/moduleReque
 import BaseDashboardLayout from "./BaseDashboardLayout";
 import { getIconComponent } from "../utils/iconMapping";
 import { LogOut } from "lucide-react";
+import { useAuth } from "../utils/useAuth";
+import Loading from "../utils/Loading";
 
 interface ModuleDto {
   moduleId: number;
@@ -26,11 +28,14 @@ function EmploymentLayout() {
     fetchModules();
   }, []);
 
+  const { user } = useAuth();
+  const organisationType = user?.organisationType;
+
   const fetchModules = async () => {
     try {
       setLoading(true);
       const data: ModuleDto[] = await fetchModulesByRoleIdAndPortalType(
-        "EMPLOYER",
+        organisationType?.toUpperCase() || "AGENT",
         2,
       );
 
@@ -76,13 +81,13 @@ function EmploymentLayout() {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <div className="loading">Loading...</div>
+          <div className="loading"><Loading /></div>
         </div>
       </div>
     );
   }
 
-  return <BaseDashboardLayout navItems={navItems} title={"EMPLOYER"} />;
+  return <BaseDashboardLayout navItems={navItems} title={organisationType?.toUpperCase()} />;
 }
 
 export default EmploymentLayout;

@@ -32,7 +32,7 @@ export const fetchDbsCheckById = async (id: number) => {
     },
   });
 
-  console.log("check by id", response.json)
+  console.log("check by id", response.json);
   return response;
 };
 
@@ -44,6 +44,29 @@ export const fetchDbsChecksByUserId = async (userId: number) => {
       Authorization: `Bearer ${token}`,
     },
   });
+  return response;
+};
+
+export const GetDbsChecksByOrganisationIdAndStatus = async (
+  filterData: object,
+  status: number,
+) => {
+  const token = localStorage.getItem("accessToken");
+  const params = new URLSearchParams();
+  Object.entries(filterData).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== "") {
+      params.append(key, value);
+    }
+  });
+  const response = await fetch(
+    `${BaseURL}/dbs-applications/${status}/by-status`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
   return response;
 };
 

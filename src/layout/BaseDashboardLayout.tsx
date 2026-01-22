@@ -14,8 +14,9 @@ import {
   CircleQuestionMark,
 } from "lucide-react";
 import { useAuth } from "../utils/useAuth";
-import Modal from 'react-modal';
+import Modal from "react-modal";
 import Tippy from "@tippyjs/react";
+import { getNotifications } from "../utils/Requests/NotificationRequest";
 
 interface NavItem {
   path: string;
@@ -30,6 +31,7 @@ interface BaseDashboardLayoutProps {
 
 function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
   const [open, setOpen] = useState(false);
+  const [notificationCount, setNotificationCount] = useState<number | null>(0);
   const { logout, user } = useAuth();
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
@@ -46,6 +48,25 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    fetchNotifications();
+
+    const intervalId = setInterval(() => {
+      fetchNotifications();
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const fetchNotifications = async () => {
+    const userNotifications = await getNotifications(0);
+    if (!userNotifications) {
+      return;
+    }
+
+    setNotificationCount(userNotifications.length);
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenMobile, setIsOpenMobile] = useState(false);
 
@@ -58,7 +79,6 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
   }
 
   useEffect(() => {
-    // Initialize Alpine.js if it's loaded
     if (window.Alpine) {
       window.Alpine.start();
     }
@@ -181,31 +201,28 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
             <ul className="sidebar-main-menu">
               {navItems.map((item) => (
                 <li key={item.path} className="nav-item">
-                  {
-                    isOpen ? (
+                  {isOpen ? (
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) =>
+                        `text-black  ${"nav-link"} ${isActive ? "active" : ""}`
+                      }
+                    >
+                      {item.icon}
+                      <span className="item-name">{item.label}</span>
+                    </NavLink>
+                  ) : (
+                    <Tippy content={item.label}>
                       <NavLink
                         to={item.path}
                         className={({ isActive }) =>
-                          `text-black  ${"nav-link"
-                          } ${isActive ? "active" : ""}`
+                          `text-black flex justify-center items-center gap-4 my-1 py-3 nav-link-sub" ${isActive ? "active" : ""}`
                         }
                       >
                         {item.icon}
-                        <span className="item-name">{item.label}</span>
                       </NavLink>
-                    ) : (
-                        <Tippy content={item.label}>
-                          <NavLink
-                            to={item.path}
-                            className={({ isActive }) =>
-                              `text-black flex justify-center items-center gap-4 my-1 py-3 nav-link-sub" ${isActive ? "active" : ""}`
-                            }
-                          >
-                            {item.icon}
-                          </NavLink>
-                        </Tippy>
-                    )
-                  }
+                    </Tippy>
+                  )}
                 </li>
               ))}
             </ul>
@@ -258,7 +275,10 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                       {user && `${user.firstName[0]} ${user.lastName[0]}`}
                     </span>
                     <div className="caption ml-3 d-none d-md-block ">
-                      <span className="mb-0 text-black caption-title mr-4" style={{}}>
+                      <span
+                        className="mb-0 text-black caption-title mr-4"
+                        style={{}}
+                      >
                         <span className="text-sm">
                           {" "}
                           {user && `${user.firstName}`}
@@ -269,7 +289,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                           {user && `${user.lastName}`}
                         </span>
                       </span>
-                      <br/>
+                      <br />
                       <span className="mb-0 text-sm font-bold caption-sub-title focusa active:text-primary-500  focus:text-primary-500 hover:text-primary-500 text-black mr-4">
                         {user && user.userRole}
                       </span>
@@ -823,12 +843,21 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                               className="flex items-center pl-2"
                               x-data="{ open: false }"
                             >
-                              <a
-                                href="#"
-                                className="block p-2 group hover:text-primary-500 focusa text-secondary-600"
-                              >
-                                <Bell className="text-black" size={22} />
-                              </a>
+                              <div className="relative">
+                                {notificationCount != null &&
+                                  notificationCount > 0 && (
+                                    <span className="bg-red-600 text-white text-xs rounded-full px-1.5 py-0.5 absolute top-0 right-0 translate-x-2 -translate-y-1">
+                                      {notificationCount && notificationCount}
+                                    </span>
+                                  )}
+                                <NavLink
+                                  to={"Communication"}
+                                  className="block p-2 group hover:text-primary-500 focusa text-secondary-600"
+                                >
+                                  <Bell className="text-black" size={22} />
+                                </NavLink>
+                              </div>
+
                               <div
                                 x-show="open"
                                 className="absolute z-40 rtl:right-2/3 rounded top-14 shadow w-80"
@@ -956,15 +985,15 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                               </div>
                             </li>
                             <li className="relative flex items-center pl-2 border-r group">
-                              <a
-                                href="help"
+                              <NavLink
+                                to={"ControlPanel/helpSupport"}
                                 className="block p-3 hover:text-primary-500 text-secondary-600"
                               >
                                 <CircleQuestionMark
                                   className="text-black"
                                   size={22}
                                 />
-                              </a>
+                              </NavLink>
 
                               {/* Tooltip */}
                               <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 invisible group-hover:visible bg-gray-800 text-white text-xs rounded px-2 py-1 whitespace-nowrap">
@@ -1029,14 +1058,18 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                   <div className="absolute right-0 z-10 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
                                     <div className="py-1 px-2">
                                       <p className="w-full px-4 py-2 text-left text-md border-b font-bold text-gray-700 hover:bg-gray-100">
-                                        Teachers Registration Council of Nigeria
+                                        {user && user.organisationName}
                                       </p>
                                       <ul className="py-2">
                                         <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
-                                          <a>Organisation Profile</a>
+                                          <NavLink to={"ControlPanel"}>
+                                            Organisation Profile
+                                          </NavLink>
                                         </li>
                                         <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
-                                          <a>Settings</a>
+                                          <NavLink to={"ControlPanel/security"}>
+                                            Security
+                                          </NavLink>
                                         </li>
                                         <li className="w-full px-4 py-2 text-left rounded-md text-sm text-gray-700 hover:bg-gray-100">
                                           <button onClick={logout}>

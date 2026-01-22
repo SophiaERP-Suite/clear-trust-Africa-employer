@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SetStateAction } from "react";
 import {
   ChevronRightIcon,
   Plus,
@@ -68,12 +68,12 @@ function AdminEmployees() {
     fetchApplicants(page, limit)
       .then((res) => {
         if (res.status === 200) {
-          res.json().then((data) => {
+          res.json().then((data: { data: { users: SetStateAction<EmployeeData[]>; totalCount: SetStateAction<number>; }; }) => {
             setEmployees(data.data.users);
             setTotalEmployees(data.data.totalCount);
           });
         } else {
-          res.text().then((data) => {
+          res.text().then((data: string) => {
             console.log(JSON.parse(data));
           });
         }

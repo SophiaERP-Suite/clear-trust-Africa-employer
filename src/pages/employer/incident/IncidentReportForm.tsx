@@ -217,13 +217,13 @@ export default function IncidentReportForm() {
     .then(res => {
         if (res.status === 200) {
             res.json()
-            .then(data => {
+            .then((data: { data: { users: any; }; }) => {
                 console.log(data);
                 setEmployees(data.data?.users || []);
             })
         } else {
             res.text()
-            .then(data => {
+            .then((data: string) => {
                 console.log(JSON.parse(data));
             })
         }
