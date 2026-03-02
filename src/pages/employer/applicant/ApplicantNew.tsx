@@ -16,6 +16,7 @@ import {
   getAllCountry,
   getAllState,
 } from "../../../utils/Requests/Location.js";
+import { useAuth } from "../../../utils/useAuth.js";
 
 interface ApplicantFormValues {
   FirstName: string;
@@ -37,6 +38,7 @@ interface ApplicantFormValues {
 
 interface EmployeeData {
   userId: number;
+  applicantId: number;
   firstName: string;
   lastName: string;
   otherNames: string;
@@ -64,6 +66,7 @@ function AdminEmployeesNew() {
   const { id } = useParams();
   const hashIds = new Hashids("ClearTrustAfricaEncode", 10);
   const hashedId = id ? Number(hashIds.decode(id)[0]) : 0;
+  console.log("app id", hashedId);
   const isEditMode = !!id;
 
   const [countries, setCountries] = useState<CountryDto[]>([]);
@@ -121,7 +124,6 @@ function AdminEmployeesNew() {
               const employeeData = data.data.user;
               setEmployee(employeeData);
 
-              // Reset form with employee data
               reset({
                 FirstName: employeeData.firstName || "",
                 LastName: employeeData.lastName || "",
@@ -149,6 +151,9 @@ function AdminEmployeesNew() {
         .catch((err) => console.log(err));
     }
   }, [hashedId, reset]);
+
+  const { user } = useAuth();
+  const organisationType = user?.organisationType;
 
   const addApplicant = async (data: ApplicantFormValues) => {
     if (
@@ -197,7 +202,7 @@ function AdminEmployeesNew() {
       formData.append("ProfileImage", data.ProfileImage[0]);
 
       if (isEditMode) {
-        const res = await updateEmployee(formData, hashedId);
+        const res = await updateEmployee(formData, employee!.applicantId);
         handleCreateEmployee(res, loader, text, { toast }, reset);
       } else {
         const res = await createEmployee(formData);
@@ -215,20 +220,20 @@ function AdminEmployeesNew() {
           <div className="flex">
             <Users className="text-[rgb(112_22_208/0.9)] mr-2 " size={36} />
             <div>
-              <h3 className="mb-0 text-black">Employee Management</h3>
+              <h3 className="mb-0 text-black"> {" "}{organisationType === "Agent" ? "Candidates" : " Employee"} Management</h3>
               <p className="text-secondary-600 text-black">
                 <NavLink to="/Dashboard">Dashboard</NavLink>
                 <ChevronRightIcon size={14} />
-                <NavLink to="/Employee">Employee Mgt </NavLink>
+                <NavLink to="/Candidates"> {" "}{organisationType === "Agent" ? "Candidates" : " Employee"} Mgt </NavLink>
                 <ChevronRightIcon size={14} />
-                <NavLink to="/EmployeeNew">New Employee</NavLink>
+                <NavLink to="/EmployeeNew">New  {" "}{organisationType === "Agent" ? "Candidates" : " Employee"}</NavLink>
               </p>
             </div>
           </div>
           <div>
             <NavLink to="/Employee" className="btn btn-primary">
               <Users size={18} className="mr-2" />
-              All Employees
+              All  {" "}{organisationType === "Agent" ? "Candidate" : " Employee"}
             </NavLink>
           </div>
         </div>
@@ -236,7 +241,7 @@ function AdminEmployeesNew() {
           <div className="flex-auto w-full">
             <div className="relative flex flex-col mb-8 text-secondary-500 bg-white shadow rounded -mt-2 dark:bg-dark-card">
               <div className="flex justify-between flex-auto p-6 border-b dark:border-secondary-800">
-                <h4 className="mb-0 dark:text-white">Employee Information</h4>
+                <h4 className="mb-0 dark:text-white"> {" "}{organisationType === "Agent" ? "Candidate" : " Employee"} Information</h4>
 
                 {isEditMode && (
                   <span className="px-3 py-1 text-xs font-semibold text-blue-700 bg-blue-100 rounded-full">
@@ -373,6 +378,7 @@ function AdminEmployeesNew() {
                         {isEditMode && (
                           <img
                             src={employee?.profileImage}
+                            style={{maxWidth: "100px"}}
                             className="max-w-[25px] mt-3 border rounded-md text-sm text-black"
                           />
                         )}

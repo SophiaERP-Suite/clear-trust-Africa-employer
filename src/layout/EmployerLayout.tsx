@@ -18,24 +18,25 @@ interface NavItem {
   path: string;
   icon: JSX.Element;
   label: string;
+  onClick?: () => void;
 }
 
 function EmploymentLayout() {
   const [navItems, setNavItems] = useState<NavItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const { user, logout } = useAuth();
+  const organisationType = user?.organisationType;
+
   useEffect(() => {
     fetchModules();
   }, []);
-
-  const { user } = useAuth();
-  const organisationType = user?.organisationType;
 
   const fetchModules = async () => {
     try {
       setLoading(true);
       const data: ModuleDto[] = await fetchModulesByRoleIdAndPortalType(
-        organisationType?.toUpperCase() || "AGENT",
+        organisationType?.toUpperCase().trim() || "EMPLOYER",
         2,
       );
 
@@ -47,16 +48,13 @@ function EmploymentLayout() {
           label: module.moduleName,
         }));
 
-      const hasLogout = data.some(
-        (m) => m.iconName.toLowerCase() === "log-out",
-      );
-      if (!hasLogout) {
-        mappedNavItems.push({
-          path: "/Logout",
-          icon: <LogOut size={25} />,
-          label: "Logout",
-        });
-      }
+      // Always add logout at the end regardless of what DB returns
+      mappedNavItems.push({
+        path: "#",
+        icon: <LogOut size={25} />,
+        label: "Logout",
+        onClick: logout,
+      });
 
       setNavItems(mappedNavItems);
     } catch (err: any) {
@@ -67,9 +65,10 @@ function EmploymentLayout() {
           label: "Dashboard",
         },
         {
-          path: "/Logout",
+          path: "#",
           icon: <LogOut size={25} />,
           label: "Logout",
+          onClick: logout,
         },
       ]);
     } finally {
@@ -87,7 +86,12 @@ function EmploymentLayout() {
     );
   }
 
-  return <BaseDashboardLayout navItems={navItems} title={organisationType?.toUpperCase()} />;
+  return (
+    <BaseDashboardLayout
+      navItems={navItems}
+      title={organisationType?.toUpperCase()}
+    />
+  );
 }
 
 export default EmploymentLayout;

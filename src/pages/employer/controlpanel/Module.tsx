@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { Folder, FolderPlus, Trash2, Trash2Icon, X } from "lucide-react";
+import { Folder, FolderPlus, Trash2Icon, X } from "lucide-react";
 import type { RolesDto } from "../../../types/roles";
 import { getAllRoles } from "../../../utils/Requests/roleApi";
 import { useAuth } from "../../../utils/useAuth";
@@ -352,7 +352,7 @@ function PortalModules() {
                           </div>
                         </div>
                       ) : (
-                        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                        <div className="bg-white rounded-md border border-gray-200 overflow-hidden">
                           <div className="px-6 py-4 border-b border-gray-200">
                             <h6 className="font-semibold text-md text-black">
                               Assigned Modules
@@ -369,19 +369,19 @@ function PortalModules() {
                                 <tr>
                                   <th
                                     scope="col"
-                                    className="px-6 py-3 text-left text-md font-medium text-black uppercase tracking-wider"
+                                    className="px-6 py-3 text-left text-md font-semibold text-black tracking-wider"
                                   >
                                     Module
                                   </th>
                                   <th
                                     scope="col"
-                                    className="px-6 py-3 text-left text-md font-medium text-black uppercase tracking-wider"
+                                    className="px-6 py-3 text-left text-md font-semibold text-black tracking-wider"
                                   >
                                     Assigned Role
                                   </th>
                                   <th
                                     scope="col"
-                                    className="px-6 py-3 text-left text-md font-medium text-black uppercase tracking-wider"
+                                    className="px-6 py-3 text-left text-md font-semibold text-black tracking-wider"
                                   >
                                     Actions
                                   </th>
@@ -423,7 +423,7 @@ function PortalModules() {
                                         onClick={() => openDeleteModal(mod)}
                                         className="btn-sm btn-danger rounded-md"
                                       >
-                                        <Trash2 size={17} /> Unassign
+                                        <X size={17} /> Unassign
                                       </button>
                                     </td>
                                   </tr>

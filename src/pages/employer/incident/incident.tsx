@@ -18,7 +18,7 @@ import {
   Pen,
 } from "lucide-react";
 
-interface IncidentReport {
+export interface IncidentReport {
   incidentReportId: number;
   incidentTitle: string;
   incidentTypeId: number;
@@ -35,7 +35,7 @@ interface IncidentReport {
 }
 
 // Add interface for paginated response
-interface PaginatedResponse {
+export interface PaginatedResponse {
   data: IncidentReport[];
   totalCount: number;
   page: number;
@@ -451,34 +451,35 @@ export default function Incidents() {
                                 <h6 className="font-medium dark:text-white">
                                   {ir.incidentDate
                                     ? new Date(
-                                        ir.incidentDate
-                                      ).toLocaleDateString("en-US", {
-                                        day: "numeric",
-                                        month: "long",
-                                        year: "numeric",
-                                      })
+                                      ir.incidentDate
+                                    ).toLocaleDateString("en-US", {
+                                      day: "numeric",
+                                      month: "long",
+                                      year: "numeric",
+                                    })
                                     : "—"}
                                 </h6>
                               </div>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-5 py-4 whitespace-nowrap">
                               <div className="flex items-center mb-2">
                                 <h6 className="font-medium dark:text-white">
                                   {ir.dateCreated
                                     ? new Date(
-                                        ir.dateCreated
-                                      ).toLocaleDateString("en-US", {
-                                        day: "numeric",
-                                        month: "long",
-                                        year: "numeric",
-                                      })
+                                      ir.dateCreated
+                                    ).toLocaleDateString("en-US", {
+                                      day: "numeric",
+                                      month: "long",
+                                      year: "numeric",
+                                    })
                                     : "—"}
                                 </h6>
                               </div>
                             </td>
                             <td className="px-1 py-4 whitespace-nowrap">
-                              <div className="flex items-center mb-2 space-x-4">
-                                <button
+                              <div className="flex items-center mb-2">
+                                {/* <button
+                                  style={{ display: "none" }}
                                   className="btn btn-warning btn-icon mr-2 btn-sm"
                                   onClick={() =>
                                     navigate(
@@ -490,7 +491,7 @@ export default function Incidents() {
                                   title="Edit Report"
                                 >
                                   <Pen size={16} />
-                                </button>
+                                </button> */}
                                 <button
                                   className="btn btn-info btn-icon btn-sm"
                                   onClick={() =>
@@ -539,11 +540,10 @@ export default function Incidents() {
                                 handlePageChange(button)
                               }
                               disabled={button === "..."}
-                              className={`flex items-center justify-center min-w-10 h-10 border ${
-                                page === button
-                                  ? "bg-blue-600 text-white border-blue-600"
-                                  : "hover:bg-gray-50"
-                              } ${button === "..." ? "cursor-default" : ""}`}
+                              className={`flex items-center justify-center min-w-10 h-10 border ${page === button
+                                ? "bg-blue-600 text-white border-blue-600"
+                                : "hover:bg-gray-50"
+                                } ${button === "..." ? "cursor-default" : ""}`}
                             >
                               {button === "..." ? "..." : button}
                             </button>

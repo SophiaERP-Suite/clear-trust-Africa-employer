@@ -27,6 +27,7 @@ export interface PaymentDto {
   dbsApplicationId: number | null;
   dbsCheck: string;
   dbsApplication?: DBSApplication;
+  totalAmount?: number;
 }
 
 function PaymentDashboard() {
@@ -46,7 +47,7 @@ function PaymentDashboard() {
       if (!token) throw new Error("Authentication required");
 
       const response = await fetch(
-        `http://localhost:5181/api/payments/${organisationId}`,
+        `http://localhost:5181/api/payments/organization/${organisationId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -60,7 +61,7 @@ function PaymentDashboard() {
       }
 
       const paymentData = await response.json();
-      setPayment(paymentData.data);
+      setPayment(paymentData.data.payments);
     } catch (error) {
       console.error("Error fetching incident data:", error);
       alert("Failed to load incident data. Please try again.");

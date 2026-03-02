@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import { CheckCheck, Shield, User } from "lucide-react";
+import { CheckCheck, Shield, User, X } from "lucide-react";
 import type { RolesDto } from "../../../types/roles";
 import Modal from "../../../utils/modal";
 import { getAllRoles } from "../../../utils/Requests/roleApi";
 import { useAuth } from "../../../utils/useAuth";
 import {
   assignApplicantsRole,
-  fetchApplicants,
+  fetchAllApplicants,
   fetchApplicantsByRoleId,
 } from "../../../utils/Requests/userApi";
 
@@ -18,6 +18,7 @@ export interface EmployeesDto {
   firstName: string;
   lastName: string;
   role: string;
+  roleId: number;
 }
 
 function Roles() {
@@ -26,6 +27,7 @@ function Roles() {
   const [error, setError] = useState<string | null>(null);
   const [modalType, setModalType] = useState<ModalType>(null);
   const [selectedRoleId, setSelectedRoleId] = useState<number | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [selectedRoleInfo, setSelectedRoleInfo] = useState<EmployeesDto[]>([]);
 
   const [roles, setRoles] = useState<RolesDto[]>([]);
@@ -53,7 +55,7 @@ function Roles() {
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      const data = await fetchApplicants(1, 1000);
+      const data = await fetchAllApplicants();
       setEmployees(data.data.users);
     } catch (err: any) {
       setError("Failed to fetch Permissions");
@@ -72,24 +74,16 @@ function Roles() {
     setModalType("add");
   };
 
-  // const openDeleteModal = (roleId: number) => {
-  //   const role = roles.find((r) => r.roleId === roleId);
-  //   setSelectedRoleId(roleId);
-  //   setSelectedRole(role || null);
-  //   setModalType("delete");
-  // };
-
-  // const openEditModal = (roleId: number) => {
-  //   const role = roles.find((r) => r.roleId === roleId);
-  //   setSelectedRoleId(roleId);
-  //   setSelectedRole(role || null);
-  //   setModalType("edit");
-  // };
+  const openDeleteModal = (roleId: number, userId: number) => {
+    setSelectedRoleId(roleId);
+    setSelectedUserId(userId);
+    setModalType("delete");
+  };
 
   const closeModal = () => {
     setModalType(null);
     setSelectedRoleId(null);
-    // setSelectedRole(null);
+    setSelectedUserId(null);
   };
 
   const handleAssignRole = async (employeeId?: string, roleId?: string) => {
@@ -110,6 +104,42 @@ function Roles() {
 
       await assignApplicantsRole(payload);
 
+      notifySuccess();
+      closeModal();
+      fetchRoles();
+    } catch (err: any) {
+      notifyError();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUnassignRole = async () => {
+    try {
+      setLoading(true);
+
+      if (!selectedRoleId || !selectedUserId) {
+        toast.error("Selected item is invalid");
+        setLoading(false);
+        return;
+      }
+
+      const payload = {
+        userId: Number(selectedUserId),
+        roleId: Number(selectedRoleId),
+        organisationId: Number(organisationId),
+      };
+
+      const reassignRole = await assignApplicantsRole(payload);
+
+      if (!reassignRole) {
+        toast.error("Failed to unassign role");
+        setLoading(false);
+        return;
+      }
+
+      await fetchRoles();
+      await fetchEmployees();
       notifySuccess();
       closeModal();
       fetchRoles();
@@ -190,18 +220,18 @@ function Roles() {
                     onCancel={closeModal}
                   />
 
-                  {/* <Modal
+                  <Modal
                     isOpen={modalType === "delete"}
-                    title="Delete Role"
-                    message="Are you sure you want to delete this role? This action cannot be undone."
-                    confirmText="Delete Role"
+                    title="Unassign Role"
+                    message="Are you sure you want to unassign this role?"
+                    confirmText="Unassign Role"
                     confirmColor="red"
                     loading={loading}
                     headerIcon={<Shield />}
-                    butonIcon={<Trash2Icon />}
-                    onConfirm={handleUnassign}
+                    butonIcon={<X />}
+                    onConfirm={handleUnassignRole}
                     onCancel={closeModal}
-                  /> */}
+                  />
 
                   <Modal
                     isOpen={modalType === "edit"}
@@ -242,9 +272,6 @@ function Roles() {
                       >
                         <User /> Assign User to Role
                       </button>
-                      {/* <NavLink className="btn btn-warning" onClick={() => openAddModal()}>
-            <Tag /> Assign Permission{" "}
-          </NavLink> */}
                     </div>
                   </div>
 
@@ -289,23 +316,20 @@ function Roles() {
                                   {role.firstName} {role.lastName} ({role.role})
                                 </a>
                                 <div>
-                                  {/* <button
-                                  className="btn btn-danger btn-icon btn-sm mr-1"
-                                  type="button"
-                                  onClick={() => openDeleteModal(role.roleId)}
-                                >
-                                  {" "}
-                                  <span className="btn-inner">
-                                    <Trash style={{ scale: "140%" }} />
-                                  </span>
-                                </button> */}
-                                  {/* <button
-                                    className="btn btn-warning btn-icon btn-sm mr-1"
-                                    type="button"
-                                    // onClick={() => openEditModal(role.roleId)}
-                                  >
-                                    <Pen />
-                                  </button> */}
+                                  {role.role !== "Applicant" && (
+                                    <button
+                                      className="btn btn-danger btn-sm mr-1"
+                                      type="button"
+                                      onClick={() =>
+                                        openDeleteModal(5, role.userId)
+                                      }
+                                    >
+                                      {" "}
+                                      <span className="btn-inner">
+                                        <X /> Unassign
+                                      </span>
+                                    </button>
+                                  )}
                                 </div>
                               </li>
                             ))}

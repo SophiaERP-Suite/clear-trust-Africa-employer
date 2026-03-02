@@ -16,6 +16,7 @@ import RichTextEditor from "../../../layout/RichTextEditor";
 import { createNewIncidentReport, fetchIncidentType } from "../../../utils/Requests/IncidentRequests";
 import { handleCreateEmployee } from "../../../utils/ResponseHandlers/EmployeeResponse";
 import { toast, ToastContainer } from 'react-toastify';
+import { fetchAllApplicants } from "../../../utils/Requests/userApi";
 
 interface IncidentType {
   incidentTypeId: number;
@@ -81,25 +82,25 @@ export default function IncidentReportForm() {
   const [cities, setCities] = useState<CityData[]>([]);
 
   const [employees, setEmployees] = useState<Employee[]>([]);
-   const selectedCountry = watch('countryId');
+  const selectedCountry = watch('countryId');
   const selectedState = watch('stateId');
 
   useEffect(() => {
     fetchCountries()
-    .then(res => {
-      if (res.status === 200) {
-        res.json()
-        .then(data => {
-          setCountries(data);
-        })
-      } else {
-        res.text()
-        .then(data => {
-          console.log(JSON.parse(data));
-        })
-      }
-    })
-    .catch((err) => console.log(err))
+      .then(res => {
+        if (res.status === 200) {
+          res.json()
+            .then(data => {
+              setCountries(data);
+            })
+        } else {
+          res.text()
+            .then(data => {
+              console.log(JSON.parse(data));
+            })
+        }
+      })
+      .catch((err) => console.log(err))
   }, []);
 
   useEffect(() => {
@@ -110,20 +111,20 @@ export default function IncidentReportForm() {
       return;
     }
     fetchStatesByCountryId(Number(selectedCountry))
-    .then(res => {
-      if (res.status === 200) {
-        res.json()
-        .then(data => {
-          setStates(data);
-        })
-      } else {
-        res.text()
-        .then(data => {
-          console.log(JSON.parse(data));
-        })
-      }
-    })
-    .catch((err) => console.log(err))
+      .then(res => {
+        if (res.status === 200) {
+          res.json()
+            .then(data => {
+              setStates(data);
+            })
+        } else {
+          res.text()
+            .then(data => {
+              console.log(JSON.parse(data));
+            })
+        }
+      })
+      .catch((err) => console.log(err))
   }, [selectedCountry, setValue]);
 
   useEffect(() => {
@@ -133,39 +134,39 @@ export default function IncidentReportForm() {
       return;
     }
     fetchCitiesByStateId(Number(selectedState))
-    .then(res => {
-      if (res.status === 200) {
-        res.json()
-        .then(data => {
-          setCities(data);
-        })
-      } else {
-        res.text()
-        .then(data => {
-          console.log(JSON.parse(data));
-        })
-      }
-    })
-    .catch((err) => console.log(err))
+      .then(res => {
+        if (res.status === 200) {
+          res.json()
+            .then(data => {
+              setCities(data);
+            })
+        } else {
+          res.text()
+            .then(data => {
+              console.log(JSON.parse(data));
+            })
+        }
+      })
+      .catch((err) => console.log(err))
   }, [selectedState, setValue]);
 
   useEffect(() => {
     fetchIncidentType()
-    .then(res => {
-    if (res.status === 200) {
-        res.json()
-        .then(data => {
-        console.log(data);
-        setIncidentType(data.data);
-        })
-    } else {
-        res.text()
-        .then(data => {
-        console.log(JSON.parse(data));
-        })
-    }
-    })
-}, []);
+      .then(res => {
+        if (res.status === 200) {
+          res.json()
+            .then(data => {
+              console.log(data);
+              setIncidentType(data.data);
+            })
+        } else {
+          res.text()
+            .then(data => {
+              console.log(JSON.parse(data));
+            })
+        }
+      })
+  }, []);
 
   const severityLevels = [
     { value: 1, label: "Low", color: "text-green-600" },
@@ -174,63 +175,56 @@ export default function IncidentReportForm() {
     { value: 4, label: "Critical", color: "text-red-600" },
   ];
 
-  
   const submitIncidentReport = async (data: IncidentReportFormData) => {
-     if (!errors.incidentTitle && !errors.incidentTypeId &&
-        !errors.incidentDate &&
-        !errors.description && !errors.incidentLocation &&
-        !errors.accusedEmployeeId && !errors.severityLevel &&
-        !errors.notifyEmployee && !errors.hasInjury &&
-        !errors.countryId && !errors.stateId &&
-        !errors.cityId
-      ) {
-        const loader = document.getElementById('query-loader');
-        const text = document.getElementById('query-text');
-        if (loader) {
-          loader.style.display = 'flex';
-        }
-        if (text) {
-          text.style.display = 'none';
-        }
-        const formData = new FormData();
-        formData.append('IncidentTitle', data.incidentTitle);
-        formData.append('IncidentTypeId', `${data.incidentTypeId}`);
-        formData.append('CountryId', data.countryId);
-        formData.append('IncidentDate', data.incidentDate);
-        formData.append('Description', data.description);
-        formData.append('IncidentLocation', data.incidentLocation);
-        formData.append('AccusedEmployeeId', data.accusedEmployeeId);
-        formData.append('ReportedById', data.ReportedById);
-        formData.append('SeverityLevel', `${data.severityLevel}`);
-        formData.append('NotifyEmployee', `${data.notifyEmployee}`);
-        formData.append('HasInjury', `${data.hasInjury}`);
-        formData.append('CityId', data.cityId);
-        formData.append('StateId', data.stateId);
-        const res = await createNewIncidentReport(formData);
-        handleCreateEmployee(res, loader, text, { toast }, reset);
+    if (!errors.incidentTitle && !errors.incidentTypeId &&
+      !errors.incidentDate &&
+      !errors.description && !errors.incidentLocation &&
+      !errors.accusedEmployeeId && !errors.severityLevel &&
+      !errors.notifyEmployee && !errors.hasInjury &&
+      !errors.countryId && !errors.stateId &&
+      !errors.cityId
+    ) {
+      const loader = document.getElementById('query-loader');
+      const text = document.getElementById('query-text');
+      if (loader) {
+        loader.style.display = 'flex';
       }
+      if (text) {
+        text.style.display = 'none';
+      }
+      const formData = new FormData();
+      formData.append('IncidentTitle', data.incidentTitle);
+      formData.append('IncidentTypeId', `${data.incidentTypeId}`);
+      formData.append('CountryId', data.countryId);
+      formData.append('IncidentDate', data.incidentDate);
+      formData.append('Description', data.description);
+      formData.append('IncidentLocation', data.incidentLocation);
+      formData.append('AccusedEmployeeId', data.accusedEmployeeId);
+      formData.append('ReportedById', data.ReportedById);
+      formData.append('SeverityLevel', `${data.severityLevel}`);
+      formData.append('NotifyEmployee', `${data.notifyEmployee}`);
+      formData.append('HasInjury', `${data.hasInjury}`);
+      formData.append('CityId', data.cityId);
+      formData.append('StateId', data.stateId);
+      const res = await createNewIncidentReport(formData);
+      handleCreateEmployee(res, loader, text, { toast }, reset);
+    }
   }
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchApplicants(1, 200)
-    .then(res => {
-        if (res.status === 200) {
-            res.json()
-            .then((data: { data: { users: any; }; }) => {
-                console.log(data);
-                setEmployees(data.data?.users || []);
-            })
-        } else {
-            res.text()
-            .then((data: string) => {
-                console.log(JSON.parse(data));
-            })
-        }
-    })
-    .catch((err) => console.log(err))
-
     return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    fetchAllApplicants()
+      .then((data) => {
+        setEmployees(data.data.users);
+        console.log("employee data", data);
+      })
+      .catch((err) => {
+        console.log("employee error", err.message);
+      });
   }, []);
 
   return (
@@ -241,22 +235,22 @@ export default function IncidentReportForm() {
         <div className="w-full mb-8">
           <div className="row">
             <div className="col-md-12">
-                <div className="flex flex-wrap items-center justify-between">
+              <div className="flex flex-wrap items-center justify-between">
                 <div className="flex">
-                    <AlertTriangleIcon
-                        className="text-[rgb(112_22_208/0.9)] mr-2"
-                        size={36}
-                    />
-                    <div>
-                        <h3 className="mb-0 text-black">Incident Management</h3>
-                        <p className="text-secondary-600 text-black">
-                            <NavLink to="/Dashboard">Dashboard</NavLink>{" "}
-                            <ChevronRightIcon size={14} />{" "}
-                            <NavLink to="/IncidentMgt">Incident Management</NavLink>{" "}
-                            <ChevronRightIcon size={14} />{" "}
-                            <NavLink to="/IncidentMgt/Report/New">New Report</NavLink>{" "}
-                        </p>
-                    </div>
+                  <AlertTriangleIcon
+                    className="text-[rgb(112_22_208/0.9)] mr-2"
+                    size={36}
+                  />
+                  <div>
+                    <h3 className="mb-0 text-black">Offence Management</h3>
+                    <p className="text-secondary-600 text-black">
+                      <NavLink to="/Dashboard">Dashboard</NavLink>{" "}
+                      <ChevronRightIcon size={14} />{" "}
+                      <NavLink to="/IncidentMgt">Offence Management</NavLink>{" "}
+                      <ChevronRightIcon size={14} />{" "}
+                      <NavLink to="/IncidentMgt/Report/New">New Report</NavLink>{" "}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -273,113 +267,113 @@ export default function IncidentReportForm() {
               </h4>
             </div>
 
-            <div className="p-6">      
+            <div className="p-6">
               {/* Form */}
               <div>
                 <form onSubmit={handleSubmit(submitIncidentReport)}
                   noValidate>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-5">
-                        <div>
-                            <label
-                                className="inline-block mb-2 text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Incident Title
-                            </label>
-                            <div>
-                                <input
-                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    type="text"
-                                    {
-                                        ...register('incidentTitle', {
-                                            required: 'Required'
-                                        })
-                                    }
-                            />
-                            <p className='error-msg'>{errors.incidentTitle?.message}</p>
-                            </div>
-                        </div>
-                        <div>
-                            <label
-                                className="inline-block mb-2 text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Incident Type
-                            </label>
-                            <div>
-                                <select
-                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    {
-                                        ...register('incidentTypeId', {
-                                            required: 'Required',
-                                            pattern: {
-                                            value: /^(?!default$).+$/,
-                                            message: 'Required'
-                                            }
-                                        })
-                                    }
-                                >
-                                    <option value="default">Select Incident Type</option>
-                                    {incidentType.map((data, index) => (
-                                        <option key={data.incidentTypeId ?? index} value={data.incidentTypeId}>
-                                            {data.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                <p className='error-msg'>{errors.incidentTypeId?.message}</p>
-                            </div>
-                        </div>
-                        <div>
-                            <label
-                                className="inline-block mb-2 text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Incident Date
-                            </label>
-                            <div>
-                                <input
-                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    type="datetime-local"
-                                    {
-                                        ...register('incidentDate', {
-                                            required: 'Required'
-                                        })
-                                    }
-                            />
-                            <p className='error-msg'>{errors.incidentDate?.message}</p>
-                            </div>
-                        </div>
-                        <div>
-                            <label
-                                className="inline-block mb-2 text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Severity Level
-                            </label>
-                            <div>
-                                <select
-                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    {
-                                        ...register('severityLevel', {
-                                            required: 'Required',
-                                            pattern: {
-                                            value: /^(?!default$).+$/,
-                                            message: 'Required'
-                                            }
-                                        })
-                                    }
-                                >
-                                    <option value="default">Select Sevelrity Level</option>
-                                    {severityLevels.map((level) => (
-                                        <option key={level.value} value={level.value}>
-                                            {level.label}
-                                        </option>
-                                    ))}
-                                </select>
-                                <p className='error-msg'>{errors.severityLevel?.message}</p>
-                            </div>
-                        </div>
-                        <div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-5">
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Incident Title
+                      </label>
+                      <div>
+                        <input
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          type="text"
+                          {
+                          ...register('incidentTitle', {
+                            required: 'Required'
+                          })
+                          }
+                        />
+                        <p className='error-msg'>{errors.incidentTitle?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Incident Type
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                          ...register('incidentTypeId', {
+                            required: 'Required',
+                            pattern: {
+                              value: /^(?!default$).+$/,
+                              message: 'Required'
+                            }
+                          })
+                          }
+                        >
+                          <option value="default">Select Incident Type</option>
+                          {incidentType.map((data, index) => (
+                            <option key={data.incidentTypeId ?? index} value={data.incidentTypeId}>
+                              {data.name}
+                            </option>
+                          ))}
+                        </select>
+                        <p className='error-msg'>{errors.incidentTypeId?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Incident Date
+                      </label>
+                      <div>
+                        <input
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          type="datetime-local"
+                          {
+                          ...register('incidentDate', {
+                            required: 'Required'
+                          })
+                          }
+                        />
+                        <p className='error-msg'>{errors.incidentDate?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Severity Level
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                          ...register('severityLevel', {
+                            required: 'Required',
+                            pattern: {
+                              value: /^(?!default$).+$/,
+                              message: 'Required'
+                            }
+                          })
+                          }
+                        >
+                          <option value="default">Select Sevelrity Level</option>
+                          {severityLevels.map((level) => (
+                            <option key={level.value} value={level.value}>
+                              {level.label}
+                            </option>
+                          ))}
+                        </select>
+                        <p className='error-msg'>{errors.severityLevel?.message}</p>
+                      </div>
+                    </div>
+                    <div>
                       <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
@@ -390,13 +384,13 @@ export default function IncidentReportForm() {
                         <select
                           className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
-                            ...register('countryId', {
-                              required: 'Required',
-                              pattern: {
-                                value: /^(?!default$).+$/,
-                                message: 'Required'
-                              }
-                            })
+                          ...register('countryId', {
+                            required: 'Required',
+                            pattern: {
+                              value: /^(?!default$).+$/,
+                              message: 'Required'
+                            }
+                          })
                           }
                         >
                           <option value="default">Select Country</option>
@@ -420,13 +414,13 @@ export default function IncidentReportForm() {
                         <select
                           className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
-                            ...register('stateId', {
-                              required: 'Required',
-                              pattern: {
-                                value: /^(?!default$).+$/,
-                                message: 'Required'
-                              }
-                            })
+                          ...register('stateId', {
+                            required: 'Required',
+                            pattern: {
+                              value: /^(?!default$).+$/,
+                              message: 'Required'
+                            }
+                          })
                           }
                           disabled={!states.length}
                         >
@@ -451,13 +445,13 @@ export default function IncidentReportForm() {
                         <select
                           className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                           {
-                            ...register('cityId', {
-                              required: 'Required',
-                              pattern: {
-                                value: /^(?!default$).+$/,
-                                message: 'Required'
-                              }
-                            })
+                          ...register('cityId', {
+                            required: 'Required',
+                            pattern: {
+                              value: /^(?!default$).+$/,
+                              message: 'Required'
+                            }
+                          })
                           }
                           disabled={!cities.length}
                         >
@@ -471,143 +465,143 @@ export default function IncidentReportForm() {
                         <p className='error-msg'>{errors.cityId?.message}</p>
                       </div>
                     </div>
-                        <div>
-                            <label
-                                className="inline-block mb-2 text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Address
-                            </label>
-                            <div>
-                                <input
-                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    type="text"
-                                    {
-                                        ...register('incidentLocation', {
-                                            required: 'Required'
-                                        })
-                                    }
-                            />
-                            <p className='error-msg'>{errors.incidentLocation?.message}</p>
-                            </div>
-                        </div>
-                        <div className="lg:col-span-2">
-                            <label
-                                className="inline-block mb-2 text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Description
-                            </label>
-                            <div>
-                                <Controller
-                                    name="description"
-                                    control={control}
-                                    rules={{ required: 'Required' }}
-                                    render={({ field }) => (
-                                        <RichTextEditor
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                            />
-                                    )}
-                                    />
-                                <p className='error-msg'>{errors.description?.message}</p>
-                            </div>
-                        </div>
-                        <div>
-                            <label
-                                className="inline-block mb-2 text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Reported By
-                            </label>
-                            <div>
-                                <select
-                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    {
-                                        ...register('ReportedById', {
-                                            required: 'Required',
-                                            pattern: {
-                                            value: /^(?!default$).+$/,
-                                            message: 'Required'
-                                            }
-                                        })
-                                    }
-                                >
-                                    <option value="default">Select Reporter</option>
-                                    {employees.map((emp) => (
-                                        <option key={emp.userId} value={emp.userId}>
-                                            {emp.lastName} {emp.firstName}
-                                        </option>
-                                    ))}
-                                </select>
-                                <p className='error-msg'>{errors.ReportedById?.message}</p>
-                            </div>
-                        </div>
-                        <div>
-                            <label
-                                className="inline-block mb-2 text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Accused
-                            </label>
-                            <div>
-                                <select
-                                    className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    {
-                                        ...register('accusedEmployeeId', {
-                                            required: 'Required',
-                                            pattern: {
-                                            value: /^(?!default$).+$/,
-                                            message: 'Required'
-                                            }
-                                        })
-                                    }
-                                >
-                                    <option value="default">Select Accused</option>
-                                    {employees.map((emp) => (
-                                        <option key={emp.userId} value={emp.userId}>
-                                            {emp.lastName} {emp.firstName}
-                                        </option>
-                                    ))}
-                                </select>
-                                <p className='error-msg'>{errors.accusedEmployeeId?.message}</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start">
-                            <input
-                                type="checkbox"
-                                className="mr-2 mt-1 ml-1"
-                                {
-                                ...register('hasInjury', {
-                                    required: false
-                                })
-                                }
-                            ></input>
-                            <label
-                                className="text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Sustained Injury?
-                            </label>
-                        </div>
-                        <div className="flex items-start">
-                            <input
-                                type="checkbox"
-                                className="mr-2 mt-1 ml-1"
-                                {
-                                ...register('notifyEmployee', {
-                                    required: false
-                                })
-                                }
-                            ></input>
-                            <label
-                                className="text-secondary-600 dark:text-white"
-                                htmlFor="email"
-                                >
-                                Notify Employee?
-                            </label>
-                        </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Address
+                      </label>
+                      <div>
+                        <input
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          type="text"
+                          {
+                          ...register('incidentLocation', {
+                            required: 'Required'
+                          })
+                          }
+                        />
+                        <p className='error-msg'>{errors.incidentLocation?.message}</p>
+                      </div>
                     </div>
+                    <div className="lg:col-span-2">
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Description
+                      </label>
+                      <div className="text-black">
+                        <Controller
+                          name="description"
+                          control={control}
+                          rules={{ required: 'Required' }}
+                          render={({ field }) => (
+                            <RichTextEditor
+                              value={field.value}
+                              onChange={field.onChange}
+                            />
+                          )}
+                        />
+                        <p className='error-msg'>{errors.description?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Reported By
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                          ...register('ReportedById', {
+                            required: 'Required',
+                            pattern: {
+                              value: /^(?!default$).+$/,
+                              message: 'Required'
+                            }
+                          })
+                          }
+                        >
+                          <option value="default">Select Reporter</option>
+                          {employees.map((emp) => (
+                            <option key={emp.userId} value={emp.userId}>
+                              {emp.lastName} {emp.firstName}
+                            </option>
+                          ))}
+                        </select>
+                        <p className='error-msg'>{errors.ReportedById?.message}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        className="inline-block mb-2 text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Accused
+                      </label>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                          ...register('accusedEmployeeId', {
+                            required: 'Required',
+                            pattern: {
+                              value: /^(?!default$).+$/,
+                              message: 'Required'
+                            }
+                          })
+                          }
+                        >
+                          <option value="default">Select Accused</option>
+                          {employees.map((emp) => (
+                            <option key={emp.userId} value={emp.userId}>
+                              {emp.lastName} {emp.firstName}
+                            </option>
+                          ))}
+                        </select>
+                        <p className='error-msg'>{errors.accusedEmployeeId?.message}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start">
+                      <input
+                        type="checkbox"
+                        className="mr-2 mt-1 ml-1"
+                        {
+                        ...register('hasInjury', {
+                          required: false
+                        })
+                        }
+                      ></input>
+                      <label
+                        className="text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Sustained Injury?
+                      </label>
+                    </div>
+                    <div className="flex items-start">
+                      <input
+                        type="checkbox"
+                        className="mr-2 mt-1 ml-1"
+                        {
+                        ...register('notifyEmployee', {
+                          required: false
+                        })
+                        }
+                      ></input>
+                      <label
+                        className="text-secondary-600 dark:text-white"
+                        htmlFor="email"
+                      >
+                        Notify Employee?
+                      </label>
+                    </div>
+                  </div>
 
                   {/* Action Buttons */}
                   <div className="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
@@ -621,7 +615,7 @@ export default function IncidentReportForm() {
                         <CheckCheck size={18} className="mr-2" />
                         Submit Report
                       </span>
-                  </button>
+                    </button>
                   </div>
                 </form>
               </div>

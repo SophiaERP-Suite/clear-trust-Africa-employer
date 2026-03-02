@@ -97,9 +97,7 @@ export default function Security() {
               <div className="flex flex-col overflow-hidden bg-white rounded-lg dark:bg-dark-card dark:text-secondary-600">
                 <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
                   <div className="flex items-center gap-3">
-                    {/* <div className="p-2 bg-blue-100 rounded-full">
-                      <Lock className="w-5 h-5 text-blue-600" />
-                    </div> */}
+                  
                     <div>
                       <h2 className="text-lg font-semibold text-slate-900">
                         Change Password
@@ -282,18 +280,13 @@ export default function Security() {
                 <div className="relative flex flex-wrap justify-between p-5 border-b dark:border-secondary-800">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-slate-100 rounded-full">
-                        <Clock className="w-5 h-5 text-slate-600" />
-                      </div>
+                    
                       <div>
                         <h2 className="text-lg font-semibold text-slate-900">
                           Login History
                         </h2>
                       </div>
                     </div>
-                    {/* <button className="text-md text-blue-600 hover:text-blue-700 font-medium">
-                      View All
-                    </button> */}
                   </div>
                 </div>
                 <div className="bg-white p-6">

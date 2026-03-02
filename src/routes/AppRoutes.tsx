@@ -17,6 +17,8 @@ import IncidentReportForm from "../pages/employer/incident/IncidentReportForm";
 import DBSTrackerModule from "../pages/employer/Tracker/DbsTracker";
 import TrackerDetails from "../pages/employer/Tracker/TrackerDetails";
 import ControlPanel from "../pages/employer/controlPanel/ControlPanel";
+import AuthBridge from "../utils/AuthBridge";
+import DBSCertificate from "../pages/employer/Tracker/DBSCertificate";
 
 function AppRoutes() {
   return (
@@ -25,12 +27,15 @@ function AppRoutes() {
         <Route index element={<Dashboard />} />
         <Route path="Dashboard" element={<Dashboard />} />
         <Route path="Employee" element={<Applicants />} />
+        <Route path="Candidates" element={<Applicants />} />
         <Route path="EmployeeNew" element={<ApplicantNew />} />
+        <Route path="auth-bridge" element={<AuthBridge />} />
         <Route path="/EmployeeNew/:id" element={<ApplicantNew />} />
         <Route path="EmployeeProfile/:id" element={<ApplicantProfile />} />
         <Route path="ProfileUpdate" element={<ProfileUpdate />} />
         <Route path="Profile" element={<Profile />} />
         <Route path="Tracker" element={<DBSTrackerModule />} />
+        <Route path="Tracker/Certificate/:id" element={<DBSCertificate />} />
         <Route path="Tracker/:id" element={<TrackerDetails />} />
         <Route path="IncidentMgt" element={<Incidents />} />
         <Route path="IncidentReportForm" element={<IncidentReportForm />} />
@@ -45,10 +50,7 @@ function AppRoutes() {
         <Route path="Payment" element={<PaymentDashboard />} />
         <Route path="Reports" element={<Reports />} />
         <Route path="Communication" element={<CommunicationsPage />} />
-        {/* <Route path="ControlPanel" element={<ControlPanel />} /> */}
         <Route path="Pricing" element={<Pricing />} />
-        {/* <Route path="Security" element={<Security />} />
-        <Route path="Help" element={<HelpSupportPage />} /> */}
         <Route path="PaymentRedirect/:tx_ref" element={<PaymentRedirect />} />
         <Route path="ControlPanel/*" element={<ControlPanel />} />
       </Route>

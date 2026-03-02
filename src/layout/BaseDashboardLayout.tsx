@@ -1,5 +1,5 @@
 // src/layouts/BaseDashboardLayout.tsx
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect, type JSX } from "react";
 import DashboardHead from "../components/DashboardHead";
 import main_logo from "../assets2/img/cleartrust_logo.png";
@@ -34,6 +34,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
   const [notificationCount, setNotificationCount] = useState<number | null>(0);
   const { logout, user } = useAuth();
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const organisationType = user?.organisationType;
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -57,6 +58,17 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
 
     return () => clearInterval(intervalId);
   }, []);
+
+
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      navigate(` ${organisationType === "Agent" ? "Candidates" : " Employees"}?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
 
   const fetchNotifications = async () => {
     const userNotifications = await getNotifications(0);
@@ -338,7 +350,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                   <div className="flex justify-between items-center h-16">
                     <div className="breadcrumb-title xl:flex hidden justify-between items-center lg:flex mt-3">
                       <div className="breadcrumb-title xl:flex sm:hidden justify-center items-center lg:flex">
-                        <small className="capitalize cursor-pointer hidden md:block mr-3 pr-3 border-r border-secondary-300 dark:border-secondary-700 dark:text-white">
+                        <small className="cursor-pointer hidden md:block lg:block mr-3 pr-3 border-r border-secondary-300 dark:border-secondary-700">
                           {!isOpen ? (
                             <ArrowRight
                               size={18}
@@ -824,7 +836,41 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                         <div className="hidden lg:flex ml-7 lg:grow transition-all duration-700 ease-in-out">
                           <ul className="flex items-center mb-2 ml-auto rtl:ml-0 rtl:mr-auto lg:mb-0">
                             <li className="flex items-center justify-end">
-                              <div className="flex items-center border border-gray-700 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 transition-all duration-200">
+                              <div className="flex items-center border border-gray-100 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 transition-all duration-200">
+                                {/* <input
+                                  type="text"
+                                  placeholder="Search Employees"
+                                  className="form-control"
+                                />
+                                <button
+                                  type="button"
+                                  className=" btn btn-icon bg-blue-400"
+                                >
+                                  <Search className="text-black" size={20} />
+                                </button> */}
+
+
+                                <input
+                                  type="text"
+                                  placeholder={`Search  ${organisationType === "Agent" ? "Candidates" : " Employee"}`}
+                                  className="form-control"
+                                  value={searchQuery}
+                                  onChange={(e) => setSearchQuery(e.target.value)}
+                                  onKeyDown={handleSearch}
+                                />
+                                <button
+                                  type="button"
+                                  className="btn btn-icon bg-blue-400"
+                                  onClick={() => {
+                                    if (searchQuery.trim()) {
+                                      navigate(`${organisationType === "Agent" ? "Candidates" : "employees"}?search=${encodeURIComponent(searchQuery.trim())}`);
+                                    }
+                                  }}
+                                >
+                                  <Search className="text-black" size={20} />
+                                </button>
+                              </div>
+                              {/* <div className="flex items-center border border-gray-700 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 transition-all duration-200">
                                 <input
                                   type="text"
                                   placeholder="Search..."
@@ -836,7 +882,7 @@ function BaseDashboardLayout({ navItems, title }: BaseDashboardLayoutProps) {
                                 >
                                   <Search className="text-black" size={20} />
                                 </button>
-                              </div>
+                              </div> */}
                             </li>
 
                             <li

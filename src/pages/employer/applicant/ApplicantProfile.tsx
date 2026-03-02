@@ -30,9 +30,11 @@ import { toast } from "react-toastify";
 import { handleCreateEmployee } from "../../../utils/ResponseHandlers/EmployeeResponse.js";
 import type { DbsTypes } from "./Applicants.js";
 import { handleDbsRequest } from "../../../utils/ResponseHandlers/DbsResponse.js";
+import { useAuth } from "../../../utils/useAuth.js";
 
 interface EmployeeData {
   userId: number;
+  applicantId: number;
   firstName: string;
   lastName: string;
   otherNames: string;
@@ -107,14 +109,15 @@ function AdminApplicantsNew() {
 
   const navigate = useNavigate();
 
-  console.log("app id", hashedId);
+  const { user } = useAuth();
+  const organisationType = user?.organisationType;
 
   useEffect(() => {
     fetchApplicantById(hashedId)
       .then((res) => {
         if (res.status === 200) {
           res.json().then((data) => {
-            console.log(data);
+            console.log("employee data", data);
             setEmployee(data.data.user);
           });
         } else {
@@ -127,12 +130,14 @@ function AdminApplicantsNew() {
   }, [hashedId]);
 
   useEffect(() => {
-      fetchDbsChecksByUserId(hashedId, dbsPage, dbsLimit)
+      // fetchDbsChecksByUserId(hashedId, dbsPage, dbsLimit)
+      fetchDbsChecksByUserId(hashedId)
       .then(res => {
         if (res.status === 200) {
           res.json().then((data) => {
             console.log(data);
             setDbsChecks(data.data.checks);
+            console.log("total checks", data.data);
             setTotalDbsChecks(data.data.totalCount);
           })
         } else {
@@ -146,7 +151,8 @@ function AdminApplicantsNew() {
   
   const refetchDbsData = async () => {
     try {
-      const res = await fetchDbsChecksByUserId(hashedId, dbsPage, dbsLimit);
+      const res = await fetchDbsChecksByUserId(hashedId);
+      // const res = await fetchDbsChecksByUserId(hashedId, dbsPage, dbsLimit);
       if (res.status === 200) {
         const data = await res.json()
         setDbsChecks(data.data.checks);
@@ -456,14 +462,14 @@ function AdminApplicantsNew() {
           <div className="flex">
             <Users className="text-[rgb(112_22_208/0.9)] mr-2 " size={36} />
             <div>
-              <h3 className="mb-0 text-black">Employee Management</h3>
+              <h3 className="mb-0 text-black"> {" "}{organisationType === "Agent" ? "Candidates" : " Employee"} Management</h3>
               <p className="text-secondary-600 text-black">
                 <NavLink to="/Dashboard">Dashboard</NavLink>
                 <ChevronRightIcon size={14} />
-                <NavLink to="/Employee">Employee Mgt </NavLink>
+                <NavLink to="/Employee"> {" "}{organisationType === "Agent" ? "Candidates" : " Employee"} Management </NavLink>
                 <ChevronRightIcon size={14} />
                 <NavLink to={`/EmployeeProfile/${id}`}>
-                  Employee Profile
+                  {" "}{organisationType === "Agent" ? "Candidates" : " Employee"} Profile
                 </NavLink>
               </p>
             </div>
@@ -471,7 +477,7 @@ function AdminApplicantsNew() {
           <div>
             <NavLink to="/Employee" className="btn btn-primary">
               <Users size={18} className="mr-2" />
-              All Employees
+              All  {" "}{organisationType === "Agent" ? "Candidates" : " Employees"}
             </NavLink>
           </div>
         </div>
@@ -512,7 +518,7 @@ function AdminApplicantsNew() {
                           Review Profile
                         </button>
 
-                        <button className="btn btn-danger mr-2 mb-2">
+                        <button className="hidden btn btn-danger mr-2 mb-2">
                           <Trash2 size={18} className="mr-2" />
                           Delete Profile
                         </button>
@@ -533,57 +539,41 @@ function AdminApplicantsNew() {
                       </h4>
                     </div>
                     <div className="p-5">
-                      <div className="mt-2">
-                        <h6 className="mb-1 dark:text-white">Other Names:</h6>
-                        <p className="mb-3 dark:text-secondary-600">
-                          <a href="#">{employee.otherNames ?? "None Provided"}</a>
-                        </p>
+                      <div className="mt-2 flex">
+                        <h6 className="mb-1 dark:text-white">Other Names: {employee.otherNames ?? "None Provided"}</h6>
+                       
                       </div>
-                      <div className="mt-2">
-                        <h6 className="mb-1 dark:text-white">Email:</h6>
-                        <h6 className="mb-1 dark:text-white">BirthPlace:</h6>
-                        <p className="mb-3 dark:text-secondary-600">
-                          <a href="#">{employee.birthPlace ?? "None Provided"}</a>
-                        </p>
+                      <div className="mt-2 flex">
+                        <h6 className="mb-1 dark:text-white">Email: {employee.email ?? "None Provided"}</h6>
+                        </div>
+
+                        <div className="mt-2 flex">
+                        <h6 className="mb-1 dark:text-white">BirthPlace: {employee.birthPlace ?? "None Provided"}</h6>
+                       
                       </div>
-                      <div className="mt-2">
-                        <h6 className="mb-1 dark:text-white">Identification Number:</h6>
-                        <p className="mb-3 dark:text-secondary-600">
-                          <span className="font-semibold">
-                            Identification Number:
-                          </span>{" "}
-                          <a href="#">{employee.identificationNumber}</a>
-                        </p>
+                      <div className="mt-2 flex">
+                        <h6 className="mb-1 dark:text-white">Identification Number: {employee.identificationNumber ?? "None Provided"}</h6>
+                      
                       </div>
-                      <div className="mt-2">
-                        <h6 className="mb-1 dark:text-white">Country:</h6>
-                        <p className="mb-3 dark:text-secondary-600">
-                          <a href="#">{employee.countryName ?? "None Provided"}</a>
-                        </p>
+                      <div className="mt-2 flex">
+                        <h6 className="mb-1 dark:text-white">Country: {employee.countryName ?? "None Provided"}</h6>
+                    
                       </div>
-                      <div className="mt-2">
-                        <h6 className="mb-1 dark:text-white">State:</h6>
-                        <p className="mb-3 dark:text-secondary-600">
-                          <a href="#">{employee.stateName ?? "None Provided"}</a>
-                        </p>
+                      <div className="mt-2 flex">
+                        <h6 className="mb-1 dark:text-white">State: {employee.stateName ?? "None Provided"}</h6>
+                        
                       </div>
-                      <div className="mt-2">
-                        <h6 className="mb-1 dark:text-white">City:</h6>
-                        <p className="mb-3 dark:text-secondary-600">
-                          <a href="#">{employee.cityName ?? "None Provided"}</a>
-                        </p>
+                      <div className="mt-2 flex">
+                        <h6 className="mb-1 dark:text-white">City: {employee.cityName ?? "None Provided"}</h6>
+                      
                       </div>
-                      <div className="mt-2">
-                        <h6 className="mb-1 dark:text-white">Address:</h6>
-                        <p className="mb-3 dark:text-secondary-600">
-                          <a href="#">{`${employee.address} ${employee.currentAddressDuration && `(${employee.currentAddressDuration})`}`}</a>
-                        </p>
+                      <div className="mt-2 flex">
+                        <h6 className="mb-1 dark:text-white">Address: {`${employee.address} ${employee.currentAddressDuration && `(${employee.currentAddressDuration} Years)`}`}</h6>
+                       
                       </div>
-                      <div className="mt-2">
-                        <h6 className="mb-1 dark:text-white">Last Address:</h6>
-                        <p className="mb-3 dark:text-secondary-600">
-                          <a href="#">{employee.lastAddress ?? "None Provided"}</a>
-                        </p>
+                      <div className="mt-2 flex">
+                        <h6 className="mb-1 dark:text-white">Last Address: {employee.lastAddress ?? "None Provided"}</h6>
+                        
                       </div>
                     </div>
                   </div>

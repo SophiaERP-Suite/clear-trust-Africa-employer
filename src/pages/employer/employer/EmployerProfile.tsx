@@ -49,6 +49,7 @@ export default function Profile() {
 
   const { user } = useAuth();
   const organisationId = user?.organisationId;
+  const organisationType = user?.organisationType;
 
   useEffect(() => {
     fetchOrgData();
@@ -121,26 +122,6 @@ export default function Profile() {
       className="footer-inner mx-auto main-container container"
       x-bind:className="setting.page_layout"
     >
-      {/* Header
-      <div className="flex flex-wrap mb-6 justify-between gap-4">
-        <div className="col-md-12">
-          <div className="flex flex-wrap items-center justify-between">
-            <div className="flex">
-              <User className="text-[rgb(112_22_208/0.9)] mr-2 " size={36} />
-              <div>
-                <h3 className="mb-0 text-black">Profile</h3>
-                <p className="text-secondary-600 text-black">
-                  <NavLink to="/" className="hover:underline">
-                    Dashboard
-                  </NavLink>{" "}
-                  <ChevronRightIcon size={14} /> Profile{" "}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       <div className="space-y-4">
         {/* HEADER */}
         <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5 shadow-md">
@@ -174,7 +155,7 @@ export default function Profile() {
                           day: "2-digit",
                           month: "short",
                           year: "numeric",
-                        }
+                        },
                       )
                     : "N/A"}
                 </p>
@@ -184,7 +165,7 @@ export default function Profile() {
             <div>
               <NavLink
                 to="/profileUpdate"
-                className="flex items-center justify-center btn btn-info gap-2"
+                className="flex items-center justify-center btn btn-warning gap-2"
               >
                 <Pen size={16} />
                 Edit Profile
@@ -198,7 +179,7 @@ export default function Profile() {
           <div className="bg-white text-md rounded-lg shadow p-5 flex items-start gap-3">
             <Users2 className="text-green-600 mt-1" />
             <div>
-              <h6 className="font-semibold text-gray-700">Employees</h6>
+              <h6 className="font-semibold text-gray-700"> {organisationType === "Agent" ? "Candidates" : " Employee"}</h6>
               <p className="text-black">{employer.usersCount || 0}</p>
             </div>
           </div>

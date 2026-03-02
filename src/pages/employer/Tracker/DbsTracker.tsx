@@ -1,11 +1,23 @@
 import { useEffect, useState } from "react";
-import { Search, ChevronRightIcon, Eye, ClipboardList } from "lucide-react";
+import {
+  Search,
+  ChevronRightIcon,
+  Eye,
+  ClipboardList,
+  ShieldCheck,
+  CheckCheck,
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { fetchDbsChecks } from "../../../utils/Requests/DbsRequests";
 import { useForm, useWatch } from "react-hook-form";
 import Hashids from "hashids";
 import Tippy from "@tippyjs/react";
 import { useAuth } from "../../../utils/useAuth";
+import Modal from "../../../utils/modal";
+import { toast, ToastContainer } from "react-toastify";
+import { getDBSCertificateByCertificateCode } from "../../../utils/Requests/DbsRequestActions";
+
+type ModalType = "add" | "edit" | "delete" | null;
 
 interface DbsChecks {
   dbsApplicationId: number;
@@ -68,8 +80,10 @@ const statusTextStyles: Record<number, string> = {
 
 export default function DBSTrackerModule() {
   const [dbsChecks1, setDbsChecks1] = useState<DbsChecks[]>([]);
-  const [dbsStatus, setDbsStatus] = useState<DBSStatus[]>([]);
-  const [dbsType, setDbsType] = useState<DBSTypes[]>([]);
+  const [modalType, setModalType] = useState<ModalType>(null);
+  // const [dbsStatus, setDbsStatus] = useState<DBSStatus[]>([]);
+  // const [dbsType, setDbsType] = useState<DBSTypes[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [dbsPage, setDbsPage] = useState(1);
   const dbsLimit = 5;
   const [totalDbsChecks, setTotalDbsChecks] = useState(0);
@@ -86,6 +100,7 @@ export default function DBSTrackerModule() {
 
   const { user } = useAuth();
   const organisationId = user?.organisationId;
+  const organisationType = user?.organisationType;
 
   useEffect(() => {
     fetchDbsChecks({
@@ -97,6 +112,7 @@ export default function DBSTrackerModule() {
       .then((res) => {
         if (res.status === 200) {
           res.json().then((data) => {
+            console.log("dbs checks data", data);
             setDbsChecks1(data.data.checks);
             setTotalDbsChecks(data.data.totalCount);
           });
@@ -109,11 +125,54 @@ export default function DBSTrackerModule() {
       .catch((err) => console.log(err));
   }, [dbsPage, dbsLimit, filters, organisationId]);
 
+  // Call modals
+  const openAddModal = () => {
+    setModalType("add");
+  };
+
+  const closeModal = () => {
+    setModalType(null);
+  };
+
+  const handleFindCheck = (inputValue?: string) => {
+    console.log("Finding check for:", inputValue);
+
+    if (!inputValue || inputValue === "") {
+      toast.error("Please provide valid input to search");
+      return;
+    }
+
+    const certificate = getDBSCertificateByCertificateCode(inputValue);
+
+    if (!certificate) {
+      toast.error("No CT Check found for the provided details");
+      return;
+    }
+  };
+
   return (
     <div
       className="p-6 lg:p-8 footer-inner mx-auto main-container container"
       x-bind:className="setting.page_layout"
     >
+      <ToastContainer />
+      <Modal
+        isOpen={modalType === "add"}
+        title="Verify User CT Check"
+        message=""
+        confirmText="Confirm"
+        confirmColor="green"
+        loading={isLoading}
+        inputLabel="Enter the certificate number"
+        inputPlaceholder="Enter details here ..."
+        headerIcon={<ShieldCheck />}
+        butonIcon={<CheckCheck />}
+        onConfirm={({ inputValue }: { inputValue?: string }) =>
+          handleFindCheck(inputValue)
+        }
+        onCancel={closeModal}
+      />
+
       {/* Header */}
       <div className="mb-6">
         <div className="w-full mb-8">
@@ -123,19 +182,26 @@ export default function DBSTrackerModule() {
                 <div className="flex">
                   <ClipboardList className="text-blue-600 mr-2" size={36} />
                   <div>
-                    <h3 className="mb-0 text-black">
-                      DBS Tracker & Compliance
-                    </h3>
+                    <h3 className="mb-0 text-black">CT Tracker & Compliance</h3>
                     <p className="text-secondary-600 text-black">
                       <NavLink to="/Dashboard">Dashboard</NavLink>{" "}
                       <ChevronRightIcon size={14} />{" "}
-                      <NavLink to="/Tracker">DBS Tracker</NavLink>{" "}
+                      <NavLink to="/Tracker">CT Tracker</NavLink>{" "}
                     </p>
                   </div>
                 </div>
 
                 <div></div>
               </div>
+
+              {/* <div className="d-none flex justify-end mt-4">
+                <button
+                  onClick={() => openAddModal()}
+                  className="btn btn-success"
+                >
+                  <ShieldCheck /> Verify CT Check
+                </button>
+              </div> */}
             </div>
           </div>
         </div>
@@ -173,7 +239,7 @@ export default function DBSTrackerModule() {
                 />
               </div>
             </div>
-            <select
+            {/* <select
               {...register("Status")}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
@@ -194,7 +260,7 @@ export default function DBSTrackerModule() {
                   {data.typeName}
                 </option>
               ))}
-            </select>
+            </select> */}
           </div>
           <h4 className="mb-2 sm:mb-0 text-xl font-bold">All CT Checks</h4>
         </div>
@@ -202,28 +268,28 @@ export default function DBSTrackerModule() {
         {/* Table */}
         <div className="overflow-x-auto">
           <div className="p-5">
-            <div className="flex flex-wrap justify-between overflow-x-auto">
-              <table className="min-w-full divide-y divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
+            <div className="flex flex-wrap rounded-md justify-between overflow-x-auto">
+              <table className="min-w-full divide-y rounded-md divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
                 <thead>
                   <tr className="bg-secondary-100 dark:bg-dark-bg">
-                    <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                    <th className="px-6 py-4 text-left font-semibold text-black dark:text-white">
                       S/N
                     </th>
-                    <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
-                      Employee
+                    <th className="px-6 py-4 text-left font-semibold text-black dark:text-white">
+                      {" "}{organisationType === "Agent" ? "Candidates" : " Employee"}
                     </th>
 
-                    <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                    <th className="px-6 py-4 text-left font-semibold text-black dark:text-white">
                       Status
                     </th>
-                    <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                    <th className="px-6 py-4 text-left font-semibold text-black dark:text-white">
                       Request Type
                     </th>
 
-                    <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                    <th className="px-6 py-4 text-left font-semibold text-black dark:text-white">
                       Request Date
                     </th>
-                    <th className="px-6 py-4 text-left font-medium text-black dark:text-white">
+                    <th className="px-6 py-4 text-left font-semibold text-black dark:text-white">
                       Action
                     </th>
                   </tr>

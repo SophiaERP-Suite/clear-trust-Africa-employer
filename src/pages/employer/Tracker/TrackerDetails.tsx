@@ -5,13 +5,14 @@ import {
   CheckCheck,
   ChevronRightIcon,
   ClipboardList,
+  Eye,
   FileIcon,
   Mail,
   MapPin,
+  MessageSquare,
   MessageSquareShare,
   Phone,
   Plus,
-  Search,
   User,
   UserSquareIcon,
   Venus,
@@ -19,7 +20,6 @@ import {
 } from "lucide-react";
 import { NavLink, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-// import { fetchApplicantDocsById } from "../../../utils/Requests/EmployeeRequests.js";
 import Hashids from "hashids";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -39,6 +39,7 @@ import {
 } from "../../../utils/Requests/DbsRequestActions.js";
 import { fetchDbsCheckById } from "../../../utils/Requests/DbsRequests.js";
 import { fetchApplicantDocsById } from "../../../utils/Requests/EmployeeRequests.js";
+import { useAuth } from "../../../utils/useAuth.js";
 
 export interface DBSStagesData {
   dbsStageId: number;
@@ -122,20 +123,6 @@ interface CommentFormValues {
   ToId: string;
 }
 
-// interface ActivityLogData {
-//   activityLogId: number;
-//   action: string;
-//   dbsApplicationId: number;
-//   dbsStageId: number;
-//   dbsStageName: string;
-//   dbsStageAdminId: number;
-//   staffId: number;
-//   staffFistName: string;
-//   status: number;
-//   staffLastName: string;
-//   dateCreated: string;
-// }
-
 interface CommentLogData {
   commentLogId: number;
   comment: string;
@@ -149,33 +136,6 @@ interface CommentLogData {
   dbsApplicationId: number;
   dateCreated: string;
 }
-
-// interface ActivityLogForm {
-//   Action: string;
-// }
-
-// interface AdminFormValues {
-//   AdminId: number;
-// }
-
-// interface StaffFormValues {
-//   StaffInChargeId: number;
-// }
-
-// interface CompletedStageFormValues {
-//   Summary: string;
-// }
-
-// interface ApprovedStageFormValues {
-//   NextStageId: number;
-//   FinalStage: boolean;
-// }
-
-// interface UserData {
-//   userId: number;
-//   firstName: string;
-//   lastName: string;
-// }
 
 interface StageStatusData {
   dbsStageStatusId: number;
@@ -222,11 +182,6 @@ const stageStatusTextValues: Record<number, string> = {
   3: "Approved",
 };
 
-// type ActivityFilterForm = {
-//   StaffName: string;
-//   StageLevel: number;
-// };
-
 type CommentFilterForm = {
   Sender: string;
   DateCreated: string;
@@ -261,6 +216,10 @@ export default function TrackerDetails() {
   // const { register, handleSubmit, reset, formState } =
   //   useForm<AdminFormValues>();
   // const { errors } = formState;
+
+  const { user } = useAuth();
+  const organisationType = user?.organisationType;
+
   const {
     register: commentReg,
     handleSubmit: submitComment,
@@ -270,7 +229,7 @@ export default function TrackerDetails() {
     watch,
   } = useForm<CommentFormValues>();
   const { errors: commentErrors } = commentForm;
-  // const [certificate, setCertificate] = useState(false);
+  const [certificate, setCertificate] = useState(false);
   const selectedRecipientGroup = watch("To");
 
   useEffect(() => {
@@ -279,7 +238,8 @@ export default function TrackerDetails() {
         if (res.status === 200) {
           res.json().then((data) => {
             setDbsDetails(data.data.application);
-            // setCertificate(data.data.certificate);
+            setCertificate(data.data.certificate);
+            console.log("dbs cert", data.data);
           });
         } else {
           res.text().then((data) => {
@@ -323,18 +283,6 @@ export default function TrackerDetails() {
         .catch((err) => console.log(err));
     }
   }, [hashedId, dbsDetails]);
-
-  // const refetchDbsDetails = async () => {
-  //   const res = await fetchDbsCheckById(hashedId);
-  //   if (res.status === 200) {
-  //     const data = await res.json();
-  //     setDbsDetails(data.data);
-  //     setCertificate(data.data.certificate);
-  //   } else {
-  //     const resText = await res.text();
-  //     console.log(JSON.parse(resText));
-  //   }
-  // };
 
   const refetchComments = async () => {
     const res = await getDBSApplicationComment(hashedId, {
@@ -382,7 +330,7 @@ export default function TrackerDetails() {
       if (res.status === 200) {
         res.json().then((data) => {
           // setDbsStages(data.data.stages);
-          return data
+          return data;
         });
       } else {
         res.text().then((data) => {
@@ -399,15 +347,6 @@ export default function TrackerDetails() {
     }
     return "UploadedFile";
   };
-
-  // const generateCertificate = async () => {
-  //   setOpenMoreAction(!openMoreAction);
-  //   toast.success("Your Certificate is being generated");
-  //   const res = await generateNewDBSCertificate(hashedId);
-  //   handleCreateEmployee(res, null, null, { toast }, null).finally(async () => {
-  //     await refetchDbsDetails();
-  //   });
-  // };
 
   const logComment = async (data: CommentFormValues) => {
     if (!commentErrors.Comment && !commentErrors.ToId && !commentErrors.To) {
@@ -461,7 +400,7 @@ export default function TrackerDetails() {
           },
         }}
       >
-        <div className="h-fit max-h-[70vh] overflow-y-auto  w-70 md:w-100">
+        <div className="h-fit max-h-[70vh] w-70 md:w-100">
           <div className="flex justify-start">
             <p className="font-semibold text-black py-1 text-lg">
               <MessageSquareShare size={20} className="mr-2" /> Add New Comment
@@ -546,13 +485,13 @@ export default function TrackerDetails() {
           <div className="flex">
             <ClipboardList className="text-blue-600 mr-2" size={36} />
             <div>
-              <h3 className="mb-0 text-black">Application Details</h3>
+              <h3 className="mb-0 text-black">CT Tracker Details</h3>
               <p className="text-secondary-600 text-black">
                 <NavLink to="/Dashboard">Dashboard</NavLink>{" "}
                 <ChevronRightIcon size={14} />{" "}
-                <NavLink to="/Tracker">CTA Tracker</NavLink>{" "}
+                <NavLink to="/Tracker">CT Tracker</NavLink>{" "}
                 <ChevronRightIcon size={14} />{" "}
-                <NavLink to={`/Tracker/${id}`}>CTA Details</NavLink>{" "}
+                <NavLink to={`/Tracker/${id}`}>CT Tracker Details</NavLink>{" "}
               </p>
             </div>
           </div>
@@ -581,14 +520,25 @@ export default function TrackerDetails() {
                   </p>
                 </Tippy>
               </div>
+              {certificate === true && (
+                <NavLink
+                  to={`/Tracker/certificate/${id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-success"
+                >
+                  <Eye size={16} />    View Certificate
+                </NavLink>
+              )}
             </div>
           )}
         </div>
+
         {dbsDetails && (
           <div className="flex flex-wrap contet-inner" x-data="{ openTab: 1 }">
             <div className="w-full grid grid-cols-1 lg:grid-cols-3 lg:gap-8">
               <div className="col lg:col-span-1">
-                <div x-show="openTab === 4">
+                <div>
                   <div className="h-fit overflow-y-auto relative flex flex-col mb-8  bg-white shadow rounded-xl dark:bg-dark-card">
                     <div className="bg-[#7016d0] p-5 border-b dark:border-secondary-800 dark:border-secondary-800">
                       <div className="lg:mb-0 profile-logo profile-logo1 flex justify-center">
@@ -646,7 +596,7 @@ export default function TrackerDetails() {
                       <div className="mt-5 border-b dark:border-secondary-800 dark:border-secondary-800 flex items-center pb-1">
                         <UserSquareIcon size={30} className="mr-2" />
                         <h4 className="card-title mb-0 dark:text-white font-bold">
-                          Employer Details
+                          {" "}{organisationType === "Agent" ? "Agent" : " Employer"} Details
                         </h4>
                       </div>
                       <div className="mt-2 py-1 text-sm flex justify-start items-center">
@@ -669,7 +619,7 @@ export default function TrackerDetails() {
                 </div>
               </div>
               <div className="col lg:col-span-2">
-                <div x-show="openTab === 4">
+                <div>
                   <div className="relative flex flex-col mb-8 bg-white shadow rounded-xl dark:bg-dark-card">
                     <div className="p-5 border-b dark:border-secondary-800 dark:border-secondary-800 flex flex-wrap justify-between items-center">
                       <div className="flex items-center">
@@ -680,26 +630,21 @@ export default function TrackerDetails() {
                       </div>
 
                       <button
-                        className="btn btn-success mr-2 mb-2"
+                        className="btn btn-success mb-2"
                         onClick={() => setCommentModalState(true)}
                       >
-                        <Plus size={18} className="mr-2" />
-                        Add New Comment
+                        <Plus size={18} /> Add New Comment
                       </button>
                     </div>
                     <div className="p-5">
                       <div className="flex flex-wrap gap-4">
                         <div className="flex-1 min-w-[330px]">
                           <div className="relative">
-                            <Search
-                              className="absolute left-3 top-7 transform -translate-y-1/2 text-gray-400"
-                              size={20}
-                            />
                             <input
                               type="text"
                               placeholder="Search by sender name..."
                               {...commentFilterReg("Sender")}
-                              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="form-control"
                             />
                           </div>
                         </div>
@@ -708,14 +653,77 @@ export default function TrackerDetails() {
                             <input
                               type="date"
                               {...commentFilterReg("DateCreated")}
-                              className="w-full pl-2 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="form-control"
                             />
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="p-5">
-                      <div className="flex flex-wrap justify-between overflow-x-auto h-fit">
+                      <div className="space-y-4">
+                        {commentLog.length === 0 ? (
+                          <div className="text-center py-12 bg-gray-50 dark:bg-dark-bg rounded-md border border-dashed border-gray-300 dark:border-gray-700">
+                            <MessageSquare className="w-12 h-12 mx-auto text-gray-400 mb-3" />
+                            <p className="text-black dark:text-gray-400">
+                              No comments yet. Be the first to add one!
+                            </p>
+                          </div>
+                        ) : (
+                          commentLog.map((data, index) => (
+                            <div
+                              key={data.commentLogId ?? index}
+                              className="bg-white dark:bg-dark-bg border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow"
+                            >
+                              {/* Header */}
+                              <div className="flex items-start justify-between mb-3">
+                                <div className="flex items-center gap-3">
+                                  {/* Avatar */}
+                                  <div
+                                    className="h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+                                    style={{
+                                      backgroundColor: colors[index % 4],
+                                    }}
+                                  >
+                                    {`${data.fromFirstName[0]}${data.fromLastName[0]}`}
+                                  </div>
+
+                                  {/* Name & Date */}
+                                  <div>
+                                    <h6 className="font-semibold text-gray-900 dark:text-white">
+                                      {`${data.fromFirstName} ${data.fromLastName}`}
+                                    </h6>
+                                    <span className="text-xs text-gray-700 dark:text-gray-400">
+                                      {new Date(
+                                        data.dateCreated,
+                                      ).toLocaleDateString("en-GB", {
+                                        day: "2-digit",
+                                        month: "short",
+                                        year: "numeric",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Comment Number Badge */}
+                                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                                  #
+                                  {index +
+                                    activityLimit * (activityPage - 1) +
+                                    1}
+                                </span>
+                              </div>
+
+                              {/* Comment Content */}
+                              <div className="ml-13 text-black dark:text-gray-300">
+                                <HtmlRenderer html={data.comment} />
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                      {/* <div className="flex flex-wrap justify-between overflow-x-auto h-fit">
                         <table className="min-w-full divide-y divide-secondary-200 dark:divide-secondary-800 border dark:border-secondary-800">
                           <thead>
                             <tr className="bg-secondary-100 dark:bg-dark-bg">
@@ -792,7 +800,7 @@ export default function TrackerDetails() {
                             </span>
                           </div>
                         )}
-                      </div>
+                      </div> */}
                       <div className="flex flex-wrap justify-between mt-6">
                         <div className="flex justify-center items-center mb-1">
                           <p className="text-black">
@@ -803,9 +811,9 @@ export default function TrackerDetails() {
                             to{" "}
                             {commentLog.length > 0
                               ? commentPage * commentLimit -
-                                commentLimit +
-                                1 +
-                                (commentLog.length - 1)
+                              commentLimit +
+                              1 +
+                              (commentLog.length - 1)
                               : 0}{" "}
                             of {totalCommentLog} entries
                           </p>
@@ -847,7 +855,7 @@ export default function TrackerDetails() {
                   </div>
                 </div>
 
-                <div x-show="openTab === 4">
+                <div>
                   <div className="relative flex flex-col mb-8  bg-white shadow rounded-xl dark:bg-dark-card">
                     <div className="p-5 border-b dark:border-secondary-800 dark:border-secondary-800 flex items-center">
                       <FileIcon size={30} className="mr-2" />
@@ -867,65 +875,65 @@ export default function TrackerDetails() {
                       {userDocuments.length > 0 &&
                         userDocuments.map((data: UserDocumentValues, index) => (
                           <div
-                            className="p-2 border-2 rounded-xl mb-4"
+                            className="px-5 py-3 border rounded-lg mb-4"
                             key={index}
-                            style={{ borderColor: "#7016d0" }}
                           >
-                            <div className="flex justify-between items-center">
-                              <a
-                                className="mb-1 dark:text-white flex items-center gap-3 font-bold"
-                                href={data.fileUrl}
-                                target="_blank"
-                              >
-                                {Number(data.userDocumentType) === 1 &&
-                                  "International Passport"}
-                                {Number(data.userDocumentType) === 2 &&
-                                  "Identification Document"}
-                                {Number(data.userDocumentType) === 3 &&
-                                  "Police Certificate"}{" "}
-                              </a>
-                              {Number(data.status) === 1 && (
-                                <p className="w-15 text-sm font-light p-1 bg-orange-200 text-center rounded-lg">
-                                  Pending
-                                </p>
-                              )}
-                              {Number(data.status) === 2 && (
-                                <p className="w-15 text-sm font-light p-1 bg-green-200 text-center rounded-lg">
-                                  Verified
-                                </p>
-                              )}
-                              {Number(data.status) === 3 && (
-                                <p className="w-15 text-sm font-light p-1 bg-red-200 text-center rounded-lg">
-                                  Rejected
-                                </p>
-                              )}
-                            </div>
-                            <div className="my-2">
-                              <a
-                                className="underline decoration-solid text-blue mr-2"
-                                href={data.fileUrl}
-                                target="_blank"
-                              >
-                                {splitFile(data.fileUrl)}
-                              </a>
-                            </div>
-                            <p className="mb-1 dark:text-secondary-600 text-sm">
-                              <span>
-                                Uploaded On -{" "}
-                                {new Date(data.dateCreated).toLocaleDateString(
-                                  "en-GB",
-                                  {
+                            <a
+                              className="py-5"
+                              key={index}
+                              href={data.fileUrl}
+                              target="_blank"
+                            >
+                              <div className="flex justify-between items-center">
+                                <a className="mb-1 dark:text-white flex items-center gap-3 font-bold">
+                                  {Number(data.userDocumentType) === 1 &&
+                                    "International Passport"}
+                                  {Number(data.userDocumentType) === 2 &&
+                                    "Identification Document"}
+                                  {Number(data.userDocumentType) === 3 &&
+                                    "Police Certificate"}{" "}
+                                </a>
+                                {Number(data.status) === 1 && (
+                                  <p className="w-15 text-sm font-light p-1 bg-orange-200 text-center rounded-lg">
+                                    Pending
+                                  </p>
+                                )}
+                                {Number(data.status) === 2 && (
+                                  <p className="w-15 text-sm font-light p-1 bg-green-200 text-center rounded-lg">
+                                    Verified
+                                  </p>
+                                )}
+                                {Number(data.status) === 3 && (
+                                  <p className="w-15 text-sm font-light p-1 bg-red-200 text-center rounded-lg">
+                                    Rejected
+                                  </p>
+                                )}
+                              </div>
+                              <div className="my-2">
+                                <a
+                                  className="underline decoration-solid text-blue mr-2"
+                                  href={data.fileUrl}
+                                  target="_blank"
+                                >
+                                  {splitFile(data.fileUrl)}
+                                </a>
+                              </div>
+                              <p className="mb-1 dark:text-secondary-600 text-sm">
+                                <span>
+                                  Uploaded On -{" "}
+                                  {new Date(
+                                    data.dateCreated,
+                                  ).toLocaleDateString("en-GB", {
                                     day: "2-digit",
                                     month: "short",
                                     year: "numeric",
-                                  },
-                                )}
-                              </span>
-                            </p>
-                            {Number(data.status) === 1 &&
-                              dbsDetails.status != 4 && (
-                                <div className="flex justify-end items-center gap-3 my-1">
-                                  {/* <Tippy content="Mark As Rejected">
+                                  })}
+                                </span>
+                              </p>
+                              {Number(data.status) === 1 &&
+                                dbsDetails.status != 4 && (
+                                  <div className="flex justify-end items-center gap-3 my-1">
+                                    {/* <Tippy content="Mark As Rejected">
                                     <button
                                       className="btn text-white btn-danger py-1 px-2"
                                       // onClick={() =>
@@ -945,8 +953,9 @@ export default function TrackerDetails() {
                                       <CheckCheck size={18} />
                                     </button>
                                   </Tippy> */}
-                                </div>
-                              )}
+                                  </div>
+                                )}
+                            </a>{" "}
                           </div>
                         ))}
                     </div>

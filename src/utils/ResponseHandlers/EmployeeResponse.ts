@@ -31,7 +31,7 @@ interface DataResponse {
 }
 
 
-export const handleCreateEmployee = async (res: any, loader: HTMLElement | null, text: HTMLElement | null, { toast }: Props, reset: any, msg="Data added successfully") => {
+export const handleCreateEmployee = async (res: any, loader: HTMLElement | null, text: HTMLElement | null, { toast }: Props, reset: any, msg = "Data added successfully") => {
   try {
     if (loader) {
       loader.style.display = 'none';

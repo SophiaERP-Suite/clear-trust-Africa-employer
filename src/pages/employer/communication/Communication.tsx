@@ -3,7 +3,6 @@ import {
   MessageSquare,
   Bell,
   Send,
-  Shield,
   AlertCircle,
   Plus,
   ChevronRightIcon,
@@ -11,7 +10,6 @@ import {
   SendHorizonal,
   AlarmCheckIcon,
 } from "lucide-react";
-import { fetchApplicants } from "../../../utils/Requests/EmployeeRequests";
 import type { EmployeesDto } from "../controlPanel/Roles";
 import Modal from "../../../utils/modal";
 import {
@@ -29,6 +27,7 @@ import {
   readNotifications,
 } from "../../../utils/Requests/NotificationRequest";
 import { NavLink, useNavigate } from "react-router-dom";
+import { fetchAllApplicants } from "../../../utils/Requests/userApi";
 
 type ModalType = "add" | "edit" | "delete" | null;
 
@@ -63,7 +62,7 @@ interface NotificationDto {
 export default function CommunicationsPage() {
   const [activeTab, setActiveTab] = useState("messages");
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
-  const [selectedRoute, setSelectedRoute] = useState("institution");
+  // const [selectedRoute, setSelectedRoute] = useState("institution");
   const [employees, setEmployees] = useState<EmployeesDto[]>([]);
   const [allConversations, setAllConversations] = useState<ConversationDto[]>(
     [],
@@ -108,7 +107,7 @@ export default function CommunicationsPage() {
 
   const fetchEmployees = async () => {
     try {
-      const data = await fetchApplicants(1, 2000);
+      const data = await fetchAllApplicants();
       setEmployees(data.data.users);
     } catch (err: any) {
       setError("Failed to fetch users");
@@ -140,16 +139,12 @@ export default function CommunicationsPage() {
     }
   };
 
-  // useEffect(() => {
-  //   fetchNotifications();
-  // }, []);
-
   useEffect(() => {
     fetchNotifications();
 
     const intervalId = setInterval(() => {
       fetchNotifications();
-    }, 5000); 
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -453,39 +448,6 @@ export default function CommunicationsPage() {
 
                   {/* Messages */}
                   <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    <div className="flex items-center justify-center">
-                      <div
-                        className={`flex items-center gap-2 px-3 py-1 rounded-full ${
-                          selectedRoute === "institution"
-                            ? "bg-blue-100"
-                            : selectedRoute === "staff"
-                              ? "bg-purple-100"
-                              : "bg-green-100"
-                        }`}
-                      >
-                        <Shield
-                          className={`w-3 h-3 ${
-                            selectedRoute === "institution"
-                              ? "text-blue-700"
-                              : selectedRoute === "staff"
-                                ? "text-purple-700"
-                                : "text-green-700"
-                          }`}
-                        />
-                        <span
-                          className={`text-xs font-medium ${
-                            selectedRoute === "institution"
-                              ? "text-blue-700"
-                              : selectedRoute === "staff"
-                                ? "text-purple-700"
-                                : "text-green-700"
-                          }`}
-                        >
-                          Secure Communication
-                        </span>
-                      </div>
-                    </div>
-
                     {!loading && error && (
                       <p className="text-sm text-slate-500">{error}</p>
                     )}
@@ -513,15 +475,7 @@ export default function CommunicationsPage() {
                               </p>
                             )}
                             <div
-                              className={`p-3 rounded-md ${
-                                isOwnMessage
-                                  ? selectedRoute === "institution"
-                                    ? "bg-blue-600 text-white"
-                                    : selectedRoute === "staff"
-                                      ? "bg-purple-600 text-white"
-                                      : "bg-green-600 text-white"
-                                  : "bg-slate-100 text-slate-900"
-                              }`}
+                              className={`p-3 rounded-md bg-green-600 text-white`}
                             >
                               <p className="text-sm">{msg.messageBody}</p>
                             </div>

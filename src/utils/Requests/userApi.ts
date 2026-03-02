@@ -1,5 +1,16 @@
 const BaseURL = "http://localhost:5181";
 
+export const fetchAllApplicants = async () => {
+  const token = localStorage.getItem("accessToken");
+  const response = await fetch(`${BaseURL}/applicants/non-filtered`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
+};
+
 export const fetchApplicants = async (pageNumber = 1, limit = 10) => {
   const token = localStorage.getItem("accessToken");
   const response = await fetch(

@@ -48,18 +48,13 @@ export const fetchDbsChecksByUserId = async (userId: number) => {
 };
 
 export const GetDbsChecksByOrganisationIdAndStatus = async (
-  filterData: object,
+  organisationId: number,
   status: number,
 ) => {
   const token = localStorage.getItem("accessToken");
-  const params = new URLSearchParams();
-  Object.entries(filterData).forEach(([key, value]) => {
-    if (value !== null && value !== undefined && value !== "") {
-      params.append(key, value);
-    }
-  });
+
   const response = await fetch(
-    `${BaseURL}/dbs-applications/${status}/by-status`,
+    `${BaseURL}/dbs-applications/${organisationId}/${status}/by-status`,
     {
       method: "GET",
       headers: {
@@ -67,7 +62,7 @@ export const GetDbsChecksByOrganisationIdAndStatus = async (
       },
     },
   );
-  return response;
+  return response.json();
 };
 
 export const verifyDbsPayment = async (tx_ref: string) => {
@@ -103,7 +98,7 @@ export const fetchDbsChecks = async (filterData: object) => {
       params.append(key, value);
     }
   });
-  const url = `${BaseURL}/dbs-applications/GetAllDBSApplicationByOrganisationId?${params}`;
+  const url = `${BaseURL}/dbs-applications/GetCTChecksByOrganisationId?${params}`;
   console.log(url);
   const response = await fetch(url, {
     method: "GET",
@@ -112,4 +107,18 @@ export const fetchDbsChecks = async (filterData: object) => {
     },
   });
   return response;
+};
+
+export const GetEmployeesWithoutDbs = async (organisationId: number) => {
+  const token = localStorage.getItem("accessToken");
+
+  const url = `${BaseURL}/dbs-applications/${organisationId}/GetEmployeesWithoutDbs`;
+  console.log(url);
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.json();
 };
