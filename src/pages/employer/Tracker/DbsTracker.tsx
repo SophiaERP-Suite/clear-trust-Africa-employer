@@ -25,7 +25,7 @@ export default function DBSTrackerModule() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Sample DBS checks data
+  // Sample CTA checks data
   const dbsChecks = [
     {
       id: "DBS-2025-001",
@@ -205,10 +205,10 @@ export default function DBSTrackerModule() {
                   <Shield className="text-[rgb(112_22_208/0.9)] mr-2" size={36} />
                   <div>
                     <h3 className="mb-0 text-black">
-                      DBS Tracker & Compliance
+                      CTA Tracker & Compliance
                     </h3>
                     <p className="text-secondary-600 text-black">
-                      Dashboard <ChevronRightIcon size={14} /> DBS Tracker{" "}
+                      Dashboard <ChevronRightIcon size={14} /> CTA Tracker{" "}
                     </p>
                   </div>
                 </div>
@@ -481,7 +481,7 @@ export default function DBSTrackerModule() {
                   />
                   <input
                     type="text"
-                    placeholder="Search by name, employee ID, or DBS number..."
+                    placeholder="Search by name, employee ID, or CTA number..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -650,10 +650,10 @@ export default function DBSTrackerModule() {
               <AlertTriangle className="text-red-600 mt-1" size={24} />
               <div className="flex-1">
                 <h3 className="font-bold text-red-900 mb-2">
-                  Critical: Expired DBS Checks
+                  Critical: Expired CTA Checks
                 </h3>
                 <p className="text-red-700 mb-4">
-                  {stats.expired} employee(s) have expired DBS checks and may
+                  {stats.expired} employee(s) have expired CTA checks and may
                   not be compliant to work in regulated positions.
                 </p>
                 <div className="space-y-2">
@@ -692,7 +692,7 @@ export default function DBSTrackerModule() {
                   Warning: Expiring Soon
                 </h3>
                 <p className="text-yellow-700 mb-4">
-                  {stats.expiringSoon} DBS check(s) will expire within the next
+                  {stats.expiringSoon} CTA check(s) will expire within the next
                   30 days. Renewal should be initiated immediately.
                 </p>
                 <div className="space-y-2">

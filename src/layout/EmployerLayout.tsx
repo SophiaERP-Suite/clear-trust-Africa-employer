@@ -24,7 +24,7 @@ function EmploymentLayout() {
     {
       path: "/Tracker",
       icon: <ClipboardList size={25} />,
-      label: "DBS Tracker",
+      label: "CTA Tracker",
     },
     {
       path: "/IncidentMgt",
