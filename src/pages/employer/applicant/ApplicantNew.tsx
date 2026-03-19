@@ -29,6 +29,8 @@ interface ApplicantFormValues {
   DateOfBirth: string;
   BirthPlace: string;
   Gender: string;
+  CurrentAddressDurationCount: number;
+  CurrentAddressDurationUnit: string;
   Address: string;
   CountryId: number;
   StateId: number;
@@ -156,22 +158,14 @@ function AdminEmployeesNew() {
   const organisationType = user?.organisationType;
 
   const addApplicant = async (data: ApplicantFormValues) => {
-    if (
-      !errors.FirstName &&
-      !errors.LastName &&
-      !errors.OtherNames &&
-      !errors.ProfileImage &&
-      !errors.Phone &&
-      !errors.Email &&
-      !errors.IdentificationNumber &&
-      !errors.DateOfBirth &&
-      !errors.BirthPlace &&
-      !errors.Gender &&
-      !errors.Address &&
-      !errors.CountryId &&
-      !errors.StateId &&
-      !errors.CityId &&
-      !errors.CurrentAddressDuration
+    if (!errors.FirstName && !errors.LastName &&
+      !errors.ProfileImage && !errors.Phone &&
+      !errors.Email && !errors.IdentificationNumber &&
+      !errors.DateOfBirth && !errors.Gender &&
+      !errors.Address && !errors.CountryId &&
+      !errors.CurrentAddressDurationCount && !errors.StateId &&
+      !errors.OtherNames && !errors.BirthPlace &&
+      !errors.CityId && !errors.CurrentAddressDurationUnit
     ) {
       const loader = document.getElementById("query-loader");
       const text = document.getElementById("query-text");
@@ -363,7 +357,7 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        Applicant Photo
+                       Photo
                       </label>
                       <div>
                         <input
@@ -438,7 +432,7 @@ function AdminEmployeesNew() {
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
                         htmlFor="email"
                       >
-                        Identification Number (NIN, SSN, SIN)
+                        Unique Personal Identification Number (eg: NIN, UPI, etc...)
                       </label>
                       <div>
                         <input
@@ -573,26 +567,48 @@ function AdminEmployeesNew() {
                         <p className="error-msg">{errors.CityId?.message}</p>
                       </div>
                     </div>
-                    <div>
-                      <label
+                    <div className="grid grid-cols-2 gap-x-6">
+                      <div className="col-span-2">
+                        <label
                         className="inline-block mb-2 text-secondary-600 dark:text-white"
-                        htmlFor="addressduration"
-                      >
-                        Current Address Duration (Years)
-                      </label>
+                          htmlFor="lname"
+                        >
+                          Length of Residency in Current Address
+                        </label>
+                      </div>
                       <div>
                         <input
                           type="number"
-                          className="form-control text-black"
-                          {...register("CurrentAddressDuration", {
-                            required: isEditMode ? false : "Required",
-                          })}
-                          defaultValue={employee?.currentAddressDuration}
+                          placeholder="Duration"
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('CurrentAddressDurationCount', {
+                              required: 'Required'
+                            })
+                          }
                           required
                         />
-                        <p className="error-msg">
-                          {errors.CurrentAddressDuration?.message}
-                        </p>
+                        <p className='error-msg'>{errors.CurrentAddressDurationCount?.message}</p>
+                      </div>
+                      <div>
+                        <select
+                          className="w-full h-12 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-black placeholder-secondary-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                          {
+                            ...register('CurrentAddressDurationUnit', {
+                              required: 'Required',
+                              pattern: {
+                                value: /^(?!default$).+$/,
+                                message: 'Required'
+                              }
+                            })
+                          }
+                        >
+                          <option value="default">Select Unit</option>
+                          <option value="Week">Weeks</option>
+                          <option value="Month">Months</option>
+                          <option value="Year">Years</option>
+                        </select>
+                        <p className='error-msg'>{errors.CurrentAddressDurationUnit?.message}</p>
                       </div>
                     </div>
                     <div className="lg:col-span-2">

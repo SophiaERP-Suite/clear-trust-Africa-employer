@@ -1,20 +1,29 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
+import BulletList from '@tiptap/extension-bullet-list'
+import OrderedList from '@tiptap/extension-ordered-list'
+import ListItem from '@tiptap/extension-list-item'
 import { useEffect } from 'react';
- 
+
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
 }
- 
+
 export default function RichTextEditor({ value, onChange }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
+        bulletList: false,
+        orderedList: false,
+        listItem: false,
       }),
       Underline,
+      BulletList,
+      OrderedList,
+      ListItem,
     ],
     content: value,
     editorProps: {
@@ -27,20 +36,19 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
       onChange(editor.getHTML());
     },
   });
- 
+
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value);
     }
   }, [value, editor]);
- 
+
   if (!editor) return null;
- 
+
   const btn = (active: boolean) =>
-    `px-2 py-1 rounded text-sm border ${
-      active ? 'bg-gray-200 font-semibold' : 'bg-white'
+    `px-2 py-1 rounded text-sm border ${active ? 'bg-gray-200 font-semibold' : 'bg-white'
     } hover:bg-gray-100`;
- 
+
   return (
     <div className="space-y-2">
       {/* Toolbar */}
@@ -52,7 +60,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         >
           B
         </button>
- 
+
         <button
           type="button"
           className={btn(editor.isActive('italic'))}
@@ -60,7 +68,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         >
           I
         </button>
- 
+
         <button
           type="button"
           className={btn(editor.isActive('underline'))}
@@ -68,7 +76,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         >
           U
         </button>
- 
+
         <button
           type="button"
           className={btn(editor.isActive('heading', { level: 1 }))}
@@ -76,7 +84,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         >
           H1
         </button>
- 
+
         <button
           type="button"
           className={btn(editor.isActive('heading', { level: 2 }))}
@@ -84,7 +92,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         >
           H2
         </button>
- 
+
         <button
           type="button"
           className={btn(editor.isActive('heading', { level: 3 }))}
@@ -92,15 +100,15 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         >
           H3
         </button>
- 
+
         <button
           type="button"
           className={btn(false)}
           onClick={() => editor.chain().focus().undo().run()}
         >
-          ↺
+          • List
         </button>
- 
+
         <button
           type="button"
           className={btn(false)}
@@ -108,7 +116,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
         >
           ↻
         </button>
- 
+
         <button
           type="button"
           className={btn(editor.isActive('blockquote'))}
@@ -117,7 +125,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
           ❝
         </button>
       </div>
- 
+
       <EditorContent editor={editor} />
     </div>
   );

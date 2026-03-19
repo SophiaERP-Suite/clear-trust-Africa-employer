@@ -44,6 +44,7 @@ export interface DbsTypes {
   dbsTypeId: number;
   typeName: string;
   typeCost: number;
+  description: string;
 }
 
 interface DbsCheckRequest {
@@ -60,6 +61,7 @@ function AdminEmployees() {
   const hashIds = new Hashids("ClearTrustAfricaEncode", 10);
   const [openRowId, setOpenRowId] = useState<string | null>(null);
   const [modalState, setModalState] = useState(false);
+  // const [modalDescState, setModalDescState] = useState(false);
   const [dbsRequestData, setDbsRequestData] = useState<DbsCheckRequest | null>(null);
   const [loading, setLoading] = useState(true);
 
